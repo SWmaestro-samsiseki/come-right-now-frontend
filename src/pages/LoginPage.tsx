@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Navigate } from 'react-router-dom';
+import useAuthStore from '../store/authStore';
 
 function LoginPage() {
+  const { setAuth, setUserType } = useAuthStore();
   const [id, setId] = useState('');
   const [pw, setPw] = useState('');
 
@@ -11,12 +14,50 @@ function LoginPage() {
     setPw(e.target.value);
   }
   function login() {
-    // id와 pw값을 보내고 성공시 로그인 로직 처리
-    // 성공시 JWT를 반환 받아서 쿠키에 저장하고 /main으로 리다이렉트
-    // 이때 로그인 상태관리를 하는 전역 상태 변수를 true로 변경
-    // 실패시 실패 alert
+    fetch('API주소/accout/login', {
+      method: 'POST',
+      body: JSON.stringify({
+        email: id,
+        password: pw,
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.isSuccess) {
+          localStorage.setItem('token', res.accessToken);
+          setAuth();
+          setUserType(res.userType);
+          return <Navigate to="/main" replace={true} />;
+        } else {
+          alert('로그인 실패');
+        }
+      })
+      .catch((err) => {
+        alert('로그인에 실패했습니다.' + err);
+      });
     console.log(id, pw);
   }
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token !== null) {
+      fetch('API주소/accout/validation', {
+        method: 'GET',
+        headers: {
+          accessToken: token,
+        },
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.isValid) {
+            return <Navigate to="/main" replace={true} />;
+          }
+        })
+        .catch((err) => {
+          alert('확인에 실패했습니다.' + err);
+        });
+    }
+  }, []);
 
   return (
     <div>
