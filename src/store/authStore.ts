@@ -3,14 +3,14 @@ import create from 'zustand';
 interface Auth {
   authoried: boolean;
   userType: string;
-  setAuth: () => void;
+  setAuth: (value: boolean) => void;
   setUserType: (type: string) => void;
 }
 
 const useAuthStore = create<Auth>((set) => ({
   authoried: false,
   userType: '',
-  setAuth: () => set((state) => ({ authoried: !state.authoried })),
+  setAuth: (value: boolean) => set(() => ({ authoried: !value })),
   setUserType: (type: string) => set(() => ({ userType: type })),
 }));
 

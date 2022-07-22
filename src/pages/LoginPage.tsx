@@ -25,7 +25,7 @@ function LoginPage() {
       .then((res) => {
         if (res.isSuccess) {
           localStorage.setItem('token', res.accessToken);
-          setAuth();
+          setAuth(true);
           setUserType(res.userType);
           return <Navigate to="/main" replace={true} />;
         } else {
@@ -50,6 +50,8 @@ function LoginPage() {
         .then((res) => res.json())
         .then((res) => {
           if (res.isValid) {
+            setAuth(true);
+            setUserType(res.userType);
             return <Navigate to="/main" replace={true} />;
           }
         })
