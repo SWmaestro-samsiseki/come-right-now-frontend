@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import useAuthStore from '../store/authStore';
 
 function LoginPage() {
+  const navigate = useNavigate();
   const { setAuth, setUserType } = useAuthStore();
   const [id, setId] = useState('');
   const [pw, setPw] = useState('');
@@ -27,7 +28,7 @@ function LoginPage() {
           localStorage.setItem('token', res.accessToken);
           setAuth(true);
           setUserType(res.userType);
-          return <Navigate to="/main" replace={true} />;
+          navigate('/main', { replace: true });
         } else {
           alert('로그인 실패');
         }
@@ -44,15 +45,15 @@ function LoginPage() {
       fetch('API주소/accout/validation', {
         method: 'GET',
         headers: {
-          accessToken: token,
+          Authorization: token,
         },
       })
         .then((res) => res.json())
         .then((res) => {
-          if (res.isValid) {
+          if (res.statusCode === 200) {
             setAuth(true);
             setUserType(res.userType);
-            return <Navigate to="/main" replace={true} />;
+            navigate('/main', { replace: true });
           }
         })
         .catch((err) => {

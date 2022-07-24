@@ -1,5 +1,17 @@
+import { useNavigate } from 'react-router-dom';
+
 function UserMainPage() {
-  return <div>유저 메인 페이지</div>;
+  const navigate = useNavigate();
+  function reservation() {
+    navigate('/request', { replace: true });
+  }
+  return (
+    <div>
+      <button type="button" onClick={reservation}>
+        실시간예약
+      </button>
+    </div>
+  );
 }
 
 export default UserMainPage;

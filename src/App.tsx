@@ -25,7 +25,7 @@ function App() {
                   StoreMainPage={<StoreMainPage />}
                 />
               ) : (
-                <LoginPage />
+                <Navigate to="/login" replace={true} />
               )
             }
           />

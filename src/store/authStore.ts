@@ -8,8 +8,8 @@ interface Auth {
 }
 
 const useAuthStore = create<Auth>((set) => ({
-  authoried: false,
-  userType: '',
+  authoried: true,
+  userType: 'USER',
   setAuth: (value: boolean) => set(() => ({ authoried: !value })),
   setUserType: (type: string) => set(() => ({ userType: type })),
 }));
