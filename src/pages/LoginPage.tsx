@@ -15,8 +15,12 @@ function LoginPage() {
     setPw(e.target.value);
   }
   function login() {
-    fetch('API주소/accout/login', {
+    fetch('http://localhost:8080/account/login', {
       method: 'POST',
+      headers: {
+        Accept: 'application/json, text/plain, */*',
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
         email: id,
         password: pw,
@@ -25,6 +29,7 @@ function LoginPage() {
       .then((res) => res.json())
       .then((res) => {
         if (res.isSuccess) {
+          console.log(res);
           localStorage.setItem('token', res.accessToken);
           setAuth(true);
           setUserType(res.userType);
@@ -42,10 +47,12 @@ function LoginPage() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token !== null) {
-      fetch('API주소/accout/validation', {
+      fetch('http://localhost:8080/account/validation', {
         method: 'GET',
         headers: {
-          Authorization: token,
+          Accept: 'application/json, text/plain, */*',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
       })
         .then((res) => res.json())
@@ -54,6 +61,7 @@ function LoginPage() {
             setAuth(true);
             setUserType(res.userType);
             navigate('/main', { replace: true });
+            console.log(res);
           }
         })
         .catch((err) => {
