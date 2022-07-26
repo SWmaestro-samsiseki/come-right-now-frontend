@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuthStore from '../stores/authStore';
+import { authValid, addAuth } from '../utils/auth';
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -15,56 +16,34 @@ function LoginPage() {
     setPw(e.target.value);
   }
   function login() {
-    fetch('http://localhost:8080/account/login', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json, text/plain, */*',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: id,
-        password: pw,
-      }),
-    })
-      .then((res) => res.json())
+    addAuth(id, pw)
       .then((res) => {
         if (res.isSuccess) {
-          console.log(res);
           localStorage.setItem('token', res.accessToken);
           setAuth(true);
           setUserType(res.userType);
           navigate('/main', { replace: true });
         } else {
-          alert('로그인 실패');
+          alert('로그인 정보가 일치하지 않습니다.');
         }
       })
       .catch((err) => {
-        alert('로그인에 실패했습니다.' + err);
+        alert('확인에 실패했습니다.' + err);
       });
-    console.log(id, pw);
   }
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token !== null) {
-      fetch('http://localhost:8080/account/validation', {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+    authValid()
+      .then((res) => {
+        if (res) {
+          setAuth(true);
+          setUserType(res);
+          navigate('/main', { replace: true });
+        }
       })
-        .then((res) => res.json())
-        .then((res) => {
-          if (res.statusCode === 200) {
-            setAuth(true);
-            setUserType(res.userType);
-            navigate('/main', { replace: true });
-          }
-        })
-        .catch((err) => {
-          alert('확인에 실패했습니다.' + err);
-        });
-    }
+      .catch((err) => {
+        alert('확인에 실패했습니다.' + err);
+      });
   }, []);
 
   return (
