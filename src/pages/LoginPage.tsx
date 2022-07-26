@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useAuthStore from '../store/authStore';
+import useAuthStore from '../stores/authStore';
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -50,8 +50,6 @@ function LoginPage() {
       fetch('http://localhost:8080/account/validation', {
         method: 'GET',
         headers: {
-          Accept: 'application/json, text/plain, */*',
-          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
       })
@@ -61,7 +59,6 @@ function LoginPage() {
             setAuth(true);
             setUserType(res.userType);
             navigate('/main', { replace: true });
-            console.log(res);
           }
         })
         .catch((err) => {

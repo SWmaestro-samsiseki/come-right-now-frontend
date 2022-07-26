@@ -2,10 +2,10 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import BranchComponent from './components/brachComponent';
-import UserMainPage from './pages/UserMainPage';
-import StoreMainPage from './pages/StoreMainPage';
-import RequestPage from './pages/RequestPage';
-import useAuthStore from './store/authStore';
+import UserMainPage from './pages/user/UserMainPage';
+import StoreMainPage from './pages/store/StoreMainPage';
+import RequestPage from './pages/user/RequestPage';
+import useAuthStore from './stores/authStore';
 
 function App() {
   const { authoried } = useAuthStore();

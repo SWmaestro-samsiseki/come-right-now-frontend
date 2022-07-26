@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-function MainPage() {
+function UserMainPage() {
   return (
     <div>
       <div role="button">
@@ -10,4 +10,4 @@ function MainPage() {
   );
 }
 
-export default MainPage;
+export default UserMainPage;
