@@ -5,11 +5,8 @@ import BranchComponent from './components/brachComponent';
 import UserMainPage from './pages/user/UserMainPage';
 import StoreMainPage from './pages/store/StoreMainPage';
 import RequestPage from './pages/user/RequestPage';
-import useAuthStore from './stores/authStore';
 
 function App() {
-  const { authoried } = useAuthStore();
-
   return (
     <div className="App">
       <Router>
@@ -18,16 +15,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route
             path="/main"
-            element={
-              authoried ? (
-                <BranchComponent
-                  UserMainPage={<UserMainPage />}
-                  StoreMainPage={<StoreMainPage />}
-                />
-              ) : (
-                <Navigate to="/login" replace={true} />
-              )
-            }
+            element={<BranchComponent first={<UserMainPage />} second={<StoreMainPage />} />}
           />
           <Route path="/request" element={<RequestPage />} />
         </Routes>

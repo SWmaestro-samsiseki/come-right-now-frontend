@@ -1,15 +1,38 @@
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { authValid } from '../utils/auth';
 import useAuthStore from '../stores/authStore';
 
 function BranchComponent({
-  UserMainPage,
-  StoreMainPage,
+  first,
+  second,
 }: {
-  UserMainPage: JSX.Element;
-  StoreMainPage: JSX.Element;
+  first: JSX.Element;
+  second: JSX.Element;
 }): JSX.Element {
-  const { userType } = useAuthStore();
-  if (userType === 'USER') return UserMainPage;
-  else if (userType === 'STORE') return StoreMainPage;
-  else return <div>분기페이지입니다.</div>;
+  const navigate = useNavigate();
+  const { setAuth, setUserType } = useAuthStore();
+  const [userType, setType] = useState('');
+
+  useEffect(() => {
+    authValid()
+      .then((res) => {
+        if (res) {
+          setAuth(true);
+          setUserType(res);
+          setType(res);
+        } else {
+          navigate('/login', { replace: true });
+        }
+      })
+      .catch((err) => {
+        alert('확인에 실패했습니다.' + err);
+        navigate('/login', { replace: true });
+      });
+  }, []);
+
+  if (userType === 'USER') return first;
+  else if (userType === 'STORE') return second;
+  else return <></>;
 }
 export default BranchComponent;
