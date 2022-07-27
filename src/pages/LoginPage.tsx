@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuthStore from '../stores/authStore';
-import { authValid, addAuth } from '../utils/auth';
+import { addAuth } from '../utils/auth';
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -31,20 +31,6 @@ function LoginPage() {
         alert('확인에 실패했습니다.' + err);
       });
   }
-
-  useEffect(() => {
-    authValid()
-      .then((res) => {
-        if (res) {
-          setAuth(true);
-          setUserType(res);
-          navigate('/main', { replace: true });
-        }
-      })
-      .catch((err) => {
-        alert('확인에 실패했습니다.' + err);
-      });
-  }, []);
 
   return (
     <div>
