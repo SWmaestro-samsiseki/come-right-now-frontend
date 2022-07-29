@@ -1,9 +1,11 @@
+import { useNavigate } from 'react-router-dom';
 import useAuthStore from '../../stores/authStore';
 import useRequestStore from '../../stores/requestStore';
 import CategoryItem from '../../components/CategoryItem';
 import { findStore } from '../../utils/request';
 
 function RequestPage() {
+  const navigate = useNavigate();
   const { user } = useAuthStore();
   const {
     categories,
@@ -27,6 +29,7 @@ function RequestPage() {
       latitude,
       longitude,
     });
+    navigate('/search', { replace: true });
   }
   return (
     <div>
