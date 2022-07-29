@@ -1,6 +1,7 @@
 import useAuthStore from '../../stores/authStore';
 import useRequestStore from '../../stores/requestStore';
 import CategoryItem from '../../components/CategoryItem';
+import { findStore } from '../../utils/request';
 
 function RequestPage() {
   const { user } = useAuthStore();
@@ -18,14 +19,14 @@ function RequestPage() {
   } = useRequestStore();
 
   function check() {
-    console.log(
-      selectedCategories,
-      people,
-      new Date(new Date().getTime() + time * 60000).toLocaleString(),
-      user?.id,
+    findStore({
+      categories: selectedCategories.map((ele) => String(ele.id)),
+      numberOfPeople: people,
+      arrivedAt: new Date(new Date().getTime() + time * 60000),
+      userId: user?.id,
       latitude,
       longitude,
-    );
+    });
   }
   return (
     <div>
