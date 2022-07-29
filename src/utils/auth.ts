@@ -1,3 +1,5 @@
+import type { User } from '../stores/authStore';
+
 const BASE_URL = 'http://localhost:8080';
 
 interface LoginOutputDTO {
@@ -40,4 +42,16 @@ async function addAuth(id: string, pw: string): Promise<LoginOutputDTO> {
   return parse;
 }
 
-export { authValid, addAuth };
+async function fetchUserInfo(): Promise<User> {
+  const token = localStorage.getItem('token');
+  const response = await fetch(`${BASE_URL}/user/info`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const parse = await response.json();
+  return parse;
+}
+
+export { authValid, addAuth, fetchUserInfo };
