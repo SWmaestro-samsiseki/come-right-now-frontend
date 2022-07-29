@@ -7,6 +7,7 @@ import CheckUserType from './components/CheckUserType';
 import UserMainPage from './pages/user/UserMainPage';
 import StoreMainPage from './pages/store/StoreMainPage';
 import RequestPage from './pages/user/RequestPage';
+import SearchPage from './pages/user/SearchPage';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             }
           />
           <Route path="/request" element={<CheckAuth component={<RequestPage />} />} />
+          <Route path="/search" element={<CheckAuth component={<SearchPage />} />} />
         </Routes>
       </Router>
     </div>

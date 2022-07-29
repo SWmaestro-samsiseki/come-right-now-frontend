@@ -1,8 +1,11 @@
+import { useNavigate } from 'react-router-dom';
 import useAuthStore from '../../stores/authStore';
 import useRequestStore from '../../stores/requestStore';
 import CategoryItem from '../../components/CategoryItem';
+import { findStore } from '../../utils/request';
 
 function RequestPage() {
+  const navigate = useNavigate();
   const { user } = useAuthStore();
   const {
     categories,
@@ -18,14 +21,15 @@ function RequestPage() {
   } = useRequestStore();
 
   function check() {
-    console.log(
-      selectedCategories,
-      people,
-      new Date(new Date().getTime() + time * 60000).toLocaleString(),
-      user?.id,
+    findStore({
+      categories: selectedCategories.map((ele) => ele.id),
+      numberOfPeople: people,
+      arrivedAt: new Date(new Date().getTime() + time * 60000),
+      userId: user?.id,
       latitude,
       longitude,
-    );
+    });
+    navigate('/search', { replace: true });
   }
   return (
     <div>

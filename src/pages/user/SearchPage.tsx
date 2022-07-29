@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 import socket from '../../utils/socket';
 
-function StoreMainPage() {
+function SearchPage() {
   useEffect(() => {
-    socket.on(socket.id, (data) => {
+    socket.on('availableSeat', (data) => {
       console.log(data);
     });
   });
-  return <div>사장 메인 페이지</div>;
+  return <div>탐색중입니다.</div>;
 }
 
-export default StoreMainPage;
+export default SearchPage;
