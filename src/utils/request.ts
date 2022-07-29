@@ -4,7 +4,7 @@ import socket from './socket';
 const BASE_URL = 'http://localhost:8080';
 
 interface findStoreDTO {
-  categories: string[];
+  categories: number[];
   numberOfPeople: number;
   arrivedAt: Date;
   userId: string | undefined;

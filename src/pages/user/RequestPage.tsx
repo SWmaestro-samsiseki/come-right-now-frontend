@@ -22,7 +22,7 @@ function RequestPage() {
 
   function check() {
     findStore({
-      categories: selectedCategories.map((ele) => String(ele.id)),
+      categories: selectedCategories.map((ele) => ele.id),
       numberOfPeople: people,
       arrivedAt: new Date(new Date().getTime() + time * 60000),
       userId: user?.id,
