@@ -26,7 +26,7 @@ function App() {
           <Route path="/" element={<InitAuth />} />
           <Route path="/login" element={<LoginPage />} />
           <Route
-            path="/main"
+            path="/main/*"
             element={
               <CheckAuth
                 component={<CheckUserType first={<UserMainPage />} second={<StoreMainPage />} />}
