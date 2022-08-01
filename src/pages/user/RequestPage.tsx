@@ -28,8 +28,13 @@ function RequestPage() {
       userId: user?.id,
       latitude,
       longitude,
+    }).then((res) => {
+      if (res.isSuccess === true) {
+        navigate('/search', { replace: true });
+      } else {
+        alert('요청에 실패했습니다');
+      }
     });
-    navigate('/search', { replace: true });
   }
   return (
     <div>
