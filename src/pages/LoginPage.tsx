@@ -90,12 +90,13 @@ const Tooltip = styled.div`
   top: 30px;
   right: 40px;
   border-radius: 50%;
+  font: normal 700 24px / 32px 'IBM Plex Sans KR';
   color: white;
-  text-align: center;
-  line-height: 40px;
   background: #54c2ff;
   @media screen and (min-width: 500px) {
-    dißsplay: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 `;
 
@@ -142,9 +143,7 @@ function LoginPage() {
         로그인
       </LoginBtn>
       <RegistBtn to="/">아직 회원이 아니신가요?</RegistBtn>
-      <Tooltip>
-        <i className="fas fa-question" />
-      </Tooltip>
+      <Tooltip>?</Tooltip>
     </LoginForm>
   );
 }
