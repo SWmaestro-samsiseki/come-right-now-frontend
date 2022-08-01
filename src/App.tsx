@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import styled from 'styled-components';
 import InitAuth from './components/InitAuth';
 import CheckAuth from './components/CheckAuth';
 import LoginPage from './pages/LoginPage';
@@ -9,9 +10,17 @@ import StoreMainPage from './pages/store/StoreMainPage';
 import RequestPage from './pages/user/RequestPage';
 import SearchPage from './pages/user/SearchPage';
 
+const AppContainer = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 function App() {
   return (
-    <div className="App">
+    <AppContainer className="App">
       <Router>
         <Routes>
           <Route path="/" element={<InitAuth />} />
@@ -28,7 +37,7 @@ function App() {
           <Route path="/search" element={<CheckAuth component={<SearchPage />} />} />
         </Routes>
       </Router>
-    </div>
+    </AppContainer>
   );
 }
 
