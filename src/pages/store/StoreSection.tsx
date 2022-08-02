@@ -15,22 +15,18 @@ const ButtonContainer = styled.div`
   height: 100%;
   border-right: 1px solid #d2d2d2;
 `;
-const Button = styled.div`
+const Button = styled(Link)`
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   height: 50%;
-  border: none;
-  background: none;
-  &:first-child {
-    border-bottom: 1px solid #d2d2d2;
-  }
-`;
-const StyledLink = styled(Link)`
   font: normal 700 24px / 32px 'IBM Plex Sans KR';
   color: #888;
   text-decoration: none;
+  &:first-child {
+    border-bottom: 1px solid #d2d2d2;
+  }
 `;
 const ContentContainer = styled.div`
   width: 85%;
@@ -41,12 +37,8 @@ function StoreSection() {
   return (
     <MainContainer>
       <ButtonContainer>
-        <Button>
-          <StyledLink to="/main/reservation">예약</StyledLink>
-        </Button>
-        <Button>
-          <StyledLink to="/main/request">대기</StyledLink>
-        </Button>
+        <Button to="/main/reservation">예약</Button>
+        <Button to="/main/request">대기</Button>
       </ButtonContainer>
       <ContentContainer>
         <Routes>

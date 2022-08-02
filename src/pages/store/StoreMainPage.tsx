@@ -12,10 +12,15 @@ const MainContainer = styled.div`
 `;
 
 function StoreMainPage() {
-  const { setSocket } = useSocketStore();
+  const { socket, setSocket } = useSocketStore();
 
   useEffect(() => {
     setSocket(initSocket());
+    if (socket) {
+      socket.on('requestSeat', (data) => {
+        console.log(data);
+      });
+    }
   }, []);
 
   return (

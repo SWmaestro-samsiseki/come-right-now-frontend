@@ -3,6 +3,7 @@ import useSocketStore from '../../stores/socketStore';
 
 function SearchPage() {
   const { socket } = useSocketStore();
+
   useEffect(() => {
     if (socket) {
       socket.on('availableSeat', (data) => {
@@ -10,6 +11,7 @@ function SearchPage() {
       });
     }
   });
+
   return <div>탐색중입니다.</div>;
 }
 
