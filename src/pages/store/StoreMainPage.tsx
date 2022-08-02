@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
-import socket from '../../utils/socket';
+import initSocket from '../../utils/socket';
 import StoreHeader from '../../components/StoreHeader';
 import StoreSection from './StoreSection';
 import StoreAd from '../../components/StoreAd';
 import styled from 'styled-components';
+import useSocketStore from '../../stores/socketStore';
 
 const MainContainer = styled.div`
   width: 100%;
@@ -11,11 +12,12 @@ const MainContainer = styled.div`
 `;
 
 function StoreMainPage() {
+  const { setSocket } = useSocketStore();
+
   useEffect(() => {
-    socket.on(socket.id, (data) => {
-      console.log(data);
-    });
-  });
+    setSocket(initSocket());
+  }, []);
+
   return (
     <MainContainer>
       <StoreHeader />

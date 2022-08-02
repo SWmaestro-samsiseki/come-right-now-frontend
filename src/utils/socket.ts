@@ -3,8 +3,13 @@ import { io } from 'socket.io-client';
 const BASE_URL = 'http://localhost:8080';
 
 function initSocket() {
-  const socket = io(BASE_URL);
+  const token = localStorage.getItem('token') as string;
 
+  const socket = io(BASE_URL, {
+    extraHeaders: {
+      auth: token,
+    },
+  });
   socket.on('connect', () => {
     console.log('connected');
   });
@@ -12,6 +17,4 @@ function initSocket() {
   return socket;
 }
 
-const socket = initSocket();
-
-export default socket;
+export default initSocket;
