@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import useAuthStore from '../../stores/user/authStore';
+import useAuthStore from '../../stores/authStore';
 import useRequestStore from '../../stores/user/requestStore';
 import CategoryItem from '../../components/CategoryItem';
 import { findStore } from '../../utils/request';

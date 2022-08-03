@@ -4,7 +4,8 @@ import StoreHeader from '../../components/StoreHeader';
 import StoreSection from './StoreSection';
 import StoreAd from '../../components/StoreAd';
 import styled from 'styled-components';
-import useSocketStore from '../../stores/user/socketStore';
+import useAuthStore from '../../stores/authStore';
+import useSocketStore from '../../stores/socketStore';
 
 const MainContainer = styled.div`
   width: 100%;
@@ -12,15 +13,11 @@ const MainContainer = styled.div`
 `;
 
 function StoreMainPage() {
-  const { socket, setSocket } = useSocketStore();
+  const { userType } = useAuthStore();
+  const { setSocket } = useSocketStore();
 
   useEffect(() => {
-    setSocket(initSocket());
-    if (socket) {
-      socket.on('requestSeat', (data) => {
-        console.log(data);
-      });
-    }
+    setSocket(initSocket(userType));
   }, []);
 
   return (

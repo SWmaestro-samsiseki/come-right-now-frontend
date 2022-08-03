@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import styled from 'styled-components';
-import useAuthStore from '../stores/user/authStore';
+import useAuthStore from '../stores/authStore';
 import { addAuth } from '../utils/auth';
 
 const LoginForm = styled.div`

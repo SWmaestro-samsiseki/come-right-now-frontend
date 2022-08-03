@@ -26,9 +26,15 @@ const IconContainer = styled.div`
 `;
 
 function StoreHeader() {
+  function test() {
+    fetch('http://localhost:8080/store/test/seat-request', {
+      method: 'POST',
+    });
+  }
+
   return (
     <HeaderContainer>
-      <Title>지금갈게</Title>
+      <Title onClick={test}>지금갈게</Title>
       <IconContainer>
         <img src={require('../images/notification_on.png')} />
         <img src={require('../images/graph.png')} />

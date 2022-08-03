@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import useSocketStore from '../../stores/user/socketStore';
+import useSocketStore from '../../stores/socketStore';
 
 function SearchPage() {
   const { socket } = useSocketStore();

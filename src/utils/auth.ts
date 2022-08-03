@@ -1,4 +1,4 @@
-import type { User } from '../stores/user/authStore';
+import type { User } from '../stores/authStore';
 
 const BASE_URL = 'http://localhost:8080';
 

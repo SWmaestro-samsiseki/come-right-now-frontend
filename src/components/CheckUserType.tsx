@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router-dom';
-import useAuthStore from '../stores/user/authStore';
+import useAuthStore from '../stores/authStore';
 
 function CheckUserType({
   first,

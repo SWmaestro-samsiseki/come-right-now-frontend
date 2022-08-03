@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import useAuthStore from '../../stores/user/authStore';
+import useAuthStore from '../../stores/authStore';
 import useRequestStore from '../../stores/user/requestStore';
-import useSocketStore from '../../stores/user/socketStore';
+import useSocketStore from '../../stores/socketStore';
 import { fetchUserInfo } from '../../utils/auth';
 import { fetchCategories } from '../../utils/request';
 import initSocket from '../../utils/socket';
 
 function UserMainPage() {
-  const { setUser } = useAuthStore();
+  const { userType, setUser } = useAuthStore();
   const { initCategories, setLatitude, setLongitude } = useRequestStore();
   const { setSocket } = useSocketStore();
 
@@ -28,7 +28,7 @@ function UserMainPage() {
     } else {
       // 브라우저가 GPS를 지원하지 않는 경우.
     }
-    setSocket(initSocket());
+    setSocket(initSocket(userType));
   }, []);
 
   return (
