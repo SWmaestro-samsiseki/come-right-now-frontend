@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import useAuthStore from '../../stores/authStore';
-import useRequestStore from '../../stores/requestStore';
-import useSocketStore from '../../stores/socketStore';
+import useAuthStore from '../../stores/user/authStore';
+import useRequestStore from '../../stores/user/requestStore';
+import useSocketStore from '../../stores/user/socketStore';
 import { fetchUserInfo } from '../../utils/auth';
 import { fetchCategories } from '../../utils/request';
 import initSocket from '../../utils/socket';

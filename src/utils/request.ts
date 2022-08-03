@@ -1,4 +1,4 @@
-import type { category } from '../stores/requestStore';
+import type { category } from '../stores/user/requestStore';
 
 const BASE_URL = 'http://localhost:8080';
 

@@ -1,5 +1,5 @@
-import type { category } from '../stores/requestStore';
-import useRequestStore from '../stores/requestStore';
+import type { category } from '../stores/user/requestStore';
+import useRequestStore from '../stores/user/requestStore';
 
 function CategoryItem({ category }: { category: category }) {
   const { selectedCategories, addCategory, removeCategory } = useRequestStore();

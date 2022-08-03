@@ -4,7 +4,7 @@ import StoreHeader from '../../components/StoreHeader';
 import StoreSection from './StoreSection';
 import StoreAd from '../../components/StoreAd';
 import styled from 'styled-components';
-import useSocketStore from '../../stores/socketStore';
+import useSocketStore from '../../stores/user/socketStore';
 
 const MainContainer = styled.div`
   width: 100%;
