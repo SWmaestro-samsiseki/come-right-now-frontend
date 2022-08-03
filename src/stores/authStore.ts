@@ -12,10 +12,23 @@ interface User {
 interface Store {
   id: string;
   email: string;
-  name: string;
-  phone: string;
-  bitrh: string;
-  creditRate: number;
+  masterName: string;
+  storeName: string;
+  businessName: string;
+  storeType: string;
+  address: string;
+  latitude: number;
+  longitude: number;
+  storePhone: string;
+  masterPhone: string;
+  introduce: string;
+  storeImage: string;
+  mainMenu1: string;
+  mainMenu2: string;
+  mainMenu3: string;
+  menuImage: string;
+  offDays: string[];
+  starRate: number;
 }
 
 interface Auth {

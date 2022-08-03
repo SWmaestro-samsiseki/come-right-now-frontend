@@ -1,3 +1,6 @@
+import { useEffect } from 'react';
+import useReservationStore from '../stores/store/reservationStore';
+import useSocketStore from '../stores/socketStore';
 import styled from 'styled-components';
 
 const HeaderContainer = styled.div`
@@ -26,11 +29,21 @@ const IconContainer = styled.div`
 `;
 
 function StoreHeader() {
+  const { addRequest } = useReservationStore();
+  const { socket } = useSocketStore();
   function test() {
     fetch('http://localhost:8080/store/test/seat-request', {
       method: 'POST',
     });
   }
+
+  useEffect(() => {
+    if (socket) {
+      socket.on('requestSeat', (data) => {
+        addRequest(data);
+      });
+    }
+  }, [socket]);
 
   return (
     <HeaderContainer>

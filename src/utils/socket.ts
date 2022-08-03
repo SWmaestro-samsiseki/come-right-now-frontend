@@ -15,9 +15,9 @@ function initSocket(userType: string) {
   });
 
   if (userType === 'STORE') {
-    socket.on('requestSeat', (data) => {
-      console.log(data);
-    });
+    // socket.on('requestSeat', (data) => {
+    //   console.log(data);
+    // });
   }
 
   return socket;

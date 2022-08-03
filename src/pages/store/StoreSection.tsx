@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import StoreReservationList from './StoreReservationList';
@@ -24,8 +25,13 @@ const Button = styled(Link)`
   font: normal 700 24px / 32px 'IBM Plex Sans KR';
   color: #888;
   text-decoration: none;
+
   &:first-child {
     border-bottom: 1px solid #d2d2d2;
+  }
+  &.current {
+    color: white;
+    background: #54c2ff;
   }
 `;
 const ContentContainer = styled.div`
@@ -34,11 +40,30 @@ const ContentContainer = styled.div`
 `;
 
 function StoreSection() {
+  const [menuStatus, setMenuStatus] = useState('');
+
+  function reservationBtnClick() {
+    setMenuStatus('reservation');
+  }
+  function requestBtnClick() {
+    setMenuStatus('request');
+  }
+
   return (
     <MainContainer>
       <ButtonContainer>
-        <Button to="/main/reservation">예약</Button>
-        <Button to="/main/request">대기</Button>
+        <Button
+          to="/main/reservation"
+          className={menuStatus === 'reservation' ? 'current' : ''}
+          onClick={reservationBtnClick}>
+          예약
+        </Button>
+        <Button
+          to="/main/request"
+          className={menuStatus === 'request' ? 'current' : ''}
+          onClick={requestBtnClick}>
+          대기
+        </Button>
       </ButtonContainer>
       <ContentContainer>
         <Routes>
