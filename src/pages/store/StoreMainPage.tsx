@@ -4,7 +4,6 @@ import StoreHeader from '../../components/StoreHeader';
 import StoreSection from './StoreSection';
 import StoreAd from '../../components/StoreAd';
 import styled from 'styled-components';
-import useAuthStore from '../../stores/authStore';
 import useSocketStore from '../../stores/socketStore';
 
 const MainContainer = styled.div`
@@ -13,11 +12,10 @@ const MainContainer = styled.div`
 `;
 
 function StoreMainPage() {
-  const { userType } = useAuthStore();
   const { setSocket } = useSocketStore();
 
   useEffect(() => {
-    setSocket(initSocket(userType));
+    setSocket(initSocket());
   }, []);
 
   return (

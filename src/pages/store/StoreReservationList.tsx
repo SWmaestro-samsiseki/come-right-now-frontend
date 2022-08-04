@@ -1,5 +1,5 @@
 import useReservationStore from '../../stores/store/reservationStore';
-import ReservationItem from '../../components/RequestItem';
+import ReservationItem from '../../components/ReservationItem';
 import styled from 'styled-components';
 
 const ListContainer = styled.div`
@@ -12,11 +12,11 @@ const ListContainer = styled.div`
 `;
 
 function StoreReservationList() {
-  const { requestList } = useReservationStore();
+  const { reservationList } = useReservationStore();
 
   return (
     <ListContainer>
-      {requestList.map((item, index) => (
+      {reservationList.map((item, index) => (
         <ReservationItem key={index} item={item} />
       ))}
     </ListContainer>

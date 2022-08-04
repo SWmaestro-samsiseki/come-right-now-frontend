@@ -16,6 +16,8 @@
     "react-scripts": "5.0.1",
     "socket.io-client": "^4.5.1",
     "styled-components": "^5.3.5",
+    "sweetalert2": "^11.4.24",
+    "sweetalert2-react-content": "^5.0.2",
     "typescript": "^4.7.4",
     "web-vitals": "^2.1.4",
     "zustand": "^4.0.0-rc.1"

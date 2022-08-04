@@ -8,7 +8,7 @@ import { fetchCategories } from '../../utils/request';
 import initSocket from '../../utils/socket';
 
 function UserMainPage() {
-  const { userType, setUser } = useAuthStore();
+  const { setUser } = useAuthStore();
   const { initCategories, setLatitude, setLongitude } = useRequestStore();
   const { setSocket } = useSocketStore();
 
@@ -28,7 +28,7 @@ function UserMainPage() {
     } else {
       // 브라우저가 GPS를 지원하지 않는 경우.
     }
-    setSocket(initSocket(userType));
+    setSocket(initSocket());
   }, []);
 
   return (

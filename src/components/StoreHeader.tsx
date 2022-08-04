@@ -3,6 +3,11 @@ import useReservationStore from '../stores/store/reservationStore';
 import useSocketStore from '../stores/socketStore';
 import styled from 'styled-components';
 
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import RequestPopup from './RequestPopup';
+import ReservationPopup from './ReservationPopup';
+
 const HeaderContainer = styled.div`
   position: relative;
   width: 100%;
@@ -29,10 +34,17 @@ const IconContainer = styled.div`
 `;
 
 function StoreHeader() {
-  const { addRequest } = useReservationStore();
+  const { addReservation, addRequest } = useReservationStore();
   const { socket } = useSocketStore();
+
   function test() {
-    fetch('http://localhost:8080/store/test/seat-request', {
+    fetch('http://localhost:8080/reservation-events/test/seat-request', {
+      method: 'POST',
+    });
+  }
+
+  function test2() {
+    fetch('http://localhost:8080/주소', {
       method: 'POST',
     });
   }
@@ -41,6 +53,33 @@ function StoreHeader() {
     if (socket) {
       socket.on('requestSeat', (data) => {
         addRequest(data);
+
+        const MySwal = withReactContent(Swal);
+
+        MySwal.fire({
+          html: <RequestPopup item={data} close={Swal.close} />,
+          showConfirmButton: false,
+          width: '480px',
+          padding: 0,
+          customClass: {
+            popup: 'border-radius-0',
+          },
+        });
+      });
+      socket.on('이벤트명', (data) => {
+        addReservation(data);
+
+        const MySwal = withReactContent(Swal);
+
+        MySwal.fire({
+          html: <ReservationPopup item={data} close={Swal.close} />,
+          showConfirmButton: false,
+          width: '480px',
+          padding: 0,
+          customClass: {
+            popup: 'border-radius-0',
+          },
+        });
       });
     }
   }, [socket]);
@@ -51,7 +90,7 @@ function StoreHeader() {
       <IconContainer>
         <img src={require('../images/notification_on.png')} />
         <img src={require('../images/graph.png')} />
-        <img src={require('../images/setting.png')} />
+        <img src={require('../images/setting.png')} onClick={test2} />
       </IconContainer>
     </HeaderContainer>
   );

@@ -66,11 +66,9 @@ function RequestItem({ item }: { item: Request }) {
   const dateString = date.toLocaleTimeString();
   const time = dateString.slice(0, dateString.indexOf(':', 7));
 
-  function reject() {
-    removeRequest(item);
-  }
   function accept() {
-    //
+    // 서버로 수락하는 API를 보낸다.
+    removeRequest(item);
   }
 
   return (
@@ -79,14 +77,14 @@ function RequestItem({ item }: { item: Request }) {
         <p>{time}</p>
         <Info>
           <h3>
-            {'한재혁'} 외 {item.numberOfPeople - 1}명
+            {item.userName} 외 {item.numberOfPeople - 1}명
           </h3>
           <p>{item.userPhone}</p>
           <p>신용등급 : {item.creditRate}점</p>
         </Info>
       </InfoContainer>
       <ButtonBox>
-        <button onClick={reject}>거절</button>
+        <button onClick={() => removeRequest(item)}>거절</button>
         <button onClick={accept}>수락</button>
       </ButtonBox>
     </ItemContainer>
