@@ -12,6 +12,7 @@ function UserMainPage() {
   useEffect(() => {
     fetchCategories().then((res) => initCategories(res));
     fetchUserInfo().then((res) => setUser(res));
+    // TODO: 위치를 반환하는 Custom Hooks 구현하기
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -23,7 +24,7 @@ function UserMainPage() {
         },
       );
     } else {
-      // 브라우저가 GPS를 지원하지 않는 경우.
+      // 브라우저가 GPS를 지원하지 않는 경우
     }
   }, []);
 

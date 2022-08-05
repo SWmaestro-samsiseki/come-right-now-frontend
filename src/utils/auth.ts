@@ -44,7 +44,7 @@ async function addAuth(id: string, pw: string): Promise<LoginOutputDTO> {
 
 async function fetchUserInfo(): Promise<User> {
   const token = localStorage.getItem('token');
-  const response = await fetch(`${BASE_URL}/user/info`, {
+  const response = await fetch(`${BASE_URL}/user/myInfo`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`,
