@@ -1,4 +1,3 @@
-import type { findStoreDTO } from '../../utils/request';
 import { useNavigate } from 'react-router-dom';
 import useAuthStore from '../../stores/authStore';
 import useRequestStore from '../../stores/user/requestStore';
