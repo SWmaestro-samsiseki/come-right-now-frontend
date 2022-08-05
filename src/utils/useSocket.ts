@@ -23,6 +23,7 @@ const useSocket = (token: string) => {
         console.log(data);
       });
     }
+    console.log(socket);
   }, [socket, userType]);
 
   return [socket];

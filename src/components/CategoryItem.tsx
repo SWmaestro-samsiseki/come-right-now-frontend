@@ -13,7 +13,7 @@ function CategoryItem({ category }: { category: category }) {
 
   return (
     <div onClick={chooseItem}>
-      {category.name}, {category.id + 1}
+      {category.name}, {category.id}
     </div>
   );
 }

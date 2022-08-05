@@ -22,18 +22,5 @@ async function fetchCategories(): Promise<Array<category>> {
   return parse;
 }
 
-async function findStore(findStoreDTO: findStoreDTO) {
-  const response = await fetch(`${BASE_URL}/store/seat-request`, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(findStoreDTO),
-  });
-  const parse = await response.json();
-  console.log(parse);
-  return parse;
-}
-
-export { fetchCategories, findStore };
+export type { findStoreDTO };
+export { fetchCategories };

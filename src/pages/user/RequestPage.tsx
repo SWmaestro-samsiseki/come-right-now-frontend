@@ -1,10 +1,13 @@
+import type { findStoreDTO } from '../../utils/request';
 import { useNavigate } from 'react-router-dom';
 import useAuthStore from '../../stores/authStore';
 import useRequestStore from '../../stores/user/requestStore';
+import useSocket from '../../utils/useSocket';
 import CategoryItem from '../../components/CategoryItem';
-import { findStore } from '../../utils/request';
 
 function RequestPage() {
+  const token = localStorage.getItem('token') as string;
+  const [socket] = useSocket(token);
   const navigate = useNavigate();
   const { user } = useAuthStore();
   const {
@@ -20,21 +23,22 @@ function RequestPage() {
     minusTime,
   } = useRequestStore();
 
-  function check() {
-    findStore({
-      categories: selectedCategories.map((ele) => ele.id),
-      numberOfPeople: people,
-      arrivedAt: new Date(new Date().getTime() + time * 60000),
-      userId: user?.id,
-      latitude,
-      longitude,
-    }).then((res) => {
-      if (res.isSuccess === true) {
-        navigate('/search', { replace: true });
-      } else {
-        alert('요청에 실패했습니다');
-      }
-    });
+  function findStore() {
+    // TODO: 준호와 이벤트명세 확정하고 수정하기
+    if (socket) {
+      socket.emit('user.find-store.server', {
+        categories: selectedCategories.map((ele) => ele.id),
+        numberOfPeople: people,
+        arrivedAt: new Date(new Date().getTime() + time * 60000),
+        userId: user?.id,
+        latitude: latitude,
+        longitude: longitude,
+      });
+      navigate('/search', { replace: true });
+    } else {
+      console.log('소켓이 활성화되지 않았습니다.');
+      // TODO: SweetAlert2를 사용해 알림창 띄우기
+    }
   }
   return (
     <div>
@@ -44,18 +48,18 @@ function RequestPage() {
       <div role="button" onClick={minusPeople}>
         -
       </div>
-      <input type="number" value={people} />
+      {people}
       <div role="button" onClick={plusPeople}>
         +
       </div>
       <div role="button" onClick={minusTime}>
         -
       </div>
-      <input type="number" value={time} />
+      {time}
       <div role="button" onClick={plusTime}>
         +
       </div>
-      <button onClick={check}>지금갈게</button>
+      <button onClick={findStore}>지금갈게</button>
     </div>
   );
 }
