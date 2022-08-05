@@ -5,7 +5,7 @@ interface Reservation {
   phone: string;
   creditRate: number;
   peopleNumber: number;
-  estimatedTime: Date;
+  estimatedTime: string;
 }
 
 interface Request {
@@ -30,10 +30,7 @@ const useReservationStore = create<StoreManager>((set) => ({
   requestList: [],
   addReservation: (value: Reservation) =>
     set((state) => ({ reservationList: [...state.reservationList, value] })),
-  addRequest: (value: Request) => {
-    console.log(value);
-    set((state) => ({ requestList: [...state.requestList, value] }));
-  },
+  addRequest: (value: Request) => set((state) => ({ requestList: [...state.requestList, value] })),
   removeRequest: (value: Request) =>
     set((state) => ({ requestList: [...state.requestList.filter((ele) => ele !== value)] })),
 }));

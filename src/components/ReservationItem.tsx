@@ -64,17 +64,14 @@ const ButtonBox = styled.div`
   }
 `;
 
-function RequestItem({ item }: { item: Reservation }) {
-  const date = new Date(item.estimatedTime);
-  const dateString = date.toLocaleTimeString();
-  const time = dateString.slice(0, dateString.indexOf(':', 7));
+function ReservationItem({ item }: { item: Reservation }) {
   return (
     <ItemContainer>
       <InfoContainer>
-        <p>{time}</p>
+        <p>{item.estimatedTime}</p>
         <Info>
           <h3>
-            {'한재혁'} 외 {item.peopleNumber - 1}명
+            {item.userName} 외 {item.peopleNumber - 1}명
           </h3>
           <p>{item.phone}</p>
           <p>신용등급 : {item.creditRate}점</p>
@@ -89,4 +86,4 @@ function RequestItem({ item }: { item: Reservation }) {
   );
 }
 
-export default RequestItem;
+export default ReservationItem;

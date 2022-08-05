@@ -1,10 +1,9 @@
 import { useEffect } from 'react';
-import initSocket from '../../utils/socket';
 import StoreHeader from '../../components/StoreHeader';
 import StoreSection from './StoreSection';
 import StoreAd from '../../components/StoreAd';
 import styled from 'styled-components';
-import useSocketStore from '../../stores/socketStore';
+import useSocket from '../../utils/useSocket';
 
 const MainContainer = styled.div`
   width: 100%;
@@ -12,10 +11,10 @@ const MainContainer = styled.div`
 `;
 
 function StoreMainPage() {
-  const { setSocket } = useSocketStore();
+  const [socket, add] = useSocket(localStorage.getItem('token') as string);
 
   useEffect(() => {
-    setSocket(initSocket());
+    //
   }, []);
 
   return (

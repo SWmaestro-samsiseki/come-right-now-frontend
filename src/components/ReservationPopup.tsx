@@ -1,5 +1,7 @@
 import type { Reservation } from '../stores/store/reservationStore';
 import styled from 'styled-components';
+import { Link, unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
 
 const PopupContainer = styled.div`
   display: flex;
@@ -14,7 +16,7 @@ const PopupContainer = styled.div`
     left: 0;
     width: 480px;
     height: 16px;
-    background: #0ba8ff;
+    background: #ffe144;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
   }
@@ -59,16 +61,28 @@ const ButtonContainer = styled.div`
     color: white;
   }
 `;
+const LinkButton = styled(Link)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 145px;
+  height: 44px;
+  margin: 0 10px;
+  border: none;
+  border-radius: 4px;
+  font: normal 700 14px / 20px 'IBM Plex Sans KR';
+  text-decoration: none;
+  background-color: #54c2ff;
+  color: white;
+`;
 
 function ReservationPopup({ item, close }: { item: Reservation; close: VoidFunction }) {
-  const date = new Date(item.estimatedTime);
-  const dateString = date.toLocaleTimeString();
-  const time = dateString.slice(0, dateString.indexOf(':', 7));
+  const browserHistory = createBrowserHistory({ window });
 
   return (
     <PopupContainer>
       <Title>도착 예정</Title>
-      <TimeSpan>{time}</TimeSpan>
+      <TimeSpan>{item.estimatedTime}</TimeSpan>
       <InfoContainer>
         <p>
           {item.userName} 외 {item.peopleNumber - 1}명 도착 예정
@@ -76,7 +90,11 @@ function ReservationPopup({ item, close }: { item: Reservation; close: VoidFunct
       </InfoContainer>
       <ButtonContainer>
         <button onClick={close}>닫기</button>
-        <button>상세보기</button>
+        <HistoryRouter history={browserHistory}>
+          <LinkButton to="/main/reservation" onClick={close}>
+            상세보기
+          </LinkButton>
+        </HistoryRouter>
       </ButtonContainer>
     </PopupContainer>
   );

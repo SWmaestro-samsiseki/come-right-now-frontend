@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import useReservationStore from '../stores/store/reservationStore';
-import useSocketStore from '../stores/socketStore';
 import styled from 'styled-components';
 
 import Swal from 'sweetalert2';
@@ -35,7 +34,6 @@ const IconContainer = styled.div`
 
 function StoreHeader() {
   const { addReservation, addRequest } = useReservationStore();
-  const { socket } = useSocketStore();
 
   function test() {
     fetch('http://localhost:8080/reservation-events/test/seat-request', {
@@ -44,45 +42,43 @@ function StoreHeader() {
   }
 
   function test2() {
-    fetch('http://localhost:8080/주소', {
+    fetch('http://localhost:8080/reservation-events/test/seat-reservation', {
       method: 'POST',
     });
   }
 
-  useEffect(() => {
-    if (socket) {
-      socket.on('requestSeat', (data) => {
-        addRequest(data);
-
-        const MySwal = withReactContent(Swal);
-
-        MySwal.fire({
-          html: <RequestPopup item={data} close={Swal.close} />,
-          showConfirmButton: false,
-          width: '480px',
-          padding: 0,
-          customClass: {
-            popup: 'border-radius-0',
-          },
-        });
-      });
-      socket.on('이벤트명', (data) => {
-        addReservation(data);
-
-        const MySwal = withReactContent(Swal);
-
-        MySwal.fire({
-          html: <ReservationPopup item={data} close={Swal.close} />,
-          showConfirmButton: false,
-          width: '480px',
-          padding: 0,
-          customClass: {
-            popup: 'border-radius-0',
-          },
-        });
-      });
-    }
-  }, [socket]);
+  // useEffect(() => {
+  //   if (socket) {
+  //     socket.on('requestSeat', (data) => {
+  //       console.log(data);
+  //       addRequest(data);
+  //       const MySwal = withReactContent(Swal);
+  //       MySwal.fire({
+  //         html: <RequestPopup item={data} close={Swal.close} />,
+  //         showConfirmButton: false,
+  //         width: '480px',
+  //         padding: 0,
+  //         customClass: {
+  //           popup: 'border-radius-0',
+  //         },
+  //       });
+  //     });
+  //     socket.on('server.make-reservation.store', (data) => {
+  //       console.log(data);
+  //       addReservation(data);
+  //       const MySwal = withReactContent(Swal);
+  //       MySwal.fire({
+  //         html: <ReservationPopup item={data} close={Swal.close} />,
+  //         showConfirmButton: false,
+  //         width: '480px',
+  //         padding: 0,
+  //         customClass: {
+  //           popup: 'border-radius-0',
+  //         },
+  //       });
+  //     });
+  //   }
+  // }, [socket]);
 
   return (
     <HeaderContainer>
