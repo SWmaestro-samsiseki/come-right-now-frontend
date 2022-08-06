@@ -25,7 +25,7 @@ const StepContainer = styled.div`
     border-top: 1px solid #282828;
   }
   & p {
-    margin: 6px;
+    margin: 0 6px;
     font: normal 700 12px / 16px 'IBM Plex Sans KR';
     color: #282828;
   }

@@ -5,30 +5,41 @@ import useRequestStore from '../../stores/user/requestStore';
 import useSocket from '../../utils/useSocket';
 import UserRequestHeader from '../../components/user/RequestHeader';
 import RequestStep from '../../components/user/RequestStep';
-import CategoryItem from '../../components/CategoryItem';
+import RequestCategory from '../../components/user/RequestCategory';
+import RequestStatus from '../../components/user/RequestStatus';
 
 const RequestContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
   height: 100%;
 `;
+const SearchBtn = styled.button`
+  position: fixed;
+  bottom: 0;
+  width: 320px;
+  height: 48px;
+  margin: 20px;
+  font: normal 700 14px / 20px 'IBM Plex Sans KR';
+  color: white;
+  background: #ddd;
+  border: none;
+  border-radius: 4px;
 
+  &.active {
+    background: #54c2ff;
+  }
+  &:active {
+    background: #0ba8ff;
+  }
+`;
 function RequestPage() {
   const token = localStorage.getItem('token') as string;
   const [socket] = useSocket(token);
   const navigate = useNavigate();
   const { user } = useAuthStore();
-  const {
-    categories,
-    selectedCategories,
-    people,
-    time,
-    latitude,
-    longitude,
-    plusPeople,
-    minusPeople,
-    plusTime,
-    minusTime,
-  } = useRequestStore();
+  const { selectedCategories, people, time, latitude, longitude } = useRequestStore();
 
   function findStore() {
     // TODO: 준호와 이벤트명세 확정하고 수정하기
@@ -51,26 +62,14 @@ function RequestPage() {
     <RequestContainer>
       <UserRequestHeader />
       <RequestStep step={1} name={'주종'} />
-      {categories.map((ele, index) => (
-        <CategoryItem key={index} category={ele} />
-      ))}
+      <RequestCategory />
       <RequestStep step={2} name={'인원'} />
-      <div role="button" onClick={minusPeople}>
-        -
-      </div>
-      {people}
-      <div role="button" onClick={plusPeople}>
-        +
-      </div>
+      <RequestStatus type={'people'} />
       <RequestStep step={3} name={'시간'} />
-      <div role="button" onClick={minusTime}>
-        -
-      </div>
-      {time}
-      <div role="button" onClick={plusTime}>
-        +
-      </div>
-      <button onClick={findStore}>지금갈게</button>
+      <RequestStatus type={'time'} />
+      <SearchBtn onClick={findStore} className={selectedCategories.length > 0 ? 'active' : ''}>
+        지금갈게
+      </SearchBtn>
     </RequestContainer>
   );
 }
