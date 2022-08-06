@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
-import useReservationStore from '../stores/store/reservationStore';
+import useReservationStore from '../../stores/store/reservationStore';
 import styled from 'styled-components';
 
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import RequestPopup from './RequestPopup';
-import ReservationPopup from './ReservationPopup';
+import RequestPopup from '../RequestPopup';
+import ReservationPopup from '../ReservationPopup';
 
 const HeaderContainer = styled.div`
   position: relative;
@@ -84,9 +84,9 @@ function StoreHeader() {
     <HeaderContainer>
       <Title onClick={test}>지금갈게</Title>
       <IconContainer>
-        <img src={require('../images/notification_on.png')} />
-        <img src={require('../images/graph.png')} />
-        <img src={require('../images/setting.png')} onClick={test2} />
+        <img src={require('../../images/notification_on.png')} />
+        <img src={require('../../images/graph.png')} />
+        <img src={require('../../images/setting.png')} onClick={test2} />
       </IconContainer>
     </HeaderContainer>
   );

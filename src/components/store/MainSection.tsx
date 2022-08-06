@@ -1,8 +1,7 @@
-import { useState } from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route, Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import StoreReservationList from './StoreReservationList';
-import StoreRequestList from './StoreRequestList';
+import SectionReservation from '../../pages/store/SectionReservation';
+import SectionRequest from '../../pages/store/SectionRequest';
 
 const MainContainer = styled.div`
   display: flex;
@@ -40,36 +39,23 @@ const ContentContainer = styled.div`
 `;
 
 function StoreSection() {
-  const [menuStatus, setMenuStatus] = useState('');
-
-  function reservationBtnClick() {
-    setMenuStatus('reservation');
-  }
-  function requestBtnClick() {
-    setMenuStatus('request');
-  }
+  const param = useParams();
 
   return (
     <MainContainer>
       <ButtonContainer>
-        <Button
-          to="/main/reservation"
-          className={menuStatus === 'reservation' ? 'current' : ''}
-          onClick={reservationBtnClick}>
+        <Button to="/main/reservation" className={param['*'] === 'reservation' ? 'current' : ''}>
           예약
         </Button>
-        <Button
-          to="/main/request"
-          className={menuStatus === 'request' ? 'current' : ''}
-          onClick={requestBtnClick}>
+        <Button to="/main/request" className={param['*'] === 'request' ? 'current' : ''}>
           대기
         </Button>
       </ButtonContainer>
       <ContentContainer>
         <Routes>
           <Route path="" element={<div>가게전경사진</div>} />
-          <Route path="reservation" element={<StoreReservationList />} />
-          <Route path="request" element={<StoreRequestList />} />
+          <Route path="reservation" element={<SectionReservation />} />
+          <Route path="request" element={<SectionRequest />} />
         </Routes>
       </ContentContainer>
     </MainContainer>

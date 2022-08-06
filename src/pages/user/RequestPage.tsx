@@ -76,7 +76,7 @@ function RequestPage() {
       <SearchBtn
         onClick={findStore}
         className={selectedCategories.length > 0 ? 'active' : ''}
-        disabled={true}>
+        disabled={selectedCategories.length > 0 ? false : true}>
         지금갈게
       </SearchBtn>
     </RequestContainer>
