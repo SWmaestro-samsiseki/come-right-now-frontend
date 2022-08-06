@@ -1,32 +1,18 @@
-import { useEffect, useState } from 'react';
-import useAuthStore from '../stores/authStore';
 import { io, Socket } from 'socket.io-client';
 
 const BASE_URL = 'http://localhost:8080';
 
-const useSocket = (token: string) => {
-  const { userType } = useAuthStore();
-  const [socket, setSocket] = useState<Socket | undefined>(undefined);
-
-  if (!socket) {
-    const newSocket = io(BASE_URL, {
+const socket: { [key: string]: Socket } = {};
+const useSocket = (token: string): [Socket] => {
+  if (!socket[token]) {
+    socket[token] = io(BASE_URL, {
       extraHeaders: {
         auth: token,
       },
     });
-    setSocket(newSocket);
   }
 
-  useEffect(() => {
-    if (socket && userType === 'STORE') {
-      socket.on('requestSeat', (data) => {
-        console.log(data);
-      });
-    }
-    console.log(socket);
-  }, [socket, userType]);
-
-  return [socket];
+  return [socket[token]];
 };
 
 export default useSocket;

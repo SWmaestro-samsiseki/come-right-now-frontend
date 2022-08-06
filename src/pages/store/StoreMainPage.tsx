@@ -11,7 +11,7 @@ const MainContainer = styled.div`
 `;
 
 function StoreMainPage() {
-  const [socket, add] = useSocket(localStorage.getItem('token') as string);
+  const [socket] = useSocket(localStorage.getItem('token') as string);
 
   useEffect(() => {
     //

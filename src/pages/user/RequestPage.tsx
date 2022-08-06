@@ -34,6 +34,7 @@ const SearchBtn = styled.button`
     background: #0ba8ff;
   }
 `;
+
 function RequestPage() {
   const token = localStorage.getItem('token') as string;
   const [socket] = useSocket(token);
@@ -42,22 +43,27 @@ function RequestPage() {
   const { selectedCategories, people, time, latitude, longitude } = useRequestStore();
 
   function findStore() {
-    // TODO: 준호와 이벤트명세 확정하고 수정하기
-    if (socket) {
-      socket.emit('user.find-store.server', {
+    socket.emit(
+      'user.find-store.server',
+      {
         categories: selectedCategories.map((ele) => ele.id),
         numberOfPeople: people,
-        arrivedAt: new Date(new Date().getTime() + time * 60000),
+        delayMinutes: time,
         userId: user?.id,
         latitude: latitude,
         longitude: longitude,
-      });
-      navigate('/search', { replace: true });
-    } else {
-      console.log('소켓이 활성화되지 않았습니다.');
-      // TODO: SweetAlert2를 사용해 알림창 띄우기
-    }
+      },
+      (response: boolean, data?: object) => {
+        if (response) {
+          // TODO: data를 이용해 POST 요청보내기
+          navigate('/search', { replace: true });
+        } else {
+          // TODO: emit 실패시 SweetAlert2를 이용한 경고창 띄우기
+        }
+      },
+    );
   }
+
   return (
     <RequestContainer>
       <UserRequestHeader />
@@ -67,7 +73,10 @@ function RequestPage() {
       <RequestStatus type={'people'} />
       <RequestStep step={3} name={'시간'} />
       <RequestStatus type={'time'} />
-      <SearchBtn onClick={findStore} className={selectedCategories.length > 0 ? 'active' : ''}>
+      <SearchBtn
+        onClick={findStore}
+        className={selectedCategories.length > 0 ? 'active' : ''}
+        disabled={true}>
         지금갈게
       </SearchBtn>
     </RequestContainer>

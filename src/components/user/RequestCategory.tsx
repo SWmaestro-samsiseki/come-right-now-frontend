@@ -9,6 +9,7 @@ const CategoryContainer = styled.div`
   align-items: center;
   padding: 10px 0;
 
+  // TODO: 344px과 같이 하드한 값이 아닌 내부 아이템들에 의해 결정되도록 수정하기
   & > div {
     display: flex;
     flex-wrap: wrap;
