@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import useAuthStore from '../../stores/authStore';
 import useRequestStore from '../../stores/user/requestStore';
 import useSocket from '../../utils/useSocket';
-import UserRequestHeader from '../../components/user/UserRequestHeader';
+import UserRequestHeader from '../../components/user/RequestHeader';
 import RequestStep from '../../components/user/RequestStep';
 import CategoryItem from '../../components/CategoryItem';
 

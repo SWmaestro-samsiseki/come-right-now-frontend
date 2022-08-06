@@ -5,7 +5,7 @@ import InitAuth from './components/InitAuth';
 import CheckAuth from './components/CheckAuth';
 import LoginPage from './pages/LoginPage';
 import CheckUserType from './components/CheckUserType';
-import UserMainPage from './pages/user/UserMainPage';
+import UserMainPage from './pages/user/MainPage';
 import StoreMainPage from './pages/store/StoreMainPage';
 import RequestPage from './pages/user/RequestPage';
 import SearchPage from './pages/user/SearchPage';
