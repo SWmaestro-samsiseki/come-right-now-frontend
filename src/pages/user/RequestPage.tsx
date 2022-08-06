@@ -1,8 +1,16 @@
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import useAuthStore from '../../stores/authStore';
 import useRequestStore from '../../stores/user/requestStore';
 import useSocket from '../../utils/useSocket';
+import UserRequestHeader from '../../components/user/UserRequestHeader';
+import RequestStep from '../../components/user/RequestStep';
 import CategoryItem from '../../components/CategoryItem';
+
+const RequestContainer = styled.div`
+  width: 100%;
+  height: 100%;
+`;
 
 function RequestPage() {
   const token = localStorage.getItem('token') as string;
@@ -40,10 +48,13 @@ function RequestPage() {
     }
   }
   return (
-    <div>
+    <RequestContainer>
+      <UserRequestHeader />
+      <RequestStep step={1} name={'주종'} />
       {categories.map((ele, index) => (
         <CategoryItem key={index} category={ele} />
       ))}
+      <RequestStep step={2} name={'인원'} />
       <div role="button" onClick={minusPeople}>
         -
       </div>
@@ -51,6 +62,7 @@ function RequestPage() {
       <div role="button" onClick={plusPeople}>
         +
       </div>
+      <RequestStep step={3} name={'시간'} />
       <div role="button" onClick={minusTime}>
         -
       </div>
@@ -59,7 +71,7 @@ function RequestPage() {
         +
       </div>
       <button onClick={findStore}>지금갈게</button>
-    </div>
+    </RequestContainer>
   );
 }
 
