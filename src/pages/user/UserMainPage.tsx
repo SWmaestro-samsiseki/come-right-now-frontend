@@ -4,9 +4,9 @@ import useAuthStore from '../../stores/authStore';
 import useRequestStore from '../../stores/user/requestStore';
 import { fetchUserInfo } from '../../utils/auth';
 import { fetchCategories } from '../../utils/request';
-import UserHeader from '../../components/UserHeader';
-import UserSection from '../../components/UserSection';
-import UserMenu from '../../components/UserMenu';
+import UserHeader from '../../components/user/UserHeader';
+import UserSection from '../../components/user/UserSection';
+import UserMenu from '../../components/user/UserMenu';
 
 const MainContainer = styled.div`
   width: 100%;

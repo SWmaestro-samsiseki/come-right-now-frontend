@@ -40,7 +40,7 @@ function UserMenu() {
         <MenuItem to="/main" replace={true}>
           <li>
             <img
-              src={require(`../images/home_${param['*'] === '' ? 'on' : 'off'}.png`)}
+              src={require(`../../images/home_${param['*'] === '' ? 'on' : 'off'}.png`)}
               alt="홈 아이콘"
             />
             <span>홈</span>
@@ -49,7 +49,7 @@ function UserMenu() {
         <MenuItem to="/main/star" replace={true}>
           <li>
             <img
-              src={require(`../images/star_${param['*'] === 'star' ? 'on' : 'off'}.png`)}
+              src={require(`../../images/star_${param['*'] === 'star' ? 'on' : 'off'}.png`)}
               alt="찜 아이콘"
             />
             <span>찜</span>
@@ -58,7 +58,7 @@ function UserMenu() {
         <MenuItem to="/main/history" replace={true}>
           <li>
             <img
-              src={require(`../images/history_${param['*'] === 'history' ? 'on' : 'off'}.png`)}
+              src={require(`../../images/history_${param['*'] === 'history' ? 'on' : 'off'}.png`)}
               alt="이용내역 아이콘"
             />
             <span>이용내역</span>
@@ -67,7 +67,7 @@ function UserMenu() {
         <MenuItem to="/main/mypage" replace={true}>
           <li>
             <img
-              src={require(`../images/mypage_${param['*'] === 'mypage' ? 'on' : 'off'}.png`)}
+              src={require(`../../images/mypage_${param['*'] === 'mypage' ? 'on' : 'off'}.png`)}
               alt="마이페이지 아이콘"
             />
             <span>My 지금갈게</span>
