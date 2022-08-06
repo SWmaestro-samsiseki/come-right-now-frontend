@@ -1,9 +1,17 @@
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import useAuthStore from '../../stores/authStore';
 import useRequestStore from '../../stores/user/requestStore';
 import { fetchUserInfo } from '../../utils/auth';
 import { fetchCategories } from '../../utils/request';
+import UserHeader from '../../components/UserHeader';
+import UserSection from '../../components/UserSection';
+import UserMenu from '../../components/UserMenu';
+
+const MainContainer = styled.div`
+  width: 100%;
+  height: 100%;
+`;
 
 function UserMainPage() {
   const { setUser } = useAuthStore();
@@ -29,11 +37,11 @@ function UserMainPage() {
   }, []);
 
   return (
-    <div>
-      <div role="button">
-        <Link to="/request">실시간예약</Link>
-      </div>
-    </div>
+    <MainContainer>
+      <UserHeader />
+      <UserSection />
+      <UserMenu />
+    </MainContainer>
   );
 }
 
