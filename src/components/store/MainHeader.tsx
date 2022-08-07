@@ -1,11 +1,4 @@
-import { useEffect } from 'react';
-import useReservationStore from '../../stores/store/reservationStore';
 import styled from 'styled-components';
-
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
-import RequestPopup from '../RequestPopup';
-import ReservationPopup from '../ReservationPopup';
 
 const HeaderContainer = styled.div`
   position: relative;
@@ -33,52 +26,16 @@ const IconContainer = styled.div`
 `;
 
 function StoreHeader() {
-  const { addReservation, addRequest } = useReservationStore();
-
   function test() {
     fetch('http://localhost:8080/reservation-events/test/seat-request', {
       method: 'POST',
     });
   }
-
   function test2() {
     fetch('http://localhost:8080/reservation-events/test/seat-reservation', {
       method: 'POST',
     });
   }
-
-  // useEffect(() => {
-  //   if (socket) {
-  //     socket.on('requestSeat', (data) => {
-  //       console.log(data);
-  //       addRequest(data);
-  //       const MySwal = withReactContent(Swal);
-  //       MySwal.fire({
-  //         html: <RequestPopup item={data} close={Swal.close} />,
-  //         showConfirmButton: false,
-  //         width: '480px',
-  //         padding: 0,
-  //         customClass: {
-  //           popup: 'border-radius-0',
-  //         },
-  //       });
-  //     });
-  //     socket.on('server.make-reservation.store', (data) => {
-  //       console.log(data);
-  //       addReservation(data);
-  //       const MySwal = withReactContent(Swal);
-  //       MySwal.fire({
-  //         html: <ReservationPopup item={data} close={Swal.close} />,
-  //         showConfirmButton: false,
-  //         width: '480px',
-  //         padding: 0,
-  //         customClass: {
-  //           popup: 'border-radius-0',
-  //         },
-  //       });
-  //     });
-  //   }
-  // }, [socket]);
 
   return (
     <HeaderContainer>

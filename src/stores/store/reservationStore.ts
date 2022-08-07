@@ -10,7 +10,7 @@ interface Reservation {
 
 interface Request {
   numberOfPeople: number;
-  arrivedAt: string;
+  arrivedAt: Date;
   userId: string;
   userName: string;
   userPhone: string;

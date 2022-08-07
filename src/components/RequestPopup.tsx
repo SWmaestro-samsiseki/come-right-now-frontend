@@ -1,6 +1,6 @@
 import type { Request } from '../stores/store/reservationStore';
-import useReservationStore from '../stores/store/reservationStore';
 import styled from 'styled-components';
+import useReservationStore from '../stores/store/reservationStore';
 
 const PopupContainer = styled.div`
   display: flex;
