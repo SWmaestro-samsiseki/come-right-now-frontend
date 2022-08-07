@@ -53,15 +53,17 @@ function RequestPage() {
         latitude: latitude,
         longitude: longitude,
       },
-      (response: boolean, data?: object) => {
-        if (response) {
-          // TODO: data를 이용해 POST 요청보내기
-          navigate('/search', { replace: true });
-        } else {
-          // TODO: emit 실패시 SweetAlert2를 이용한 경고창 띄우기
-        }
-      },
+      // ,
+      // (response: boolean, data?: object) => {
+      //   if (response) {
+      //     // TODO: data를 이용해 POST 요청보내기
+      //     navigate('/search', { replace: true });
+      //   } else {
+      //     // TODO: emit 실패시 SweetAlert2를 이용한 경고창 띄우기
+      //   }
+      // },
     );
+    navigate('/search', { replace: true });
   }
 
   return (
