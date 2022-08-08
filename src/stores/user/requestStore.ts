@@ -5,6 +5,17 @@ interface category {
   name: string;
 }
 
+interface createReservationDTO {
+  estimatedTime: Date;
+  numberOfPeople: number;
+  storeId: string;
+}
+
+interface FindStoreResponse {
+  isSuccess: boolean;
+  datas: createReservationDTO[];
+}
+
 interface request {
   categories: category[];
   selectedCategories: category[];
@@ -47,5 +58,5 @@ const useRequestStore = create<request>((set) => ({
   setLongitude: (value: number) => set(() => ({ longitude: value })),
 }));
 
-export type { category };
+export type { category, FindStoreResponse, createReservationDTO };
 export default useRequestStore;

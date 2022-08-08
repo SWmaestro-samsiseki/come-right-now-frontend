@@ -63,7 +63,7 @@ const ButtonContainer = styled.div`
 
 function RequestPopup({ item, close }: { item: Request; close: VoidFunction }) {
   const { removeRequest } = useReservationStore();
-  const date = new Date(item.arrivedAt);
+  const date = new Date(item.estimatedTime);
   const dateString = date.toLocaleTimeString();
   const time = dateString.slice(0, dateString.indexOf(':', 7));
 

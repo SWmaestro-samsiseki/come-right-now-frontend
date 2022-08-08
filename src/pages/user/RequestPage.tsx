@@ -1,6 +1,4 @@
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import useAuthStore from '../../stores/authStore';
 import useRequestStore from '../../stores/user/requestStore';
 import useSocket from '../../utils/useSocket';
 import UserRequestHeader from '../../components/user/RequestHeader';
@@ -37,34 +35,8 @@ const SearchBtn = styled.button`
 
 function RequestPage() {
   const token = localStorage.getItem('token') as string;
-  const [socket] = useSocket(token);
-  const navigate = useNavigate();
-  const { user } = useAuthStore();
-  const { selectedCategories, people, time, latitude, longitude } = useRequestStore();
-
-  function findStore() {
-    socket.emit(
-      'user.find-store.server',
-      {
-        categories: selectedCategories.map((ele) => ele.id),
-        numberOfPeople: people,
-        delayMinutes: time,
-        userId: user?.id,
-        latitude: latitude,
-        longitude: longitude,
-      },
-      // ,
-      // (response: boolean, data?: object) => {
-      //   if (response) {
-      //     // TODO: data를 이용해 POST 요청보내기
-      //     navigate('/search', { replace: true });
-      //   } else {
-      //     // TODO: emit 실패시 SweetAlert2를 이용한 경고창 띄우기
-      //   }
-      // },
-    );
-    navigate('/search', { replace: true });
-  }
+  const { emitFindStore } = useSocket(token);
+  const { selectedCategories } = useRequestStore();
 
   return (
     <RequestContainer>
@@ -76,7 +48,7 @@ function RequestPage() {
       <RequestStep step={3} name={'시간'} />
       <RequestStatus type={'time'} />
       <SearchBtn
-        onClick={findStore}
+        onClick={emitFindStore}
         className={selectedCategories.length > 0 ? 'active' : ''}
         disabled={selectedCategories.length > 0 ? false : true}>
         지금갈게

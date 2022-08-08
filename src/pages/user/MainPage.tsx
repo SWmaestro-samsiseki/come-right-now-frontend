@@ -21,11 +21,13 @@ function UserMainPage() {
     fetchCategories().then((res) => initCategories(res));
     fetchUserInfo().then((res) => setUser(res));
     // TODO: 위치를 반환하는 Custom Hooks 구현하기
+    // TODO: 위치를 반환하기 전까지 요청을 보낼 수 없도록 구현하기
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           setLatitude(position.coords.latitude);
           setLongitude(position.coords.longitude);
+          console.log('위치가져옴.');
         },
         () => {
           console.log('사용자의 위치를 가져오는데 실패했습니다.');

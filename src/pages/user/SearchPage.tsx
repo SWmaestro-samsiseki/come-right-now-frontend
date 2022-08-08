@@ -11,7 +11,7 @@ const SearchContainer = styled.div`
 
 function SearchPage() {
   const token = localStorage.getItem('token') as string;
-  const [socket] = useSocket(token);
+  const { socket } = useSocket(token);
 
   useEffect(() => {
     socket.on('server.available-seat.user', () => {

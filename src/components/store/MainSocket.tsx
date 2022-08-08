@@ -8,12 +8,11 @@ import ReservationPopup from '../ReservationPopup';
 
 function MainSocket() {
   const token = localStorage.getItem('token') as string;
-  const [socket] = useSocket(token);
+  const { socket } = useSocket(token);
   const { addRequest, addReservation } = useReservationStore();
 
   useEffect(() => {
-    // TODO: 이벤트명 server.find-store.store로 수정하기
-    socket.on('requestSeat', (data) => {
+    socket.on('server.find-store.store', (data) => {
       addRequest(data);
       const MySwal = withReactContent(Swal);
       MySwal.fire({

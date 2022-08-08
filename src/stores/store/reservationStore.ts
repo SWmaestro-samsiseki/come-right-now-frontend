@@ -10,11 +10,11 @@ interface Reservation {
 
 interface Request {
   numberOfPeople: number;
-  arrivedAt: Date;
   userId: string;
   userName: string;
   userPhone: string;
   creditRate: number;
+  estimatedTime: Date;
 }
 
 interface StoreManager {

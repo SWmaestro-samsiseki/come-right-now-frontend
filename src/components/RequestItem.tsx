@@ -62,7 +62,7 @@ const ButtonBox = styled.div`
 
 function RequestItem({ item }: { item: Request }) {
   const { removeRequest } = useReservationStore();
-  const date = new Date(item.arrivedAt);
+  const date = new Date(item.estimatedTime);
   const dateString = date.toLocaleTimeString();
   const time = dateString.slice(0, dateString.indexOf(':', 7));
 
