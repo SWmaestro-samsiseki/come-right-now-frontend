@@ -1,6 +1,8 @@
-import type { Request } from '../stores/store/reservationStore';
-import useReservationStore from '../stores/store/reservationStore';
+import type { ReservationInfo } from '../stores/store/storeManagerStore';
+import useSocket from '../utils/useSocket';
+import useStoreManagerStore from '../stores/store/storeManagerStore';
 import styled from 'styled-components';
+import { deleteReservation } from '../utils/reservation';
 
 const ItemContainer = styled.div`
   display: flex;
@@ -60,15 +62,29 @@ const ButtonBox = styled.div`
   }
 `;
 
-function RequestItem({ item }: { item: Request }) {
-  const { removeRequest } = useReservationStore();
+function RequestItem({ item }: { item: ReservationInfo }) {
+  const token = localStorage.getItem('token') as string;
+  const { acceptReservation } = useSocket(token);
+  const { removeRequest } = useStoreManagerStore();
+
   const date = new Date(item.estimatedTime);
   const dateString = date.toLocaleTimeString();
   const time = dateString.slice(0, dateString.indexOf(':', 7));
 
+  function reject() {
+    deleteReservation(item.reservationId).then((res) => {
+      if (res) {
+        removeRequest(item);
+        close();
+      } else {
+        // TODO: 삭제에 실패했다는 알림
+      }
+    });
+  }
   function accept() {
-    // 서버로 수락하는 API를 보낸다.
+    acceptReservation(item.reservationId);
     removeRequest(item);
+    close();
   }
 
   return (
@@ -77,14 +93,14 @@ function RequestItem({ item }: { item: Request }) {
         <p>{time}</p>
         <Info>
           <h3>
-            {item.userName} 외 {item.numberOfPeople - 1}명
+            {item.user.name} 외 {item.peopleNumber - 1}명
           </h3>
-          <p>{item.userPhone}</p>
-          <p>신용등급 : {item.creditRate}점</p>
+          <p>{item.user.phone}</p>
+          <p>신용등급 : {item.user.creditRate}점</p>
         </Info>
       </InfoContainer>
       <ButtonBox>
-        <button onClick={() => removeRequest(item)}>거절</button>
+        <button onClick={reject}>거절</button>
         <button onClick={accept}>수락</button>
       </ButtonBox>
     </ItemContainer>

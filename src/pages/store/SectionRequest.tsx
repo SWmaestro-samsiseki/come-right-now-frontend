@@ -1,4 +1,4 @@
-import useReservationStore from '../../stores/store/reservationStore';
+import useStoreManagerStore from '../../stores/store/storeManagerStore';
 import RequestItem from '../../components/RequestItem';
 import styled from 'styled-components';
 
@@ -12,7 +12,7 @@ const ListContainer = styled.div`
 `;
 
 function StoreRequestList() {
-  const { requestList } = useReservationStore();
+  const { requestList } = useStoreManagerStore();
 
   return (
     <ListContainer>

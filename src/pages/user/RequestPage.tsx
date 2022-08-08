@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import useRequestStore from '../../stores/user/requestStore';
+import useRequestInfoStore from '../../stores/user/requestInfoStore';
 import useSocket from '../../utils/useSocket';
 import UserRequestHeader from '../../components/user/RequestHeader';
 import RequestStep from '../../components/user/RequestStep';
@@ -36,7 +36,7 @@ const SearchBtn = styled.button`
 function RequestPage() {
   const token = localStorage.getItem('token') as string;
   const { emitFindStore } = useSocket(token);
-  const { selectedCategories } = useRequestStore();
+  const { selectedCategories } = useRequestInfoStore();
 
   return (
     <RequestContainer>

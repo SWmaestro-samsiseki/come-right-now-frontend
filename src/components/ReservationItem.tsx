@@ -1,4 +1,4 @@
-import type { Reservation } from '../stores/store/reservationStore';
+import type { ReservationInfo } from '../stores/store/storeManagerStore';
 import styled from 'styled-components';
 
 const ItemContainer = styled.div`
@@ -64,17 +64,20 @@ const ButtonBox = styled.div`
   }
 `;
 
-function ReservationItem({ item }: { item: Reservation }) {
+function ReservationItem({ item }: { item: ReservationInfo }) {
+  const date = new Date(item.estimatedTime);
+  const dateString = date.toLocaleTimeString();
+  const time = dateString.slice(0, dateString.indexOf(':', 7));
   return (
     <ItemContainer>
       <InfoContainer>
-        <p>{item.estimatedTime}</p>
+        <p>{time}</p>
         <Info>
           <h3>
-            {item.userName} 외 {item.peopleNumber - 1}명
+            {item.user.name} 외 {item.peopleNumber - 1}명
           </h3>
-          <p>{item.phone}</p>
-          <p>신용등급 : {item.creditRate}점</p>
+          <p>{item.user.phone}</p>
+          <p>신용등급 : {item.user.creditRate}점</p>
         </Info>
       </InfoContainer>
       <ButtonBox>

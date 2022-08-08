@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import type { category } from '../../stores/user/requestStore';
-import useRequestStore from '../../stores/user/requestStore';
+import type { Category } from '../../stores/user/requestInfoStore';
+import useRequestStore from '../../stores/user/requestInfoStore';
 
 const ItemContainer = styled.div`
   display: flex;
@@ -26,7 +26,7 @@ const ItemContainer = styled.div`
   }
 `;
 
-function CategoryItem({ category }: { category: category }) {
+function CategoryItem({ category }: { category: Category }) {
   const { selectedCategories, addCategory, removeCategory } = useRequestStore();
 
   function chooseItem() {

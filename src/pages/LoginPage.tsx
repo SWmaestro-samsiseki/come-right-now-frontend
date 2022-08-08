@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import useAuthStore from '../stores/authStore';
-import { addAuth } from '../utils/auth';
+import { login } from '../utils/auth';
 
 const LoginForm = styled.div`
   display: flex;
@@ -112,8 +112,8 @@ function LoginPage() {
   function pwEvent(e: React.ChangeEvent<HTMLInputElement>) {
     setPw(e.target.value);
   }
-  function login() {
-    addAuth(id, pw)
+  function tryLogin() {
+    login(id, pw)
       .then((res) => {
         if (res.isSuccess) {
           localStorage.setItem('token', res.accessToken);
@@ -139,7 +139,7 @@ function LoginPage() {
         value={pw}
         onChange={pwEvent}
       />
-      <LoginBtn role="button" onClick={login} disabled={id && pw ? false : true}>
+      <LoginBtn role="button" onClick={tryLogin} disabled={id && pw ? false : true}>
         로그인
       </LoginBtn>
       <RegistBtn to="/">아직 회원이 아니신가요?</RegistBtn>

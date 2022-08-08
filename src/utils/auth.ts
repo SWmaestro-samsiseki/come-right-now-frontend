@@ -26,7 +26,7 @@ async function authValid(): Promise<string> {
   return '';
 }
 
-async function addAuth(id: string, pw: string): Promise<LoginOutputDTO> {
+async function login(id: string, pw: string): Promise<LoginOutputDTO> {
   const response = await fetch(`${BASE_URL}/account/login`, {
     method: 'POST',
     headers: {
@@ -54,4 +54,4 @@ async function fetchUserInfo(): Promise<User> {
   return parse;
 }
 
-export { authValid, addAuth, fetchUserInfo };
+export { authValid, login, fetchUserInfo };

@@ -1,4 +1,4 @@
-import useReservationStore from '../../stores/store/reservationStore';
+import useStoreManagerStore from '../../stores/store/storeManagerStore';
 import ReservationItem from '../../components/ReservationItem';
 import styled from 'styled-components';
 
@@ -12,7 +12,7 @@ const ListContainer = styled.div`
 `;
 
 function StoreReservationList() {
-  const { reservationList } = useReservationStore();
+  const { reservationList } = useStoreManagerStore();
 
   return (
     <ListContainer>

@@ -2,16 +2,16 @@ import { Navigate } from 'react-router-dom';
 import useAuthStore from '../stores/authStore';
 
 function CheckUserType({
-  first,
-  second,
+  userComponent,
+  storeComponent,
 }: {
-  first: JSX.Element;
-  second: JSX.Element;
+  userComponent: JSX.Element;
+  storeComponent: JSX.Element;
 }): JSX.Element {
   const { userType } = useAuthStore();
 
-  if (userType === 'USER') return first;
-  else if (userType === 'STORE') return second;
+  if (userType === 'USER') return userComponent;
+  else if (userType === 'STORE') return storeComponent;
   else return <Navigate to="/" replace={true} />;
 }
 export default CheckUserType;

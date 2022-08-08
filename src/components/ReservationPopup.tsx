@@ -1,4 +1,4 @@
-import type { Reservation } from '../stores/store/reservationStore';
+import type { ReservationInfo } from '../stores/store/storeManagerStore';
 import styled from 'styled-components';
 import { Link, unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
@@ -76,16 +76,20 @@ const LinkButton = styled(Link)`
   color: white;
 `;
 
-function ReservationPopup({ item, close }: { item: Reservation; close: VoidFunction }) {
+function ReservationPopup({ item, close }: { item: ReservationInfo; close: VoidFunction }) {
   const browserHistory = createBrowserHistory({ window });
+
+  const date = new Date(item.estimatedTime);
+  const dateString = date.toLocaleTimeString();
+  const time = dateString.slice(0, dateString.indexOf(':', 7));
 
   return (
     <PopupContainer>
       <Title>도착 예정</Title>
-      <TimeSpan>{item.estimatedTime}</TimeSpan>
+      <TimeSpan>{time}</TimeSpan>
       <InfoContainer>
         <p>
-          {item.userName} 외 {item.peopleNumber - 1}명 도착 예정
+          {item.user.name} 외 {item.peopleNumber - 1}명 도착 예정
         </p>
       </InfoContainer>
       <ButtonContainer>

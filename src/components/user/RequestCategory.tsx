@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import useRequestStore from '../../stores/user/requestStore';
+import useRequestInfoStore from '../../stores/user/requestInfoStore';
 import CategoryItem from './CategoryItem';
 
 const CategoryContainer = styled.div`
@@ -18,7 +18,7 @@ const CategoryContainer = styled.div`
 `;
 
 function RequestCategory() {
-  const { categories } = useRequestStore();
+  const { categories } = useRequestInfoStore();
   return (
     <CategoryContainer>
       <div>

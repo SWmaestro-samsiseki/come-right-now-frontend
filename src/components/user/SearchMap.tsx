@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
-import useRequestStore from '../../stores/user/requestStore';
+import useRequestInfoStore from '../../stores/user/requestInfoStore';
 
 const MapContainer = styled.div`
   position: relative;
@@ -38,7 +38,7 @@ const StopBtn = styled.button`
 `;
 
 function SearchMap() {
-  const { latitude, longitude } = useRequestStore();
+  const { latitude, longitude } = useRequestInfoStore();
   useEffect(() => {
     const initMap = () => {
       if (latitude && longitude) {

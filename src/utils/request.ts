@@ -1,9 +1,8 @@
-import type { category } from '../stores/user/requestStore';
-import type { createReservationDTO } from '../stores/user/requestStore';
+import type { Category } from '../stores/user/requestInfoStore';
 
 const BASE_URL = 'http://localhost:8080';
 
-async function fetchCategories(): Promise<Array<category>> {
+async function fetchCategories(): Promise<Array<Category>> {
   const response = await fetch(`${BASE_URL}/category`, {
     method: 'GET',
     headers: {
@@ -14,16 +13,4 @@ async function fetchCategories(): Promise<Array<category>> {
   return parse;
 }
 
-async function addRequest(datas: createReservationDTO[]): Promise<Response> {
-  const response = await fetch(`${BASE_URL}/reservation`, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(datas),
-  });
-  return response;
-}
-
-export { fetchCategories, addRequest };
+export { fetchCategories };

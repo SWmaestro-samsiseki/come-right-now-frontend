@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import useRequestStore from '../../stores/user/requestStore';
+import useRequestInfoStore from '../../stores/user/requestInfoStore';
 
 const StatusContainer = styled.div`
   position: relative;
@@ -45,7 +45,7 @@ const Controller = styled.div`
 `;
 
 function RequestStatus({ type }: { type: string }) {
-  const { people, time, plusPeople, minusPeople, plusTime, minusTime } = useRequestStore();
+  const { people, time, plusPeople, minusPeople, plusTime, minusTime } = useRequestInfoStore();
   return (
     <StatusContainer>
       <Controller>

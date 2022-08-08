@@ -1,4 +1,4 @@
-import type { Response } from '../../stores/user/responseStore';
+import type { StoreInfo } from '../../stores/user/responseInfoStore';
 import styled from 'styled-components';
 
 const ItemContainer = styled.div`
@@ -7,7 +7,7 @@ const ItemContainer = styled.div`
   border: 1px solid black;
 `;
 
-function SearchStoreItem({ item }: { item: Response }) {
+function SearchStoreItem({ item }: { item: StoreInfo }) {
   return <ItemContainer></ItemContainer>;
 }
 

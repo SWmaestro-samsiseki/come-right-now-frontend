@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import useResponseStore from '../../stores/user/responseStore';
+import useResponseInfoStore from '../../stores/user/responseInfoStore';
 import SearchStoreItem from './SearchStoreItem';
 
 const ListContainer = styled.div`
@@ -10,7 +10,7 @@ const ListContainer = styled.div`
 `;
 
 function SearchStoreList() {
-  const { responses } = useResponseStore();
+  const { responses } = useResponseInfoStore();
   return (
     <ListContainer>
       {responses.map((item, index) => (

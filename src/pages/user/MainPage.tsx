@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import useAuthStore from '../../stores/authStore';
-import useRequestStore from '../../stores/user/requestStore';
+import useRequestInfoStore from '../../stores/user/requestInfoStore';
 import { fetchUserInfo } from '../../utils/auth';
 import { fetchCategories } from '../../utils/request';
 import UserHeader from '../../components/user/MainHeader';
@@ -15,7 +15,7 @@ const MainContainer = styled.div`
 
 function UserMainPage() {
   const { setUser } = useAuthStore();
-  const { initCategories, setLatitude, setLongitude } = useRequestStore();
+  const { initCategories, setLatitude, setLongitude } = useRequestInfoStore();
 
   useEffect(() => {
     fetchCategories().then((res) => initCategories(res));

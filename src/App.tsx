@@ -29,7 +29,12 @@ function App() {
             path="/main/*"
             element={
               <CheckAuth
-                component={<CheckUserType first={<UserMainPage />} second={<StoreMainPage />} />}
+                component={
+                  <CheckUserType
+                    userComponent={<UserMainPage />}
+                    storeComponent={<StoreMainPage />}
+                  />
+                }
               />
             }
           />
