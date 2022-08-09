@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { io, Socket } from 'socket.io-client';
-import useAuthStore from '../stores/authStore';
 import useRequestInfoStore from '../stores/user/requestInfoStore';
 
 const BASE_URL = 'http://localhost:8080';
@@ -10,12 +9,11 @@ const socket: { [key: string]: Socket } = {};
 interface SocketHooks {
   socket: Socket;
   emitFindStore: () => void;
-  acceptReservation: (id: number) => void;
+  acceptReservation: (userId: string, reservationId: number) => void;
 }
 
 const useSocket = (token: string): SocketHooks => {
   const navigate = useNavigate();
-  const { user } = useAuthStore();
   const { selectedCategories, people, time, latitude, longitude } = useRequestInfoStore();
 
   const emitFindStore = useCallback(() => {
@@ -39,10 +37,10 @@ const useSocket = (token: string): SocketHooks => {
   }, [socket[token]]);
 
   const acceptReservation = useCallback(
-    (id: number) => {
-      socket[token].emit('server.available-seat.user', {
-        storeId: user?.id,
-        reservationId: id,
+    (userId: string, reservationId: number) => {
+      socket[token].emit('store.accept-seat.server', {
+        userId,
+        reservationId,
       });
     },
     [socket[token]],

@@ -82,7 +82,7 @@ function RequestItem({ item }: { item: ReservationInfo }) {
     });
   }
   function accept() {
-    acceptReservation(item.reservationId);
+    acceptReservation(item.user.id, item.reservationId);
     removeRequest(item);
     close();
   }

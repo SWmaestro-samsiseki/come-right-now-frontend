@@ -83,7 +83,7 @@ function RequestPopup({ item, close }: { item: ReservationInfo; close: VoidFunct
     });
   }
   function accept() {
-    acceptReservation(item.reservationId);
+    acceptReservation(item.user.id, item.reservationId);
     removeRequest(item);
     close();
   }
