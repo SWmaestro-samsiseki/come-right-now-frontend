@@ -37,7 +37,7 @@ interface Auth {
   user: User | Store | null;
   setAuth: (value: boolean) => void;
   setUserType: (type: string) => void;
-  setUser: (value: User) => void;
+  setUser: (value: User | Store) => void;
 }
 
 const useAuthStore = create<Auth>((set) => ({
@@ -49,5 +49,5 @@ const useAuthStore = create<Auth>((set) => ({
   setUser: (value: User | Store) => set(() => ({ user: value })),
 }));
 
-export type { User };
+export type { User, Store };
 export default useAuthStore;

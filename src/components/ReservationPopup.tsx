@@ -89,7 +89,7 @@ function ReservationPopup({ item, close }: { item: ReservationInfo; close: VoidF
       <TimeSpan>{time}</TimeSpan>
       <InfoContainer>
         <p>
-          {item.user.name} 외 {item.peopleNumber - 1}명 도착 예정
+          {item.user.name} 외 {item.numberOfPeople - 1}명 도착 예정
         </p>
       </InfoContainer>
       <ButtonContainer>

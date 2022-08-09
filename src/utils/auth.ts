@@ -1,4 +1,4 @@
-import type { User } from '../stores/authStore';
+import type { User, Store } from '../stores/authStore';
 
 const BASE_URL = 'http://localhost:8080';
 
@@ -54,4 +54,17 @@ async function fetchUserInfo(): Promise<User> {
   return parse;
 }
 
-export { authValid, login, fetchUserInfo };
+async function fetchStoreInfo(): Promise<Store> {
+  const token = localStorage.getItem('token');
+  const response = await fetch(`${BASE_URL}/store/my-info`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const parse = await response.json();
+
+  return parse;
+}
+
+export { authValid, login, fetchUserInfo, fetchStoreInfo };

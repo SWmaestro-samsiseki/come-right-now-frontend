@@ -93,7 +93,7 @@ function RequestItem({ item }: { item: ReservationInfo }) {
         <p>{time}</p>
         <Info>
           <h3>
-            {item.user.name} 외 {item.peopleNumber - 1}명
+            {item.user.name} 외 {item.numberOfPeople - 1}명
           </h3>
           <p>{item.user.phone}</p>
           <p>신용등급 : {item.user.creditRate}점</p>

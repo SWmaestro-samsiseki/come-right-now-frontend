@@ -19,6 +19,7 @@ interface StoreInfo {
   address: string;
   openAt: Date;
   closeAt: Date;
+  reservationId: number;
 }
 
 interface ResponseInfo {

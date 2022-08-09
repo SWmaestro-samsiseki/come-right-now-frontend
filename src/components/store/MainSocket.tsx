@@ -14,9 +14,10 @@ function MainSocket() {
 
   useEffect(() => {
     socket.on('server.find-store.store', (data: { reservationId: number }) => {
+      console.log('자리요청 이벤트를 받는데 성공했습니다.');
       getReservationInfo(data.reservationId).then((res) => {
         const response = {
-          peopleNumber: res.peopleNumber,
+          numberOfPeople: res.numberOfPeople,
           estimatedTime: res.estimatedTime,
           createdAt: res.createdAt,
           reservationStatus: res.reservationStatus,
@@ -37,9 +38,10 @@ function MainSocket() {
       });
     });
     socket.on('server.make-reservation.store', (data: { reservaionId: number }) => {
+      console.log('예약 이벤트를 받는데 성공했습니다.');
       getReservationInfo(data.reservaionId).then((res) => {
         const response = {
-          peopleNumber: res.peopleNumber,
+          numberOfPeople: res.numberOfPeople,
           estimatedTime: res.estimatedTime,
           createdAt: res.createdAt,
           reservationStatus: res.reservationStatus,

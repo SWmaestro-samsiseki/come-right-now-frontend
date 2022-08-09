@@ -4,7 +4,7 @@ import type { StoreInfo } from '../stores/user/responseInfoStore';
 const BASE_URL = 'http://localhost:8080';
 
 interface ReservationInfo {
-  peopleNumber: number;
+  numberOfPeople: number;
   estimatedTime: Date;
   createdAt: Date;
   reservationStatus: string;

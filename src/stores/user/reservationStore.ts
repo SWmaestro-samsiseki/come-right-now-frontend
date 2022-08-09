@@ -2,7 +2,7 @@ import type { StoreInfo } from './responseInfoStore';
 import create from 'zustand';
 
 interface ReservationInfo {
-  peopleNumber: number;
+  numberOfPeople: number;
   estimatedTime: Date;
   createdAt: Date;
   reservationStatus: string;

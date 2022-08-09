@@ -69,7 +69,7 @@ function RequestPopup({ item, close }: { item: ReservationInfo; close: VoidFunct
   const { removeRequest } = useStoreManagerStore();
 
   const date = new Date(item.estimatedTime);
-  const dateString = date.toLocaleTimeString();
+  const dateString = date.toLocaleTimeString('ko-KR');
   const time = dateString.slice(0, dateString.indexOf(':', 7));
 
   function reject() {
@@ -91,7 +91,7 @@ function RequestPopup({ item, close }: { item: ReservationInfo; close: VoidFunct
   return (
     <PopupContainer>
       <Title>자리 요청</Title>
-      <PeopleSpan>{item.peopleNumber}명</PeopleSpan>
+      <PeopleSpan>{item.numberOfPeople}명</PeopleSpan>
       <InfoContainer>
         <div>
           도착시간 : <span>{time}</span>
