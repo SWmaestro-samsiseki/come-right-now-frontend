@@ -20,9 +20,9 @@ const useSocket = (token: string): SocketHooks => {
         },
         (response: { isSuccess: boolean; message?: object }) => {
           if (response.isSuccess) {
-            console.log(response.isSuccess, ': 자리요청 수락에 성공했습니다.');
+            console.log('자리요청을 수락하는데 성공했습니다.');
           } else {
-            console.log(response.isSuccess, ': 자리요청 수락에 실패했습니다.');
+            console.log('자리요청을 수락하는데 실패했습니다.');
             console.log(response.message);
           }
         },

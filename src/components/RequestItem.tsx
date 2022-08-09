@@ -74,17 +74,17 @@ function RequestItem({ item }: { item: ReservationInfo }) {
   function reject() {
     deleteReservation(item.reservationId).then((res) => {
       if (res) {
+        console.log('요청을 삭제하는데 성공했습니다.');
         removeRequest(item);
-        close();
       } else {
         // TODO: 삭제에 실패했다는 알림
+        console.log('요청을 삭제하는데 실패했습니다.');
       }
     });
   }
   function accept() {
     acceptReservation(item.user.id, item.reservationId);
     removeRequest(item);
-    close();
   }
 
   return (

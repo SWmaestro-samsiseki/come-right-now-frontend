@@ -13,16 +13,16 @@ function MainSocket() {
   const { addRequest, addReservation } = useReservationStore();
 
   useEffect(() => {
-    socket.on('server.find-store.store', (data: { reservationId: number }) => {
+    socket.on('server.find-store.store', (reservationId: number) => {
       console.log('자리요청 이벤트를 받는데 성공했습니다.');
-      getReservationInfo(data.reservationId).then((res) => {
+      getReservationInfo(reservationId).then((res) => {
         const response = {
           numberOfPeople: res.numberOfPeople,
           estimatedTime: res.estimatedTime,
           createdAt: res.createdAt,
           reservationStatus: res.reservationStatus,
           user: res.user,
-          reservationId: data.reservationId,
+          reservationId: reservationId,
         };
         addRequest(response);
         const MySwal = withReactContent(Swal);
@@ -37,16 +37,16 @@ function MainSocket() {
         });
       });
     });
-    socket.on('server.make-reservation.store', (data: { reservaionId: number }) => {
+    socket.on('server.make-reservation.store', (reservaionId: number) => {
       console.log('예약 이벤트를 받는데 성공했습니다.');
-      getReservationInfo(data.reservaionId).then((res) => {
+      getReservationInfo(reservaionId).then((res) => {
         const response = {
           numberOfPeople: res.numberOfPeople,
           estimatedTime: res.estimatedTime,
           createdAt: res.createdAt,
           reservationStatus: res.reservationStatus,
           user: res.user,
-          reservationId: data.reservaionId,
+          reservationId: reservaionId,
         };
         addReservation(response);
         const MySwal = withReactContent(Swal);

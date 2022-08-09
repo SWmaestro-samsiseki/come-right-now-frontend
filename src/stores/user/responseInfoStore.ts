@@ -1,7 +1,7 @@
 import create from 'zustand';
 
 interface StoreInfo {
-  storeId: string;
+  id: string;
   masterName: string;
   storeName: string;
   storeType: string;
@@ -29,11 +29,7 @@ interface ResponseInfo {
 
 const useResponseInfoStore = create<ResponseInfo>((set) => ({
   responses: [],
-  addResponse: (value: StoreInfo) => {
-    // TODO: 로그값 확인하고 지우기
-    console.log(value);
-    set((state) => ({ responses: [value, ...state.responses] }));
-  },
+  addResponse: (value: StoreInfo) => set((state) => ({ responses: [value, ...state.responses] })),
 }));
 
 export type { StoreInfo };

@@ -15,10 +15,10 @@ function SearchStoreItem({ item }: { item: StoreInfo }) {
   function test() {
     socket.emit(
       'user.make-reservation.server',
-      { storeId: item.storeId, reservationId: item.reservationId },
+      { storeId: item.id, reservationId: item.reservationId },
       (response: boolean) => {
         if (response) {
-          console.log(response);
+          console.log('예약에 성공했습니다.');
         } else {
           console.log('예약에 실패했습니다.');
         }

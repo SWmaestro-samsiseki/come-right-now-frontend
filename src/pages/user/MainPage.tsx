@@ -27,10 +27,10 @@ function UserMainPage() {
         (position) => {
           setLatitude(position.coords.latitude);
           setLongitude(position.coords.longitude);
-          console.log('위치가져옴.');
+          console.log('위치를 가져오는데 성공했습니다.');
         },
         () => {
-          console.log('사용자의 위치를 가져오는데 실패했습니다.');
+          console.log('위치를 가져오는데 실패했습니다.');
         },
       );
     } else {
