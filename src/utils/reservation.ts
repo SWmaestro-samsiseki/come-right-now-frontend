@@ -34,4 +34,10 @@ async function deleteReservation(id: number): Promise<boolean> {
   return parse;
 }
 
-export { getReservationInfo, deleteReservation };
+function validTime(time: Date): number {
+  const limit = 1;
+  const term = new Date().getTime() - new Date(time).getTime();
+  return term < limit * 60000 ? term : 0;
+}
+
+export { getReservationInfo, deleteReservation, validTime };

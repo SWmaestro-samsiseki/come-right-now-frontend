@@ -1,6 +1,6 @@
-import useStoreManagerStore from '../../stores/store/storeManagerStore';
-import RequestItem from '../../components/RequestItem';
 import styled from 'styled-components';
+import useStoreManagerStore from '../../stores/store/storeManagerStore';
+import RequestItem from '../../components/store/RequestItem';
 
 const ListContainer = styled.div`
   width: 100%;

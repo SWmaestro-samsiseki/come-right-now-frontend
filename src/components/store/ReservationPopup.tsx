@@ -1,7 +1,6 @@
-import type { ReservationInfo } from '../stores/store/storeManagerStore';
+import { NavigateFunction } from 'react-router-dom';
 import styled from 'styled-components';
-import { Link, unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
-import { createBrowserHistory } from 'history';
+import type { ReservationInfo } from '../../stores/store/storeManagerStore';
 
 const PopupContainer = styled.div`
   display: flex;
@@ -61,7 +60,7 @@ const ButtonContainer = styled.div`
     color: white;
   }
 `;
-const LinkButton = styled(Link)`
+const LinkButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -76,13 +75,22 @@ const LinkButton = styled(Link)`
   color: white;
 `;
 
-function ReservationPopup({ item, close }: { item: ReservationInfo; close: VoidFunction }) {
-  const browserHistory = createBrowserHistory({ window });
+function ReservationPopup({
+  item,
+  close,
+  navigate,
+}: {
+  item: ReservationInfo;
+  close: VoidFunction;
+  navigate: NavigateFunction;
+}) {
+  const finalTime = new Date(item.estimatedTime).toLocaleTimeString();
+  const time = finalTime.slice(0, finalTime.lastIndexOf(':'));
 
-  const date = new Date(item.estimatedTime);
-  const dateString = date.toLocaleTimeString();
-  const time = dateString.slice(0, dateString.indexOf(':', 7));
-
+  function detail() {
+    navigate('/main/reservation', { replace: true });
+    close();
+  }
   return (
     <PopupContainer>
       <Title>도착 예정</Title>
@@ -94,11 +102,7 @@ function ReservationPopup({ item, close }: { item: ReservationInfo; close: VoidF
       </InfoContainer>
       <ButtonContainer>
         <button onClick={close}>닫기</button>
-        <HistoryRouter history={browserHistory}>
-          <LinkButton to="/main/reservation" onClick={close}>
-            상세보기
-          </LinkButton>
-        </HistoryRouter>
+        <LinkButton onClick={detail}>상세보기</LinkButton>
       </ButtonContainer>
     </PopupContainer>
   );

@@ -1,8 +1,9 @@
-import type { ReservationInfo } from '../stores/store/storeManagerStore';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import useSocket from '../utils/useSocket';
-import useStoreManagerStore from '../stores/store/storeManagerStore';
-import { deleteReservation } from '../utils/reservation';
+import useSocket from '../../utils/useSocket';
+import useStoreManagerStore from '../../stores/store/storeManagerStore';
+import { deleteReservation, validTime } from '../../utils/reservation';
+import type { ReservationInfo } from '../../stores/store/storeManagerStore';
 
 const PopupContainer = styled.div`
   display: flex;
@@ -64,20 +65,17 @@ const ButtonContainer = styled.div`
 `;
 
 function RequestPopup({ item, close }: { item: ReservationInfo; close: VoidFunction }) {
+  const [time, setTime] = useState('');
   const token = localStorage.getItem('token') as string;
   const { acceptReservation } = useSocket(token);
   const { removeRequest } = useStoreManagerStore();
 
-  const date = new Date(item.estimatedTime);
-  const dateString = date.toLocaleTimeString('ko-KR');
-  const time = dateString.slice(0, dateString.indexOf(':', 7));
-
   function reject() {
     deleteReservation(item.reservationId).then((res) => {
+      close();
       if (res) {
         console.log('요청을 삭제하는데 성공했습니다.');
         removeRequest(item);
-        close();
       } else {
         // TODO: 삭제에 실패했다는 알림
         console.log('요청을 삭제하는데 실패했습니다.');
@@ -89,6 +87,26 @@ function RequestPopup({ item, close }: { item: ReservationInfo; close: VoidFunct
     removeRequest(item);
     close();
   }
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setTime('');
+    }, 60000);
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
+  useEffect(() => {
+    const term = validTime(item.createdAt);
+    if (term) {
+      const finalTime = new Date(
+        new Date(item.estimatedTime).getTime() + term,
+      ).toLocaleTimeString();
+      setTime(finalTime.slice(0, finalTime.lastIndexOf(':')));
+    } else {
+      reject();
+    }
+  }, [time]);
 
   return (
     <PopupContainer>

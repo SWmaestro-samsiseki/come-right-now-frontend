@@ -1,5 +1,5 @@
-import type { ReservationInfo } from '../stores/store/storeManagerStore';
 import styled from 'styled-components';
+import type { ReservationInfo } from '../../stores/store/storeManagerStore';
 
 const ItemContainer = styled.div`
   display: flex;
@@ -65,9 +65,21 @@ const ButtonBox = styled.div`
 `;
 
 function ReservationItem({ item }: { item: ReservationInfo }) {
-  const date = new Date(item.estimatedTime);
-  const dateString = date.toLocaleTimeString();
-  const time = dateString.slice(0, dateString.indexOf(':', 7));
+  const finalTime = new Date(item.estimatedTime).toLocaleTimeString();
+  const time = finalTime.slice(0, finalTime.lastIndexOf(':'));
+
+  function checkPosition() {
+    // 예약자의 위치를 확인하는 함수 작성
+  }
+
+  function reject() {
+    // 예약을 취소하는 함수 작성
+  }
+
+  function checkIn() {
+    // 예약자가 도착했을때 처리하는 함수 작성
+  }
+
   return (
     <ItemContainer>
       <InfoContainer>
@@ -81,9 +93,9 @@ function ReservationItem({ item }: { item: ReservationInfo }) {
         </Info>
       </InfoContainer>
       <ButtonBox>
-        <button>위치확인</button>
-        <button>거절</button>
-        <button>수락</button>
+        <button onClick={checkPosition}>위치확인</button>
+        <button onClick={reject}>예약취소</button>
+        <button onClick={checkIn}>Check In</button>
       </ButtonBox>
     </ItemContainer>
   );

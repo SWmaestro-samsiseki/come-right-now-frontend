@@ -26,24 +26,13 @@ const IconContainer = styled.div`
 `;
 
 function StoreHeader() {
-  function test() {
-    fetch('http://localhost:8080/reservation-events/test/seat-request', {
-      method: 'POST',
-    });
-  }
-  function test2() {
-    fetch('http://localhost:8080/reservation-events/test/seat-reservation', {
-      method: 'POST',
-    });
-  }
-
   return (
     <HeaderContainer>
-      <Title onClick={test}>지금갈게</Title>
+      <Title>지금갈게</Title>
       <IconContainer>
         <img src={require('../../images/notification_on.png')} />
         <img src={require('../../images/graph.png')} />
-        <img src={require('../../images/setting.png')} onClick={test2} />
+        <img src={require('../../images/setting.png')} />
       </IconContainer>
     </HeaderContainer>
   );

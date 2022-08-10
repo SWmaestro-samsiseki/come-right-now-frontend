@@ -1,8 +1,9 @@
-import type { ReservationInfo } from '../stores/store/storeManagerStore';
-import useSocket from '../utils/useSocket';
-import useStoreManagerStore from '../stores/store/storeManagerStore';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { deleteReservation } from '../utils/reservation';
+import useSocket from '../../utils/useSocket';
+import useStoreManagerStore from '../../stores/store/storeManagerStore';
+import { deleteReservation, validTime } from '../../utils/reservation';
+import type { ReservationInfo } from '../../stores/store/storeManagerStore';
 
 const ItemContainer = styled.div`
   display: flex;
@@ -63,13 +64,10 @@ const ButtonBox = styled.div`
 `;
 
 function RequestItem({ item }: { item: ReservationInfo }) {
+  const [time, setTime] = useState('');
   const token = localStorage.getItem('token') as string;
   const { acceptReservation } = useSocket(token);
   const { removeRequest } = useStoreManagerStore();
-
-  const date = new Date(item.estimatedTime);
-  const dateString = date.toLocaleTimeString();
-  const time = dateString.slice(0, dateString.indexOf(':', 7));
 
   function reject() {
     deleteReservation(item.reservationId).then((res) => {
@@ -86,6 +84,26 @@ function RequestItem({ item }: { item: ReservationInfo }) {
     acceptReservation(item.user.id, item.reservationId);
     removeRequest(item);
   }
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setTime('');
+    }, 60000);
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
+  useEffect(() => {
+    const term = validTime(item.createdAt);
+    if (term) {
+      const finalTime = new Date(
+        new Date(item.estimatedTime).getTime() + term,
+      ).toLocaleTimeString();
+      setTime(finalTime.slice(0, finalTime.lastIndexOf(':')));
+    } else {
+      reject();
+    }
+  }, [time]);
 
   return (
     <ItemContainer>

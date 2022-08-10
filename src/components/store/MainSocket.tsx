@@ -1,15 +1,17 @@
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import useSocket from '../../utils/useSocket';
 import useReservationStore from '../../stores/store/storeManagerStore';
 import { getReservationInfo } from '../../utils/reservation';
-import RequestPopup from '../RequestPopup';
-import ReservationPopup from '../ReservationPopup';
+import RequestPopup from './RequestPopup';
+import ReservationPopup from './ReservationPopup';
 
 function MainSocket() {
   const token = localStorage.getItem('token') as string;
   const { socket } = useSocket(token);
+  const navigate = useNavigate();
   const { addRequest, addReservation } = useReservationStore();
 
   useEffect(() => {
@@ -37,6 +39,7 @@ function MainSocket() {
         });
       });
     });
+
     socket.on('server.make-reservation.store', (reservaionId: number) => {
       console.log('예약 이벤트를 받는데 성공했습니다.');
       getReservationInfo(reservaionId).then((res) => {
@@ -51,7 +54,7 @@ function MainSocket() {
         addReservation(response);
         const MySwal = withReactContent(Swal);
         MySwal.fire({
-          html: <ReservationPopup item={response} close={Swal.close} />,
+          html: <ReservationPopup item={response} close={Swal.close} navigate={navigate} />,
           showConfirmButton: false,
           width: '480px',
           padding: 0,

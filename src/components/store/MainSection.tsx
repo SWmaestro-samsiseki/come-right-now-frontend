@@ -37,6 +37,17 @@ const ContentContainer = styled.div`
   width: 85%;
   height: 100%;
 `;
+const ImgContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  & img {
+    position: relative;
+    width: 100%;
+    transform: translateY(-5%);
+  }
+`;
 
 function StoreSection() {
   const param = useParams();
@@ -53,7 +64,14 @@ function StoreSection() {
       </ButtonContainer>
       <ContentContainer>
         <Routes>
-          <Route path="" element={<div>가게전경사진</div>} />
+          <Route
+            path=""
+            element={
+              <ImgContainer>
+                <img src={require('../../images/temp_img.jpeg')} alt="가게전경사진" />
+              </ImgContainer>
+            }
+          />
           <Route path="reservation" element={<SectionReservation />} />
           <Route path="request" element={<SectionRequest />} />
         </Routes>

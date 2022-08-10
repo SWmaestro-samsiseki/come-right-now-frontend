@@ -1,6 +1,6 @@
-import useStoreManagerStore from '../../stores/store/storeManagerStore';
-import ReservationItem from '../../components/ReservationItem';
 import styled from 'styled-components';
+import useStoreManagerStore from '../../stores/store/storeManagerStore';
+import ReservationItem from '../../components/store/ReservationItem';
 
 const ListContainer = styled.div`
   width: 100%;

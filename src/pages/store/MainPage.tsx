@@ -11,7 +11,7 @@ const MainContainer = styled.div`
 
 function StoreMainPage() {
   // TODO: store-info 가져오는 코드 작성하기
-
+  // TODO: 이미 있는 예약내역, 대기내역 가져오는 코드 작성하기
   return (
     <MainContainer>
       <MainHeader />
