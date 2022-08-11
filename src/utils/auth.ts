@@ -56,7 +56,6 @@ async function fetchStoreInfo(): Promise<StoreAuth> {
     },
   });
   const parse = await response.json();
-
   return parse;
 }
 
