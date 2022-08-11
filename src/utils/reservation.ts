@@ -1,18 +1,8 @@
-import type { User } from '../stores/authStore';
-import type { StoreInfo } from '../stores/user/responseInfoStore';
+import type { Reservation } from '../utils/interface';
 
 const BASE_URL = 'http://localhost:8080';
 
-interface ReservationInfo {
-  numberOfPeople: number;
-  estimatedTime: Date;
-  createdAt: Date;
-  reservationStatus: string;
-  user: User;
-  store: StoreInfo;
-}
-
-async function getReservationInfo(id: number): Promise<ReservationInfo> {
+async function getReservationInfo(id: number): Promise<Reservation> {
   const response = await fetch(`${BASE_URL}/reservation/${id}`, {
     method: 'GET',
     headers: {
@@ -35,6 +25,7 @@ async function deleteReservation(id: number): Promise<boolean> {
 }
 
 function validTime(time: Date): number {
+  // TODO: 개발이 끝나면 10분으로 변경하기
   const limit = 1;
   const term = new Date().getTime() - new Date(time).getTime();
   return term < limit * 60000 ? term : 0;

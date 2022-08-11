@@ -19,6 +19,7 @@ const CategoryContainer = styled.div`
 
 function RequestCategory() {
   const { categories } = useRequestInfoStore();
+
   return (
     <CategoryContainer>
       <div>

@@ -1,10 +1,5 @@
 import create from 'zustand';
-
-// TODO: 카테고리에 대한 이미지 경로 추가
-interface Category {
-  id: number;
-  name: string;
-}
+import type { Category } from '../../utils/interface';
 
 interface RequestInfo {
   categories: Category[];
@@ -48,5 +43,4 @@ const useRequestInfoStore = create<RequestInfo>((set) => ({
   setLongitude: (value: number) => set(() => ({ longitude: value })),
 }));
 
-export type { Category };
 export default useRequestInfoStore;

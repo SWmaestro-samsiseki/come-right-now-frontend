@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import type { ReservationInfo } from '../../stores/store/storeManagerStore';
+import type { ReservationInStore } from '../../utils/interface';
 
 const ItemContainer = styled.div`
   display: flex;
@@ -64,7 +64,7 @@ const ButtonBox = styled.div`
   }
 `;
 
-function ReservationItem({ item }: { item: ReservationInfo }) {
+function ReservationItem({ item }: { item: ReservationInStore }) {
   const finalTime = new Date(item.estimatedTime).toLocaleTimeString();
   const time = finalTime.slice(0, finalTime.lastIndexOf(':'));
 

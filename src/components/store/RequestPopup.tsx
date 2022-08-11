@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import useSocket from '../../utils/useSocket';
 import useStoreManagerStore from '../../stores/store/storeManagerStore';
 import { deleteReservation, validTime } from '../../utils/reservation';
-import type { ReservationInfo } from '../../stores/store/storeManagerStore';
+import type { ReservationInStore } from '../../utils/interface';
 
 const PopupContainer = styled.div`
   display: flex;
@@ -64,7 +64,7 @@ const ButtonContainer = styled.div`
   }
 `;
 
-function RequestPopup({ item, close }: { item: ReservationInfo; close: VoidFunction }) {
+function RequestPopup({ item, close }: { item: ReservationInStore; close: VoidFunction }) {
   const [time, setTime] = useState('');
   const token = localStorage.getItem('token') as string;
   const { acceptReservation } = useSocket(token);

@@ -1,16 +1,8 @@
-import type { StoreInfo } from './responseInfoStore';
 import create from 'zustand';
-
-interface ReservationInfo {
-  numberOfPeople: number;
-  estimatedTime: Date;
-  createdAt: Date;
-  reservationStatus: string;
-  store: StoreInfo;
-}
+import type { ReservationInUser } from '../../utils/interface';
 
 interface Reservation {
-  reservation: ReservationInfo | undefined;
+  reservation: ReservationInUser | undefined;
 }
 
 const useReservationStore = create<Reservation>((set) => ({

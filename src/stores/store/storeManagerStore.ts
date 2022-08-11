@@ -1,33 +1,23 @@
-import type { User } from '../authStore';
 import create from 'zustand';
-
-interface ReservationInfo {
-  numberOfPeople: number;
-  estimatedTime: Date;
-  createdAt: Date;
-  reservationStatus: string;
-  user: User;
-  reservationId: number;
-}
+import type { ReservationInStore } from '../../utils/interface';
 
 interface StoreManager {
-  reservationList: ReservationInfo[];
-  requestList: ReservationInfo[];
-  addReservation: (value: ReservationInfo) => void;
-  addRequest: (value: ReservationInfo) => void;
-  removeRequest: (value: ReservationInfo) => void;
+  reservationList: ReservationInStore[];
+  requestList: ReservationInStore[];
+  addReservation: (value: ReservationInStore) => void;
+  addRequest: (value: ReservationInStore) => void;
+  removeRequest: (value: ReservationInStore) => void;
 }
 
 const useStoreManagerStore = create<StoreManager>((set) => ({
   reservationList: [],
   requestList: [],
-  addReservation: (value: ReservationInfo) =>
+  addReservation: (value: ReservationInStore) =>
     set((state) => ({ reservationList: [...state.reservationList, value] })),
-  addRequest: (value: ReservationInfo) =>
+  addRequest: (value: ReservationInStore) =>
     set((state) => ({ requestList: [...state.requestList, value] })),
-  removeRequest: (value: ReservationInfo) =>
+  removeRequest: (value: ReservationInStore) =>
     set((state) => ({ requestList: [...state.requestList.filter((ele) => ele !== value)] })),
 }));
 
-export type { ReservationInfo };
 export default useStoreManagerStore;

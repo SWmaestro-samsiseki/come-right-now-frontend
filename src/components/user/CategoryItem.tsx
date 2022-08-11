@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import type { Category } from '../../stores/user/requestInfoStore';
+import type { Category } from '../../utils/interface';
 import useRequestStore from '../../stores/user/requestInfoStore';
 
 const ItemContainer = styled.div`
@@ -41,7 +41,7 @@ function CategoryItem({ category }: { category: Category }) {
     <ItemContainer
       onClick={chooseItem}
       className={selectedCategories.indexOf(category) !== -1 ? 'selected' : ''}>
-      <img src={require('../../images/소주.png')} alt="주류사진" />
+      <img src={category.image} alt="주류사진" />
       <p>{category.name}</p>
     </ItemContainer>
   );

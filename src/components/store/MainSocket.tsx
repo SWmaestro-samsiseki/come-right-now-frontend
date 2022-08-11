@@ -19,12 +19,12 @@ function MainSocket() {
       console.log('자리요청 이벤트를 받는데 성공했습니다.');
       getReservationInfo(reservationId).then((res) => {
         const response = {
+          reservationId: reservationId,
           numberOfPeople: res.numberOfPeople,
           estimatedTime: res.estimatedTime,
           createdAt: res.createdAt,
           reservationStatus: res.reservationStatus,
           user: res.user,
-          reservationId: reservationId,
         };
         addRequest(response);
         const MySwal = withReactContent(Swal);
@@ -44,12 +44,12 @@ function MainSocket() {
       console.log('예약 이벤트를 받는데 성공했습니다.');
       getReservationInfo(reservaionId).then((res) => {
         const response = {
+          reservationId: reservaionId,
           numberOfPeople: res.numberOfPeople,
           estimatedTime: res.estimatedTime,
           createdAt: res.createdAt,
           reservationStatus: res.reservationStatus,
           user: res.user,
-          reservationId: reservaionId,
         };
         addReservation(response);
         const MySwal = withReactContent(Swal);

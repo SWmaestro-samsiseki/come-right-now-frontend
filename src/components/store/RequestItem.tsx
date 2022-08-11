@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import useSocket from '../../utils/useSocket';
 import useStoreManagerStore from '../../stores/store/storeManagerStore';
 import { deleteReservation, validTime } from '../../utils/reservation';
-import type { ReservationInfo } from '../../stores/store/storeManagerStore';
+import type { ReservationInStore } from '../../utils/interface';
 
 const ItemContainer = styled.div`
   display: flex;
@@ -63,7 +63,7 @@ const ButtonBox = styled.div`
   }
 `;
 
-function RequestItem({ item }: { item: ReservationInfo }) {
+function RequestItem({ item }: { item: ReservationInStore }) {
   const [time, setTime] = useState('');
   const token = localStorage.getItem('token') as string;
   const { acceptReservation } = useSocket(token);

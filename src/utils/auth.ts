@@ -1,13 +1,6 @@
-import type { User, Store } from '../stores/authStore';
+import type { LoginOutputDTO, UserAuth, StoreAuth } from '../utils/interface';
 
 const BASE_URL = 'http://localhost:8080';
-
-interface LoginOutputDTO {
-  isSuccess: boolean;
-  message: string;
-  accessToken: string;
-  userType: string;
-}
 
 async function authValid(): Promise<string> {
   const token = localStorage.getItem('token');
@@ -42,7 +35,7 @@ async function login(id: string, pw: string): Promise<LoginOutputDTO> {
   return parse;
 }
 
-async function fetchUserInfo(): Promise<User> {
+async function fetchUserInfo(): Promise<UserAuth> {
   const token = localStorage.getItem('token');
   const response = await fetch(`${BASE_URL}/user/my-info`, {
     method: 'GET',
@@ -54,7 +47,7 @@ async function fetchUserInfo(): Promise<User> {
   return parse;
 }
 
-async function fetchStoreInfo(): Promise<Store> {
+async function fetchStoreInfo(): Promise<StoreAuth> {
   const token = localStorage.getItem('token');
   const response = await fetch(`${BASE_URL}/store/my-info`, {
     method: 'GET',
