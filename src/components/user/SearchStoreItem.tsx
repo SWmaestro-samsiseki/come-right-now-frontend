@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router-dom';
-import useSocket from '../../utils/useSocket';
-import type { ReservationInUser } from '../../utils/interface';
 import styled from 'styled-components';
+import useSocket from '../../utils/useSocket';
+import useReservationStore from '../../stores/user/reservationStore';
+import type { ReservationInUser } from '../../utils/interface';
 
 const ItemContainer = styled.div`
   display: flex;
@@ -87,15 +88,17 @@ const InfoSub = styled.div`
 function SearchStoreItem({ item }: { item: ReservationInUser }) {
   const token = localStorage.getItem('token') as string;
   const { socket } = useSocket(token);
+  const { addReservation } = useReservationStore();
   const navigate = useNavigate();
 
-  function test() {
+  function reservation() {
     socket.emit(
       'user.make-reservation.server',
       { storeId: item.store.id, reservationId: item.reservationId },
       (response: boolean) => {
         if (response) {
           console.log('예약에 성공했습니다.');
+          addReservation(item);
           navigate('/main', { replace: true });
         } else {
           console.log('예약에 실패했습니다.');
@@ -128,7 +131,7 @@ function SearchStoreItem({ item }: { item: ReservationInUser }) {
         </InfoBox>
       </InfoContainer>
       <BtnContainer>
-        <button onClick={test}>예약</button>
+        <button onClick={reservation}>예약</button>
       </BtnContainer>
     </ItemContainer>
   );
