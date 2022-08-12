@@ -2,8 +2,10 @@ import { useEffect } from 'react';
 import styled from 'styled-components';
 import useAuthStore from '../../stores/authStore';
 import useRequestInfoStore from '../../stores/user/requestInfoStore';
+import useReservationStore from '../../stores/user/reservationStore';
 import { fetchUserInfo } from '../../utils/auth';
 import { fetchCategories } from '../../utils/request';
+import { getReservation } from '../../utils/reservation';
 import UserHeader from '../../components/user/MainHeader';
 import UserSection from '../../components/user/MainSection';
 import UserMenu from '../../components/user/MainMenu';
@@ -17,10 +19,18 @@ const MainContainer = styled.div`
 function UserMainPage() {
   const { setUser } = useAuthStore();
   const { initCategories, setLatitude, setLongitude } = useRequestInfoStore();
+  const { addReservation } = useReservationStore();
 
   useEffect(() => {
     fetchCategories().then((res) => initCategories(res));
-    fetchUserInfo().then((res) => setUser(res as UserAuth));
+    fetchUserInfo().then((res) => {
+      setUser(res as UserAuth);
+      getReservation(res.id).then((res) => {
+        if (res) {
+          addReservation(res);
+        }
+      });
+    });
     // TODO: 위치를 반환하는 Custom Hooks 구현하기
     // TODO: 위치를 반환하기 전까지 요청을 보낼 수 없도록 구현하기
     if (navigator.geolocation) {

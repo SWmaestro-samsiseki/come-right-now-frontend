@@ -104,7 +104,7 @@ function RequestPopup({ item, close }: { item: ReservationInStore; close: VoidFu
       ).toLocaleTimeString();
       setTime(finalTime.slice(0, finalTime.lastIndexOf(':')));
     } else {
-      reject();
+      close();
     }
   }, [time]);
 

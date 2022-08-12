@@ -2,6 +2,39 @@ import type { Reservation } from '../utils/interface';
 
 const BASE_URL = 'http://localhost:8080';
 
+async function getReservationList(id: string): Promise<Reservation[]> {
+  const response = await fetch(`${BASE_URL}/reservation/store/${id}?status=reserved`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  });
+  const parse = await response.json();
+  return parse;
+}
+
+async function getRequestList(id: string): Promise<Reservation[]> {
+  const response = await fetch(`${BASE_URL}/reservation/store/${id}?status=requested`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  });
+  const parse = await response.json();
+  return parse;
+}
+
+async function getReservation(id: string): Promise<Reservation> {
+  const response = await fetch(`${BASE_URL}/reservation/user/${id}?status=reserved`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  });
+  const parse = await response.json();
+  return parse;
+}
+
 async function getReservationInfo(id: number): Promise<Reservation> {
   const response = await fetch(`${BASE_URL}/reservation/${id}`, {
     method: 'GET',
@@ -31,4 +64,11 @@ function validTime(time: Date): number {
   return term < limit * 60000 ? term : 0;
 }
 
-export { getReservationInfo, deleteReservation, validTime };
+export {
+  getReservationList,
+  getRequestList,
+  getReservation,
+  getReservationInfo,
+  deleteReservation,
+  validTime,
+};
