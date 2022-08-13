@@ -19,7 +19,7 @@ function MainSocket() {
       console.log('자리요청 이벤트를 받는데 성공했습니다.');
       getReservationInfo(reservationId).then((res) => {
         const response = {
-          reservationId: reservationId,
+          id: reservationId,
           numberOfPeople: res.numberOfPeople,
           estimatedTime: res.estimatedTime,
           createdAt: res.createdAt,
@@ -44,7 +44,7 @@ function MainSocket() {
       console.log('예약 이벤트를 받는데 성공했습니다.');
       getReservationInfo(reservaionId).then((res) => {
         const response = {
-          reservationId: reservaionId,
+          id: reservaionId,
           numberOfPeople: res.numberOfPeople,
           estimatedTime: res.estimatedTime,
           createdAt: res.createdAt,

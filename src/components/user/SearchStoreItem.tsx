@@ -94,7 +94,7 @@ function SearchStoreItem({ item }: { item: ReservationInUser }) {
   function reservation() {
     socket.emit(
       'user.make-reservation.server',
-      { storeId: item.store.id, reservationId: item.reservationId },
+      { storeId: item.store.id, reservationId: item.id },
       (response: boolean) => {
         if (response) {
           console.log('예약에 성공했습니다.');

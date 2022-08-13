@@ -71,7 +71,7 @@ function RequestPopup({ item, close }: { item: ReservationInStore; close: VoidFu
   const { removeRequest } = useStoreManagerStore();
 
   function reject() {
-    deleteReservation(item.reservationId).then((res) => {
+    deleteReservation(item.id).then((res) => {
       close();
       if (res) {
         console.log('요청을 삭제하는데 성공했습니다.');
@@ -83,7 +83,7 @@ function RequestPopup({ item, close }: { item: ReservationInStore; close: VoidFu
     });
   }
   function accept() {
-    acceptReservation(item.user.id, item.reservationId);
+    acceptReservation(item.user.id, item.id);
     removeRequest(item);
     close();
   }

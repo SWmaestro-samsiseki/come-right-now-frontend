@@ -76,7 +76,7 @@ interface StoreInfo {
 }
 
 interface Reservation {
-  reservationId: number;
+  id: number;
   numberOfPeople: number;
   estimatedTime: Date;
   createdAt: Date;
@@ -86,7 +86,7 @@ interface Reservation {
 }
 
 interface ReservationInUser {
-  reservationId: number;
+  id: number;
   numberOfPeople: number;
   estimatedTime: Date;
   createdAt: Date;
@@ -95,7 +95,7 @@ interface ReservationInUser {
 }
 
 interface ReservationInStore {
-  reservationId: number;
+  id: number;
   numberOfPeople: number;
   estimatedTime: Date;
   createdAt: Date;
