@@ -1,7 +1,9 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import useSocket from '../../utils/useSocket';
 import useReservationStore from '../../stores/user/reservationStore';
+import { deleteReservation } from '../../utils/reservation';
 import type { ReservationInUser } from '../../utils/interface';
 
 const ItemContainer = styled.div`
@@ -30,6 +32,18 @@ const BtnContainer = styled.div`
     font: normal 700 12px / 16px 'IBM Plex Sans KR';
     color: #282828;
     background: none;
+  }
+  & button.done {
+    color: #bbb;
+    border: 1px solid #bbb;
+  }
+  & span {
+    margin-top: 4px;
+    font: normal 500 12px / 16px 'IBM Plex Sans KR';
+    color: #282828;
+  }
+  & span.limit {
+    color: #f55;
   }
 `;
 const ImageBox = styled.div`
@@ -86,6 +100,10 @@ const InfoSub = styled.div`
 `;
 
 function SearchStoreItem({ item }: { item: ReservationInUser }) {
+  const [limitTime] = useState(new Date().getTime() + 180000);
+  const [time, setTime] = useState('03:00');
+  const [isLimit, setIsLimit] = useState(false);
+  const [isDone, setIsDone] = useState(false);
   const token = localStorage.getItem('token') as string;
   const { socket } = useSocket(token);
   const { addReservation } = useReservationStore();
@@ -106,6 +124,32 @@ function SearchStoreItem({ item }: { item: ReservationInUser }) {
       },
     );
   }
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      const total = limitTime - new Date().getTime();
+      const min = Math.floor(total / 60000);
+      const sec = Math.floor((total % 60000) / 1000);
+      if (min === 0) {
+        setIsLimit(true);
+      }
+      if (min <= 0 && sec <= 0) {
+        clearInterval(intervalId);
+        setTime(`00:00`);
+        setIsDone(true);
+      } else setTime(`0${min}:${sec < 10 ? '0' + sec : sec}`);
+    }, 1000);
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+      deleteReservation(item.id).then((res) => {
+        if (res) {
+          console.log('삭제에 성공했습니다.');
+        } else {
+          console.log('삭제에 실패했습니다.');
+        }
+      });
+    };
+  }, []);
 
   return (
     <ItemContainer>
@@ -131,7 +175,10 @@ function SearchStoreItem({ item }: { item: ReservationInUser }) {
         </InfoBox>
       </InfoContainer>
       <BtnContainer>
-        <button onClick={reservation}>예약</button>
+        <button className={isDone ? 'done' : ''} onClick={reservation} disabled={isDone}>
+          예약
+        </button>
+        <span className={isLimit ? 'limit' : ''}>{time}</span>
       </BtnContainer>
     </ItemContainer>
   );
