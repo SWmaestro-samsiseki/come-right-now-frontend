@@ -98,12 +98,46 @@ const InfoSub = styled.div`
     margin-left: 5px;
   }
 `;
+const DetailContainer = styled.div`
+  position: relative;
+  display: none;
+  width: 100%;
+  height: 120px;
+  padding: 14px 20px;
+  font: normal 500 14px / 20px 'IBM Plex Sans KR';
+  color: #282828;
+  background: #f5f5f5;
+
+  & > span {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 59px;
+    height: 24px;
+    background: #bbbbbb;
+    border-radius: 16px;
+    font: normal 500 12px / 16px 'IBM Plex Sans KR';
+    color: white;
+  }
+  & p span {
+    font: normal 700 14px / 20px 'IBM Plex Sans KR';
+  }
+  &.detail {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+`;
 
 function SearchStoreItem({ item }: { item: ReservationInUser }) {
   const [limitTime] = useState(new Date().getTime() + 180000);
   const [time, setTime] = useState('03:00');
   const [isLimit, setIsLimit] = useState(false);
   const [isDone, setIsDone] = useState(false);
+  const [isDetail, setIsDetail] = useState(false);
   const token = localStorage.getItem('token') as string;
   const { socket } = useSocket(token);
   const { addReservation } = useReservationStore();
@@ -123,6 +157,10 @@ function SearchStoreItem({ item }: { item: ReservationInUser }) {
         }
       },
     );
+  }
+
+  function showDetail() {
+    setIsDetail(!isDetail);
   }
 
   useEffect(() => {
@@ -151,36 +189,64 @@ function SearchStoreItem({ item }: { item: ReservationInUser }) {
     };
   }, []);
 
+  useEffect(() => {
+    console.log(item);
+  }, []);
+
   return (
-    <ItemContainer>
-      <InfoContainer>
-        <ImageBox>
-          <img src={item.store.storeImage ? 'item.store.storeImage' : ''} alt="가게 이미지" />
-        </ImageBox>
-        <InfoBox>
-          <InfoMain>
-            <span>{item.store.businessName}</span>
-            <span>{item.store.storeType}</span>
-          </InfoMain>
-          <InfoSub>
-            <span>
-              <img src={require('../../images/star_on.png')} alt="평점 이미지" width={18} />
-              {item.store.starRate}/5.0
-            </span>
-            <span>{new Date(item.estimatedTime).toLocaleTimeString()}</span>
-            <span>
-              <img src={require('../../images/down.png')} alt="더보기 아이콘" />
-            </span>
-          </InfoSub>
-        </InfoBox>
-      </InfoContainer>
-      <BtnContainer>
-        <button className={isDone ? 'done' : ''} onClick={reservation} disabled={isDone}>
-          예약
-        </button>
-        <span className={isLimit ? 'limit' : ''}>{time}</span>
-      </BtnContainer>
-    </ItemContainer>
+    <div>
+      <ItemContainer>
+        <InfoContainer>
+          <ImageBox>
+            <img src={item.store.storeImage ? 'item.store.storeImage' : ''} alt="가게 이미지" />
+          </ImageBox>
+          <InfoBox>
+            <InfoMain>
+              <span>{item.store.businessName}</span>
+              <span>{item.store.storeType}</span>
+            </InfoMain>
+            <InfoSub>
+              <span>
+                <img src={require('../../images/star_on.png')} alt="평점 이미지" width={18} />
+                {item.store.starRate}/5.0
+              </span>
+              <span>{new Date(item.estimatedTime).toLocaleTimeString()}</span>
+              <span onClick={showDetail}>
+                <img
+                  src={require(`../../images/${isDetail ? 'up' : 'down'}.png`)}
+                  alt="더보기 아이콘"
+                />
+              </span>
+            </InfoSub>
+          </InfoBox>
+        </InfoContainer>
+        <BtnContainer>
+          <button className={isDone ? 'done' : ''} onClick={reservation} disabled={isDone}>
+            예약
+          </button>
+          <span className={isLimit ? 'limit' : ''}>{time}</span>
+        </BtnContainer>
+      </ItemContainer>
+      <DetailContainer className={isDetail ? 'detail' : ''}>
+        <p>
+          <span>주소:</span> {item.store.address}
+        </p>
+        <p>
+          <span>전화:</span> {item.store.storePhone}
+        </p>
+        <p>
+          <span>영업시간: </span>
+          {item.store.todayOpenAt.toString()} - {item.store.todayCloseAt.toString()}
+        </p>
+        <p>
+          <span>대표메뉴: </span>
+          {[item.store.mainMenu1, item.store.mainMenu2, item.store.mainMenu3]
+            .filter((ele) => ele !== null)
+            .join(', ')}
+        </p>
+        {item.store.menuImage ? <span>메뉴보기</span> : null}
+      </DetailContainer>
+    </div>
   );
 }
 

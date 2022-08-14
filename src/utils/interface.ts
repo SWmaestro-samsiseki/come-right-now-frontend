@@ -70,8 +70,8 @@ interface StoreInfo {
   businessHours: {
     id: number;
     businessDay: string;
-    openAt: string;
-    closeAt: string;
+    openAt: Date;
+    closeAt: Date;
   }[];
 }
 

@@ -41,25 +41,29 @@ function RequestPage() {
   const { selectedCategories, people, time, latitude, longitude } = useRequestInfoStore();
 
   function findStore() {
-    socket.emit(
-      'user.find-store.server',
-      {
-        categories: selectedCategories.map((ele) => ele.id),
-        numberOfPeople: people,
-        delayMinutes: time,
-        longitude: longitude,
-        latitude: latitude,
-      },
-      (response: boolean) => {
-        if (response) {
-          console.log('자리요청 이벤트를 보내는데 성공했습니다.');
-          navigate('/search', { replace: true });
-        } else {
-          // TODO: 이벤트 전송에 실패했다는 알림
-          console.log('자리요청 이벤트를 보내는데 실패했습니다.');
-        }
-      },
-    );
+    if (latitude && longitude) {
+      socket.emit(
+        'user.find-store.server',
+        {
+          categories: selectedCategories.map((ele) => ele.id),
+          numberOfPeople: people,
+          delayMinutes: time,
+          longitude: longitude,
+          latitude: latitude,
+        },
+        (response: boolean) => {
+          if (response) {
+            console.log('자리요청 이벤트를 보내는데 성공했습니다.');
+            navigate('/search', { replace: true });
+          } else {
+            // TODO: 이벤트 전송에 실패했다는 알림
+            console.log('자리요청 이벤트를 보내는데 실패했습니다.');
+          }
+        },
+      );
+    } else {
+      console.log('사용자의 위치가 특정되지 않아 아직 요청을 보낼 수 없습니다.');
+    }
   }
   return (
     <RequestContainer>
