@@ -64,6 +64,20 @@ function validTime(time: Date): number {
   return term < limit * 60000 ? term : 0;
 }
 
+async function getDistance(id: string, latitude: number, longitude: number) {
+  const response = await fetch(
+    `${BASE_URL}/store/${id}/distance?latitude=${latitude}&longitude=${longitude}`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    },
+  );
+  const parse = await response.json();
+  return parse;
+}
+
 export {
   getReservationList,
   getRequestList,
@@ -71,4 +85,5 @@ export {
   getReservationInfo,
   deleteReservation,
   validTime,
+  getDistance,
 };

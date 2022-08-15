@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import useRequestInfoStore from '../../stores/user/requestInfoStore';
+import useMap from '../../stores/mapStore';
 
 const MapContainer = styled.div`
   position: relative;
@@ -39,6 +40,8 @@ const StopBtn = styled.button`
 
 function SearchMap() {
   const { latitude, longitude } = useRequestInfoStore();
+  const { setMap } = useMap();
+
   useEffect(() => {
     const initMap = () => {
       if (latitude && longitude) {
@@ -46,6 +49,7 @@ function SearchMap() {
           center: new naver.maps.LatLng(latitude, longitude),
           zoom: 15,
         });
+        setMap(map);
         map.setOptions({
           scaleControl: false,
           logoControl: false,
@@ -56,6 +60,9 @@ function SearchMap() {
         new naver.maps.Marker({
           position: new naver.maps.LatLng(latitude, longitude),
           map: map,
+          icon: {
+            url: require('../../images/location_cur.png'),
+          },
         });
       } else {
         // TODO: 위치가 특정될 떄까지 Loading되는 팝업을 SweetAlert2를 이용해 구현하기

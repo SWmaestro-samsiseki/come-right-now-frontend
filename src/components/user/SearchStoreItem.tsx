@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import useMap from '../../stores/mapStore';
 import useSocket from '../../utils/useSocket';
 import useReservationStore from '../../stores/user/reservationStore';
-import { deleteReservation } from '../../utils/reservation';
+import { getDistance } from '../../utils/reservation';
 import type { ReservationInUser } from '../../utils/interface';
+import useRequestInfoStore from '../../stores/user/requestInfoStore';
 
 const ItemContainer = styled.div`
   display: flex;
@@ -133,11 +135,14 @@ const DetailContainer = styled.div`
 `;
 
 function SearchStoreItem({ item }: { item: ReservationInUser }) {
+  const { map } = useMap();
+  const { latitude, longitude } = useRequestInfoStore();
   const [limitTime] = useState(new Date().getTime() + 180000);
   const [time, setTime] = useState('03:00');
   const [isLimit, setIsLimit] = useState(false);
   const [isDone, setIsDone] = useState(false);
   const [isDetail, setIsDetail] = useState(false);
+  const [distance, setDistance] = useState('');
   const token = localStorage.getItem('token') as string;
   const { socket } = useSocket(token);
   const { addReservation } = useReservationStore();
@@ -179,18 +184,29 @@ function SearchStoreItem({ item }: { item: ReservationInUser }) {
     }, 1000);
     return () => {
       if (intervalId) clearInterval(intervalId);
-      deleteReservation(item.id).then((res) => {
-        if (res) {
-          console.log('삭제에 성공했습니다.');
-        } else {
-          console.log('삭제에 실패했습니다.');
-        }
-      });
     };
   }, []);
 
   useEffect(() => {
-    console.log(item);
+    if (latitude && longitude) {
+      getDistance(item.store.id, latitude, longitude).then((res) => {
+        if (res) {
+          setDistance(res.distanceMeter);
+        } else {
+          console.log('거리를 가져오지 못했습니다.');
+        }
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (map) {
+      new naver.maps.Marker({
+        position: new naver.maps.LatLng(item.store.latitude, item.store.longitude),
+        map: map,
+        animation: 2,
+      });
+    }
   }, []);
 
   return (
@@ -210,7 +226,7 @@ function SearchStoreItem({ item }: { item: ReservationInUser }) {
                 <img src={require('../../images/star_on.png')} alt="평점 이미지" width={18} />
                 {item.store.starRate}/5.0
               </span>
-              <span>{new Date(item.estimatedTime).toLocaleTimeString()}</span>
+              <span>{distance}m</span>
               <span onClick={showDetail}>
                 <img
                   src={require(`../../images/${isDetail ? 'up' : 'down'}.png`)}
@@ -236,7 +252,8 @@ function SearchStoreItem({ item }: { item: ReservationInUser }) {
         </p>
         <p>
           <span>영업시간: </span>
-          {item.store.todayOpenAt.toString()} - {item.store.todayCloseAt.toString()}
+          {item.store.todayOpenAt ? item.store.todayOpenAt.toString() : null} -{' '}
+          {item.store.todayCloseAt ? item.store.todayCloseAt.toString() : null}
         </p>
         <p>
           <span>대표메뉴: </span>
