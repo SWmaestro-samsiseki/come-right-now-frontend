@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
+import useSocket from '../../utils/useSocket';
 import useAuthStore from '../../stores/authStore';
 import useRequestInfoStore from '../../stores/user/requestInfoStore';
 import useReservationStore from '../../stores/user/reservationStore';
@@ -17,20 +18,13 @@ const MainContainer = styled.div`
 `;
 
 function UserMainPage() {
+  const token = localStorage.getItem('token') as string;
+  const { socket } = useSocket(token);
   const { setUser } = useAuthStore();
   const { initCategories, setLatitude, setLongitude } = useRequestInfoStore();
-  const { addReservation } = useReservationStore();
+  const { addReservation, removeReservation } = useReservationStore();
 
   useEffect(() => {
-    fetchCategories().then((res) => initCategories(res));
-    fetchUserInfo().then((res) => {
-      setUser(res as UserAuth);
-      getReservation(res.id).then((res) => {
-        if (res) {
-          addReservation(res);
-        }
-      });
-    });
     // TODO: 위치를 반환하는 Custom Hooks 구현하기
     // TODO: 위치를 반환하기 전까지 요청을 보낼 수 없도록 구현하기
     if (navigator.geolocation) {
@@ -47,6 +41,29 @@ function UserMainPage() {
     } else {
       // 브라우저가 GPS를 지원하지 않는 경우
     }
+  }, []);
+
+  useEffect(() => {
+    fetchCategories().then((res) => initCategories(res));
+    fetchUserInfo().then((res) => {
+      setUser(res as UserAuth);
+      getReservation(res.id).then((res) => {
+        if (res.length !== 0) {
+          addReservation(res[0]);
+        }
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    socket.on('server.cancel-reservation.user', () => {
+      // TODO: 가게측으로부터 예약이 취소되었다는 팝업
+      removeReservation();
+    });
+    socket.on('server.check-in.user', (reservationId: number) => {
+      // TODO: 쳬약이 성공적으로 처리되었다는 팝업
+      removeReservation();
+    });
   }, []);
 
   return (

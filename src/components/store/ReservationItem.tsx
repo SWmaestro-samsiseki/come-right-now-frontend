@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+import useSocket from '../../utils/useSocket';
+import useStoreManagerStore from '../../stores/store/storeManagerStore';
+import { deleteReservation } from '../../utils/reservation';
 import type { ReservationInStore } from '../../utils/interface';
 
 const ItemContainer = styled.div`
@@ -65,6 +68,9 @@ const ButtonBox = styled.div`
 `;
 
 function ReservationItem({ item }: { item: ReservationInStore }) {
+  const token = localStorage.getItem('token') as string;
+  const { socket } = useSocket(token);
+  const { removeReservation } = useStoreManagerStore();
   const finalTime = new Date(item.estimatedTime).toLocaleTimeString();
   const time = finalTime.slice(0, finalTime.lastIndexOf(':'));
 
@@ -74,10 +80,48 @@ function ReservationItem({ item }: { item: ReservationInStore }) {
 
   function reject() {
     // 예약을 취소하는 함수 작성
+    socket.emit(
+      'store.cancel-reservation.server',
+      item.id,
+      (response: { isSuccess: boolean; reservationId: number }) => {
+        if (response.isSuccess) {
+          console.log('예약취소 이벤트 전송에 성공했습니다.');
+          deleteReservation(response.reservationId)
+            .then((res) => {
+              if (res) {
+                removeReservation(item);
+                console.log('예약이 성공적으로 취소되었습니다.');
+              } else {
+                console.log('예약을 취소하지 못했습니다.');
+              }
+            })
+            .catch(() => {
+              console.log('통신에 문제가 있습니다.');
+            });
+        } else {
+          console.log('예약취소 이벤트 전송에 실패했습니다.');
+        }
+      },
+    );
   }
 
   function checkIn() {
     // 예약자가 도착했을때 처리하는 함수 작성
+    socket.emit(
+      'store.check-in.server',
+      {
+        reservationId: item.id,
+        userId: item.user.id,
+      },
+      (isSuccess: boolean) => {
+        if (isSuccess) {
+          removeReservation(item);
+          console.log('사용자의 도착을 처리하는데 성공했습니다.');
+        } else {
+          console.log('사용자의 도착을 처리하는데 실패했습니다.');
+        }
+      },
+    );
   }
 
   return (

@@ -24,15 +24,19 @@ async function getRequestList(id: string): Promise<Reservation[]> {
   return parse;
 }
 
-async function getReservation(id: string): Promise<Reservation> {
+async function getReservation(id: string): Promise<Reservation[]> {
   const response = await fetch(`${BASE_URL}/reservation/user/${id}?status=reserved`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
   });
-  const parse = await response.json();
-  return parse;
+  if (response.ok) {
+    const parse = await response.json();
+    return [parse];
+  } else {
+    return [];
+  }
 }
 
 async function getReservationInfo(id: number): Promise<Reservation> {
@@ -59,7 +63,7 @@ async function deleteReservation(id: number): Promise<boolean> {
 
 function validTime(time: Date): number {
   // TODO: 개발이 끝나면 10분으로 변경하기
-  const limit = 1;
+  const limit = 3;
   const term = new Date().getTime() - new Date(time).getTime();
   return term < limit * 60000 ? term : 0;
 }

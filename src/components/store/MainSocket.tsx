@@ -12,7 +12,8 @@ function MainSocket() {
   const token = localStorage.getItem('token') as string;
   const { socket } = useSocket(token);
   const navigate = useNavigate();
-  const { addRequest, addReservation } = useReservationStore();
+  const { reservationList, addRequest, addReservation, removeReservation, updateReservation } =
+    useReservationStore();
 
   useEffect(() => {
     socket.on('server.find-store.store', (reservationId: number) => {
@@ -64,6 +65,19 @@ function MainSocket() {
         });
       });
     });
+
+    socket.on('server.cancel-reservation.store', (reservationId: number) => {
+      removeReservation(reservationId);
+      console.log('사용자로부터 해당 예약건이 취소되었습니다.');
+      // TODO: 팝업창 띄우기
+    });
+
+    socket.on(
+      'server.delay-reservation.store',
+      (response: { reservationId: number; estimatedTime: Date }) => {
+        updateReservation(response.reservationId, response.estimatedTime);
+      },
+    );
   }, []);
 
   return <></>;

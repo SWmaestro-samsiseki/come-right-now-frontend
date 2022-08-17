@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import useResponseInfoStore from '../../stores/user/responseInfoStore';
 import SearchStoreItem from './SearchStoreItem';
@@ -17,7 +18,13 @@ const LoadImg = styled.img`
 `;
 
 function SearchStoreList() {
-  const { responses } = useResponseInfoStore();
+  const { responses, resetResponse } = useResponseInfoStore();
+
+  useEffect(() => {
+    return () => {
+      resetResponse();
+    };
+  }, []);
   return (
     <ListContainer>
       {responses.length !== 0 ? (

@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import useSocket from '../../utils/useSocket';
 import useRequestInfoStore from '../../stores/user/requestInfoStore';
 import useReservationStore from '../../stores/user/reservationStore';
 import { getDistance } from '../../utils/reservation';
+import { deleteReservation } from '../../utils/reservation';
 
 const ReservationContainer = styled.div`
   display: flex;
@@ -178,15 +180,61 @@ const DetailBtnContainer = styled.div`
     border: 1px solid #ff5555;
   }
 `;
-
 function ReservationItem() {
+  const token = localStorage.getItem('token') as string;
+  const { socket } = useSocket(token);
   const { latitude, longitude } = useRequestInfoStore();
-  const { reservation } = useReservationStore();
+  const { reservation, removeReservation, updateReservation } = useReservationStore();
   const [distance, setDistance] = useState('');
   const [isDetail, setIsDetail] = useState(false);
 
   function showDetail() {
     setIsDetail(!isDetail);
+  }
+
+  function delay() {
+    socket.emit(
+      'user.delay-reservation.server',
+      reservation?.id,
+      (response: { isSuccess: boolean; count: number; estimatedTime: Date }) => {
+        if (response.isSuccess) {
+          if (reservation) {
+            updateReservation(reservation, response.estimatedTime);
+          }
+          console.log(`시간 지연에 성공했습니다.`);
+
+          reservation;
+        } else {
+          console.log(`시간 지연에 실패했습니다. 최대 지연회수는 ${response.count}회입니다.`);
+        }
+      },
+    );
+  }
+
+  function reject() {
+    socket.emit(
+      'user.cancel-reservation.server',
+      reservation?.id,
+      (response: { isSuccess: boolean; reservationId: number }) => {
+        if (response.isSuccess) {
+          console.log('예약취소 이벤트 전송에 성공했습니다.');
+          deleteReservation(response.reservationId)
+            .then((res) => {
+              if (res) {
+                removeReservation();
+                console.log('예약이 성공적으로 취소되었습니다.');
+              } else {
+                console.log('예약을 취소하지 못했습니다.');
+              }
+            })
+            .catch(() => {
+              console.log('통신에 문제가 있습니다.');
+            });
+        } else {
+          console.log('예약취소 이벤트 전송에 실패했습니다.');
+        }
+      },
+    );
   }
 
   useEffect(() => {
@@ -266,8 +314,10 @@ function ReservationItem() {
             <DetailBtnContainer>
               <button>전화 걸기</button>
               <button>길 찾기</button>
-              <button>시간 변경</button>
-              <button className="cancel">예약 취소</button>
+              <button onClick={delay}>시간 변경</button>
+              <button className="cancel" onClick={reject}>
+                예약 취소
+              </button>
             </DetailBtnContainer>
           </ItemDetail>
         </>
