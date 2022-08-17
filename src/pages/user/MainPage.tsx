@@ -59,10 +59,12 @@ function UserMainPage() {
     socket.on('server.cancel-reservation.user', () => {
       // TODO: 가게측으로부터 예약이 취소되었다는 팝업
       removeReservation();
+      console.log('가게로부터 해당 예약건이 취소되었습니다.');
     });
-    socket.on('server.check-in.user', (reservationId: number) => {
+    socket.on('server.check-in.user', () => {
       // TODO: 쳬약이 성공적으로 처리되었다는 팝업
       removeReservation();
+      console.log('가게로부터 해당 예약건이 CheckIn되었습니다.');
     });
   }, []);
 

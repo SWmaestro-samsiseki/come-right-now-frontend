@@ -12,7 +12,7 @@ function MainSocket() {
   const token = localStorage.getItem('token') as string;
   const { socket } = useSocket(token);
   const navigate = useNavigate();
-  const { reservationList, addRequest, addReservation, removeReservation, updateReservation } =
+  const { addRequest, addReservation, removeReservation, updateReservation } =
     useReservationStore();
 
   useEffect(() => {

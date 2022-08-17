@@ -18,13 +18,13 @@ const useStoreManagerStore = create<StoreManager>((set) => ({
   addReservation: (value: ReservationInStore) =>
     set((state) => ({ reservationList: [...state.reservationList, value] })),
   removeReservation: (value: ReservationInStore | number) => {
-    if (value instanceof ReservationItem)
+    if (typeof value === 'number')
       set((state) => ({
-        reservationList: [...state.reservationList.filter((ele) => ele !== value)],
+        reservationList: [...state.reservationList.filter((ele) => ele.id !== value)],
       }));
     else {
       set((state) => ({
-        reservationList: [...state.reservationList.filter((ele) => ele.id !== value)],
+        reservationList: [...state.reservationList.filter((ele) => ele !== value)],
       }));
     }
   },
