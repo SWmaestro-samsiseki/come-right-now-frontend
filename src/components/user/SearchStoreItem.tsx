@@ -214,7 +214,7 @@ function SearchStoreItem({ item }: { item: ReservationInUser }) {
       <ItemContainer>
         <InfoContainer>
           <ImageBox>
-            <img src={item.store.storeImage ? 'item.store.storeImage' : ''} alt="가게 이미지" />
+            <img src={item.store.storeImage ? item.store.storeImage : ''} alt="가게 이미지" />
           </ImageBox>
           <InfoBox>
             <InfoMain>

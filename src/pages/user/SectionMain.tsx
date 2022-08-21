@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import ReservationItem from '../../components/user/ReservationItem';
 
 const MainContainer = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -10,6 +11,8 @@ const MainContainer = styled.div`
   min-height: 100%;
 `;
 const RequestBtn = styled(Link)`
+  position: absolute;
+  bottom: 20px;
   display: flex;
   justify-content: center;
   align-items: center;

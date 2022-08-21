@@ -76,6 +76,7 @@ function MainSocket() {
       'server.delay-reservation.store',
       (response: { reservationId: number; estimatedTime: Date }) => {
         updateReservation(response.reservationId, response.estimatedTime);
+        console.log('사용자로부터 해당 예약건이 지연되었습니다.');
       },
     );
   }, []);

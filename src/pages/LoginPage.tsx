@@ -36,6 +36,7 @@ const AccountInput = styled.input`
   border-bottom: 1px solid #888;
   font: normal 500 14px / 20px 'IBM Plex Sans KR';
   text-decoration: 1px solid #54c2ff;
+  caret-color: #54c2ff;
   &:focus {
     border-bottom: 1px solid #54c2ff;
     outline: none;
@@ -121,11 +122,11 @@ function LoginPage() {
           setUserType(res.userType);
           navigate('/main', { replace: true });
         } else {
-          alert('로그인 정보가 일치하지 않습니다.');
+          console.log('로그인 정보가 일치하지 않습니다.');
         }
       })
       .catch((err) => {
-        alert('확인에 실패했습니다.' + err);
+        console.log('서버가 꺼져있습니다.\n' + err);
       });
   }
 

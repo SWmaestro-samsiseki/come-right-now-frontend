@@ -1,5 +1,4 @@
 import create from 'zustand';
-import ReservationItem from '../../components/user/ReservationItem';
 import type { ReservationInStore } from '../../utils/interface';
 
 interface StoreManager {
