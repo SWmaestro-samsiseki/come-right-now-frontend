@@ -10,7 +10,7 @@ interface ResponseInfo {
 const useResponseInfoStore = create<ResponseInfo>((set) => ({
   responses: [],
   addResponse: (value: ReservationInUser) =>
-    set((state) => ({ responses: [value, ...state.responses] })),
+    set((state) => ({ responses: [...state.responses, value] })),
   resetResponse: () => set(() => ({ responses: [] })),
 }));
 

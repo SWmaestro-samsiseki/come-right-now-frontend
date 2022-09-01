@@ -68,7 +68,7 @@ function StoreSection() {
             path=""
             element={
               <ImgContainer>
-                <img src={require('../../images/temp_img.jpeg')} alt="가게전경사진" />
+                {/* <img src={require('../../images/temp_img.jpeg')} alt="가게전경사진" /> */}
               </ImgContainer>
             }
           />

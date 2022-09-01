@@ -7,6 +7,7 @@ import useReservationStore from '../../stores/user/reservationStore';
 import { fetchUserInfo } from '../../utils/auth';
 import { fetchCategories } from '../../utils/request';
 import { getReservation } from '../../utils/reservation';
+import LoadingPage from '../LoadingPage';
 import UserHeader from '../../components/user/MainHeader';
 import UserSection from '../../components/user/MainSection';
 import UserMenu from '../../components/user/MainMenu';
@@ -21,27 +22,8 @@ function UserMainPage() {
   const token = localStorage.getItem('token') as string;
   const { socket } = useSocket(token);
   const { setUser } = useAuthStore();
-  const { initCategories, setLatitude, setLongitude } = useRequestInfoStore();
+  const { initCategories } = useRequestInfoStore();
   const { addReservation, removeReservation } = useReservationStore();
-
-  useEffect(() => {
-    // TODO: 위치를 반환하는 Custom Hooks 구현하기
-    // TODO: 위치를 반환하기 전까지 요청을 보낼 수 없도록 구현하기
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLatitude(position.coords.latitude);
-          setLongitude(position.coords.longitude);
-          console.log('위치를 가져오는데 성공했습니다.');
-        },
-        () => {
-          console.log('위치를 가져오는데 실패했습니다.');
-        },
-      );
-    } else {
-      // 브라우저가 GPS를 지원하지 않는 경우
-    }
-  }, []);
 
   useEffect(() => {
     fetchCategories().then((res) => initCategories(res));
@@ -70,6 +52,7 @@ function UserMainPage() {
 
   return (
     <MainContainer>
+      <LoadingPage />
       <UserHeader />
       <UserSection />
       <UserMenu />
