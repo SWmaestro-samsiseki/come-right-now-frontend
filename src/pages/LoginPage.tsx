@@ -26,31 +26,44 @@ const Title = styled.h1`
     margin: 0 0 100px;
   }
 `;
-const AccountInput = styled.input`
-  display: block;
+const InputBox = styled.div`
+  position: relative;
   width: 320px;
   height: 24px;
   margin: 0 auto;
   margin-bottom: 20px;
-  border: none;
-  border-bottom: 1px solid #888;
-  font: normal 500 14px / 20px 'IBM Plex Sans KR';
-  text-decoration: 1px solid #54c2ff;
-  caret-color: #54c2ff;
-  &:focus {
-    border-bottom: 1px solid #54c2ff;
-    outline: none;
-  }
-  &::placeholder {
-    color: #ddd;
-  }
-  @media screen and (min-width: 500px) {
-    width: 240px;
-    height: 32px;
-    padding: 0 10px;
+
+  & input {
+    display: block;
+    width: 100%;
+    height: 100%;
     border: none;
-    border-radius: 4px;
-    background: #f5f5f5;
+    border-bottom: 1px solid #888;
+    font: normal 500 14px / 20px 'IBM Plex Sans KR';
+    text-decoration: 1px solid #54c2ff;
+    caret-color: #54c2ff;
+    &:focus {
+      border-bottom: 1px solid #54c2ff;
+      outline: none;
+    }
+    &::placeholder {
+      color: #ddd;
+    }
+    @media screen and (min-width: 500px) {
+      width: 240px;
+      height: 32px;
+      padding: 0 10px;
+      border: none;
+      border-radius: 4px;
+      background: #f5f5f5;
+    }
+  }
+
+  & div {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
   }
 `;
 const LoginBtn = styled.button`
@@ -105,41 +118,96 @@ function LoginPage() {
   const navigate = useNavigate();
   const { setAuth, setUserType } = useAuthStore();
   const [id, setId] = useState('');
+  const [isId, setIsId] = useState(false);
   const [pw, setPw] = useState('');
+  const [isPw, setIsPw] = useState(false);
 
+  function inputFocusEvent(e: React.FocusEvent) {
+    if (e.target.getAttribute('type') === 'password') {
+      if (pw.length !== 0) {
+        setIsPw(true);
+      }
+    } else {
+      if (id.length !== 0) {
+        setIsId(true);
+      }
+    }
+  }
+  function inputFocusoutEvent(e: React.FocusEvent) {
+    if (e.target.getAttribute('type') === 'password') {
+      setIsPw(false);
+    } else {
+      setIsId(false);
+    }
+  }
+  function r() {
+    setId('');
+    console.log('dd');
+  }
   function idEvent(e: React.ChangeEvent<HTMLInputElement>) {
     setId(e.target.value);
+    if (e.target.value.length === 0) {
+      setIsId(false);
+    } else {
+      setIsId(true);
+    }
   }
   function pwEvent(e: React.ChangeEvent<HTMLInputElement>) {
     setPw(e.target.value);
+    if (e.target.value.length === 0) {
+      setIsPw(false);
+    } else {
+      setIsPw(true);
+    }
   }
-  function tryLogin() {
-    login(id, pw)
-      .then((res) => {
-        if (res.isSuccess) {
-          localStorage.setItem('token', res.accessToken);
-          setAuth(true);
-          setUserType(res.userType);
-          navigate('/main', { replace: true });
-        } else {
-          console.log('로그인 정보가 일치하지 않습니다.');
-        }
-      })
-      .catch((err) => {
-        console.log('서버가 꺼져있습니다.\n' + err);
-      });
+  async function tryLogin() {
+    const response = await login(id, pw);
+    if (!('error' in response)) {
+      localStorage.setItem('token', response.accessToken);
+      setAuth(true);
+      setUserType(response.userType);
+      navigate('/main', { replace: true });
+    } else {
+      console.log(response.message);
+    }
   }
 
   return (
     <LoginForm>
       <Title>지금갈게</Title>
-      <AccountInput placeholder="이메일을 입력하세요" value={id} onChange={idEvent} />
-      <AccountInput
-        type="password"
-        placeholder="비밀번호를 입력하세요"
-        value={pw}
-        onChange={pwEvent}
-      />
+      <InputBox>
+        <input
+          placeholder="이메일을 입력하세요"
+          value={id}
+          onChange={idEvent}
+          onFocus={inputFocusEvent}
+          onBlur={inputFocusoutEvent}
+        />
+        {isId ? (
+          <div onMouseDown={() => setId('')}>
+            <img
+              src={require('../images/inputDelete.png')}
+              alt="아이디 입력 초기화 이미지"
+              onClick={r}
+            />
+          </div>
+        ) : null}
+      </InputBox>
+      <InputBox>
+        <input
+          type="password"
+          placeholder="비밀번호를 입력하세요"
+          value={pw}
+          onChange={pwEvent}
+          onFocus={inputFocusEvent}
+          onBlur={inputFocusoutEvent}
+        />
+        {isPw ? (
+          <div onMouseDown={() => setPw('')}>
+            <img src={require('../images/inputDelete.png')} alt="비밀번호 입력 초기화 이미지" />
+          </div>
+        ) : null}
+      </InputBox>
       <LoginBtn role="button" onClick={tryLogin} disabled={id && pw ? false : true}>
         로그인
       </LoginBtn>

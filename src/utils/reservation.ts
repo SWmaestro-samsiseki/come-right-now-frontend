@@ -1,4 +1,4 @@
-import type { Reservation } from '../utils/interface';
+import type { ErrorDTO, Reservation } from '../utils/interface';
 
 const BASE_URL = 'http://localhost:8080';
 
@@ -24,19 +24,28 @@ async function getRequestList(id: string): Promise<Reservation[]> {
   return parse;
 }
 
-async function getReservation(id: string): Promise<Reservation[]> {
-  const response = await fetch(`${BASE_URL}/reservation/user/${id}?status=reserved`, {
+function getReservation(id: string): Promise<Reservation | ErrorDTO> {
+  return fetch(`${BASE_URL}/reservation/user/${id}?status=reserved`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
-  });
-  if (response.ok) {
-    const parse = await response.json();
-    return [parse];
-  } else {
-    return [];
-  }
+  })
+    .then((response) => {
+      if (!response.ok) {
+        return {
+          error: true,
+          message: '예약내역이 없습니다.',
+        };
+      }
+      return response.json();
+    })
+    .catch(() => {
+      return {
+        error: true,
+        message: '서버오류로 인해 예약내역을 가져오지 못했습니다.',
+      };
+    });
 }
 
 async function getReservationInfo(id: number): Promise<Reservation> {

@@ -1,3 +1,8 @@
+interface ErrorDTO {
+  error: boolean;
+  message: string;
+}
+
 interface LoginOutputDTO {
   isSuccess: boolean;
   message: string;
@@ -104,6 +109,7 @@ interface ReservationInStore {
 }
 
 export type {
+  ErrorDTO,
   LoginOutputDTO,
   UserAuth,
   StoreAuth,

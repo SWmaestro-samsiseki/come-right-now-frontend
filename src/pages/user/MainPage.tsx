@@ -30,8 +30,10 @@ function UserMainPage() {
     fetchUserInfo().then((res) => {
       setUser(res as UserAuth);
       getReservation(res.id).then((res) => {
-        if (res.length !== 0) {
-          addReservation(res[0]);
+        if (!('error' in res)) {
+          addReservation(res);
+        } else {
+          console.log(res.message);
         }
       });
     });
