@@ -5,7 +5,7 @@ import useMap from '../../stores/mapStore';
 import useSocket from '../../utils/useSocket';
 import useReservationStore from '../../stores/user/reservationStore';
 import { getDistance } from '../../utils/reservation';
-import type { ReservationInUser } from '../../utils/interface';
+import type { ReservationDTO } from '../../utils/interface';
 import useRequestInfoStore from '../../stores/user/requestInfoStore';
 
 const ItemContainer = styled.div`
@@ -134,7 +134,7 @@ const DetailContainer = styled.div`
   }
 `;
 
-function SearchStoreItem({ item }: { item: ReservationInUser }) {
+function SearchStoreItem({ item }: { item: ReservationDTO }) {
   const { map } = useMap();
   const { latitude, longitude } = useRequestInfoStore();
   const [limitTime] = useState(new Date().getTime() + 180000);

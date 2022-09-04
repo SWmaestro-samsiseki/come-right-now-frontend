@@ -20,15 +20,7 @@ function SearchPage() {
     socket.on('server.available-seat.user', (reservationId: number) => {
       console.log('가게의 수락이벤트를 받는데 성공했습니다.');
       getReservationInfo(reservationId).then((res) => {
-        const response = {
-          id: reservationId,
-          numberOfPeople: res.numberOfPeople,
-          estimatedTime: res.estimatedTime,
-          createdAt: res.createdAt,
-          reservationStatus: res.reservationStatus,
-          store: res.store,
-        };
-        addResponse(response);
+        addResponse(res);
       });
     });
     return () => {

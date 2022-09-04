@@ -1,8 +1,8 @@
-import type { ErrorDTO, Reservation } from '../utils/interface';
+import type { ErrorDTO, ReservationDTO } from '../utils/interface';
 
 const BASE_URL = 'http://localhost:8080';
 
-async function getReservationList(id: string): Promise<Reservation[]> {
+async function getReservationList(id: string): Promise<ReservationDTO[]> {
   const response = await fetch(`${BASE_URL}/reservation/store/${id}?status=reserved`, {
     method: 'GET',
     headers: {
@@ -13,7 +13,7 @@ async function getReservationList(id: string): Promise<Reservation[]> {
   return parse;
 }
 
-async function getRequestList(id: string): Promise<Reservation[]> {
+async function getRequestList(id: string): Promise<ReservationDTO[]> {
   const response = await fetch(`${BASE_URL}/reservation/store/${id}?status=requested`, {
     method: 'GET',
     headers: {
@@ -24,7 +24,7 @@ async function getRequestList(id: string): Promise<Reservation[]> {
   return parse;
 }
 
-function getReservation(id: string): Promise<Reservation | ErrorDTO> {
+function getReservation(id: string): Promise<ReservationDTO | ErrorDTO> {
   return fetch(`${BASE_URL}/reservation/user/${id}?status=reserved`, {
     method: 'GET',
     headers: {
@@ -48,7 +48,7 @@ function getReservation(id: string): Promise<Reservation | ErrorDTO> {
     });
 }
 
-async function getReservationInfo(id: number): Promise<Reservation> {
+async function getReservationInfo(id: number): Promise<ReservationDTO> {
   const response = await fetch(`${BASE_URL}/reservation/${id}`, {
     method: 'GET',
     headers: {

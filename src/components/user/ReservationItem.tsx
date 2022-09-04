@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import useSocket from '../../utils/useSocket';
+import useAuthStore from '../../stores/authStore';
 import useRequestInfoStore from '../../stores/user/requestInfoStore';
 import useReservationStore from '../../stores/user/reservationStore';
-import { getDistance } from '../../utils/reservation';
+import { getDistance, getReservation } from '../../utils/reservation';
 import { deleteReservation } from '../../utils/reservation';
 
 const ReservationContainer = styled.div`
@@ -183,8 +184,10 @@ const DetailBtnContainer = styled.div`
 function ReservationItem() {
   const token = localStorage.getItem('token') as string;
   const { socket } = useSocket(token);
+  const { user } = useAuthStore();
   const { latitude, longitude } = useRequestInfoStore();
-  const { reservation, removeReservation, updateReservation } = useReservationStore();
+  const { reservation, addReservation, removeReservation, updateReservation } =
+    useReservationStore();
   const [distance, setDistance] = useState('');
   const [isDetail, setIsDetail] = useState(false);
 
@@ -236,6 +239,19 @@ function ReservationItem() {
       },
     );
   }
+
+  useEffect(() => {
+    if (user !== null) {
+      getReservation(user.id).then((res) => {
+        if (!('error' in res)) {
+          console.log(res);
+          addReservation(res);
+        } else {
+          console.log(res.message);
+        }
+      });
+    }
+  }, [user]);
 
   useEffect(() => {
     if (reservation && latitude && longitude) {

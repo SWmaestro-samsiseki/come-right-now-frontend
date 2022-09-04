@@ -1,7 +1,11 @@
 import { useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
+import useAuthStore from '../stores/authStore';
 import useCommonStore from '../stores/common';
 import useRequestInfoStore from '../stores/user/requestInfoStore';
+import { fetchUserInfo } from '../utils/auth';
+import { fetchCategories } from '../utils/request';
+import type { UserAuth } from '../utils/interface';
 
 const logoAni = keyframes`
   0% {
@@ -26,34 +30,40 @@ const LoadingContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   z-index: 1;
   animation: ${logoAni} 1.5s linear infinite;
 `;
 
 export default function LoadingPage() {
   const { isLoad, setLoad } = useCommonStore();
-  const { setLatitude, setLongitude } = useRequestInfoStore();
+  const { setUser } = useAuthStore();
+  const { initCategories, setLatitude, setLongitude } = useRequestInfoStore();
 
   useEffect(() => {
-    // TODO: 위치를 반환하는 Custom Hooks 구현하기
-    // TODO: 위치를 반환하기 전까지 요청을 보낼 수 없도록 구현하기
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLatitude(position.coords.latitude);
-          setLongitude(position.coords.longitude);
-          setLoad(true);
-          console.log('위치를 가져오는데 성공했습니다.');
-        },
-        () => {
-          console.log('위치를 가져오는데 실패했습니다.');
-        },
-      );
-    } else {
-      // 브라우저가 GPS를 지원하지 않는 경우
-    }
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLatitude(position.coords.latitude);
+        setLongitude(position.coords.longitude);
+        setLoad(true);
+        console.log('위치를 가져오는데 성공했습니다.');
+      },
+      () => {
+        console.log('위치를 가져오는데 실패했습니다.');
+      },
+    );
+  }, []);
+
+  useEffect(() => {
+    fetchCategories().then((res) => {
+      console.log('주종 카테고리를 가져오는데 성공했습니다.');
+      initCategories(res);
+    });
+    fetchUserInfo().then((res) => {
+      console.log('사용자 정보를 가져오는데 성공해습니다.');
+      setUser(res as UserAuth);
+    });
   }, []);
 
   return isLoad ? null : (

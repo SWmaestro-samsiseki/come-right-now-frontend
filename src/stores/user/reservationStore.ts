@@ -1,25 +1,27 @@
 import create from 'zustand';
-import type { ReservationInUser } from '../../utils/interface';
+import type { ReservationDTO } from '../../utils/interface';
 
 interface Reservation {
-  reservation: ReservationInUser | undefined;
-  addReservation: (value: ReservationInUser) => void;
+  reservation: ReservationDTO | null;
+  addReservation: (value: ReservationDTO) => void;
   removeReservation: () => void;
-  updateReservation: (item: ReservationInUser, time: Date) => void;
+  updateReservation: (item: ReservationDTO, time: Date) => void;
 }
 
 const useReservationStore = create<Reservation>((set) => ({
-  reservation: undefined,
-  addReservation: (value: ReservationInUser) => set(() => ({ reservation: value })),
-  removeReservation: () => set(() => ({ reservation: undefined })),
-  updateReservation: (item: ReservationInUser, time: Date) =>
+  reservation: null,
+  addReservation: (value: ReservationDTO) => set(() => ({ reservation: value })),
+  removeReservation: () => set(() => ({ reservation: null })),
+  updateReservation: (item: ReservationDTO, time: Date) =>
     set(() => ({
       reservation: {
         id: item.id,
         numberOfPeople: item.numberOfPeople,
+        departureTime: item.departureTime,
         estimatedTime: time,
         createdAt: item.createdAt,
         reservationStatus: item.reservationStatus,
+        user: item.user,
         store: item.store,
       },
     })),

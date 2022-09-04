@@ -1,7 +1,7 @@
 export default {
   color: {
     primary: {
-      main1: '#54C2FF',
+      main1: '#FFE144',
       main2: '#282828',
       main3: '#FFFFFF',
       main1_active: '#FFCE20',
@@ -12,7 +12,7 @@ export default {
       main1: '#FFE144',
       main2: '#F5F5F5',
       main3: '#CCCCCC',
-      main4: '8888888',
+      main4: '#888888',
       main1_active: '#F4D21D',
       main2_active: '#F0F0F0',
       main3_active: '#BBBBBB',

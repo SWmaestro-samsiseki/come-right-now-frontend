@@ -80,22 +80,14 @@ interface StoreInfo {
   }[];
 }
 
-interface Reservation {
+interface ReservationDTO {
   id: number;
   numberOfPeople: number;
+  departureTime: Date;
   estimatedTime: Date;
   createdAt: Date;
   reservationStatus: string;
   user: UserAuth;
-  store: StoreInfo;
-}
-
-interface ReservationInUser {
-  id: number;
-  numberOfPeople: number;
-  estimatedTime: Date;
-  createdAt: Date;
-  reservationStatus: string;
   store: StoreInfo;
 }
 
@@ -115,7 +107,6 @@ export type {
   StoreAuth,
   Category,
   StoreInfo,
-  Reservation,
-  ReservationInUser,
+  ReservationDTO,
   ReservationInStore,
 };
