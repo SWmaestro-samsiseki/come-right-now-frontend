@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import styled from 'styled-components';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import FailPopup from '../components/user/FailPopup';
 import useAuthStore from '../stores/authStore';
 import { login } from '../utils/auth';
 
@@ -121,6 +124,7 @@ function LoginPage() {
   const [isId, setIsId] = useState(false);
   const [pw, setPw] = useState('');
   const [isPw, setIsPw] = useState(false);
+  const MySwal = withReactContent(Swal);
 
   function inputFocusEvent(e: React.FocusEvent) {
     if (e.target.getAttribute('type') === 'password') {
@@ -139,10 +143,6 @@ function LoginPage() {
     } else {
       setIsId(false);
     }
-  }
-  function r() {
-    setId('');
-    console.log('dd');
   }
   function idEvent(e: React.ChangeEvent<HTMLInputElement>) {
     setId(e.target.value);
@@ -169,6 +169,15 @@ function LoginPage() {
       navigate('/main', { replace: true });
     } else {
       console.log(response.message);
+      MySwal.fire({
+        html: <FailPopup title="로그인 실패" description={response.message} close={Swal.close} />,
+        showConfirmButton: false,
+        width: '90%',
+        padding: 0,
+        customClass: {
+          popup: 'fail-popup-border',
+        },
+      });
     }
   }
 
@@ -188,7 +197,7 @@ function LoginPage() {
             <img
               src={require('../images/inputDelete.png')}
               alt="아이디 입력 초기화 이미지"
-              onClick={r}
+              onMouseDown={() => setId('')}
             />
           </div>
         ) : null}
