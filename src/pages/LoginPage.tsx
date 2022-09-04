@@ -36,6 +36,11 @@ const InputBox = styled.div`
   margin: 0 auto;
   margin-bottom: 20px;
 
+  @media screen and (min-width: 500px) {
+    width: 260px;
+    height: 32px;
+  }
+
   & input {
     display: block;
     width: 100%;
@@ -172,7 +177,7 @@ function LoginPage() {
       MySwal.fire({
         html: <FailPopup title="로그인 실패" description={response.message} close={Swal.close} />,
         showConfirmButton: false,
-        width: '90%',
+        width: '340px',
         padding: 0,
         customClass: {
           popup: 'fail-popup-border',
