@@ -304,7 +304,6 @@ function ReservationItem({ reservation }: { reservation: ReservationDTO }) {
               .filter((ele) => ele !== null)
               .join(', ')}
           </p>
-          {reservation.store.menuImage ? <span>메뉴보기</span> : null}
         </DetailInfo>
         <DetailBtn>
           <button>전화 걸기</button>
