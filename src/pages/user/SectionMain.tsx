@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import useReservationStore from '../../stores/user/reservationStore';
-import ReservationItem from '../../components/user/ReservationItem';
+import ReservationContainer from '../../components/user/ReservationContainer';
 import thema from '../../styles/thema';
 
 const MainContainer = styled.div`
@@ -53,7 +53,7 @@ function SectionMain() {
   return (
     <MainContainer>
       <Contents>
-        <ReservationItem />
+        <ReservationContainer />
       </Contents>
       <RequestBtn onClick={next} disabled={isReservation}>
         + 실시간 예약
