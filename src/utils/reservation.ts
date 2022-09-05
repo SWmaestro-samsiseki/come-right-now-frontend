@@ -59,15 +59,28 @@ async function getReservationInfo(id: number): Promise<ReservationDTO> {
   return parse;
 }
 
-async function deleteReservation(id: number): Promise<boolean> {
-  const response = await fetch(`${BASE_URL}/reservation/${id}`, {
+function deleteReservation(id: number): Promise<boolean | ErrorDTO> {
+  return fetch(`${BASE_URL}/reservation/${id}`, {
     method: 'DELETE',
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
-  });
-  const parse = await response.json();
-  return parse;
+  })
+    .then((response) => {
+      if (!response.ok) {
+        return {
+          error: true,
+          message: '예약취소에 실패했습니다.',
+        };
+      }
+      return true;
+    })
+    .catch(() => {
+      return {
+        error: true,
+        message: '서버오류로 인해 예약취소를 하지 못했습니다.',
+      };
+    });
 }
 
 function validTime(time: Date): number {

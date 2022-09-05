@@ -1,8 +1,13 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 import useSocket from '../../utils/useSocket';
 import useRequestInfoStore from '../../stores/user/requestInfoStore';
 import useReservationStore from '../../stores/user/reservationStore';
+import ConfirmPopup from './ConfirmPopup';
+import FailPopup from './FailPopup';
+import SuccessPopup from './SuccessPopup';
 import { getDistance } from '../../utils/reservation';
 import { deleteReservation } from '../../utils/reservation';
 import type { ReservationDTO } from '../../utils/interface';
@@ -169,6 +174,7 @@ function ReservationItem({ reservation }: { reservation: ReservationDTO }) {
   const { removeReservation, updateReservation } = useReservationStore();
   const [distance, setDistance] = useState('');
   const [isDetail, setIsDetail] = useState(false);
+  const MySwal = withReactContent(Swal);
 
   function showDetail() {
     setIsDetail(!isDetail);
@@ -186,48 +192,177 @@ function ReservationItem({ reservation }: { reservation: ReservationDTO }) {
   }
 
   function delay() {
-    socket.emit(
-      'user.delay-reservation.server',
-      reservation.id,
-      (response: { isSuccess: boolean; count: number; estimatedTime: Date }) => {
-        if (response.isSuccess) {
-          if (reservation) {
-            updateReservation(reservation, response.estimatedTime);
-          }
-          console.log(`시간 지연에 성공했습니다.`);
-
-          reservation;
-        } else {
-          console.log(`시간 지연에 실패했습니다. 최대 지연회수는 ${response.count}회입니다.`);
-        }
+    MySwal.fire({
+      html: (
+        <ConfirmPopup
+          title="예약지연"
+          description={'예약시간을 5분 지연시키겠습니까?'}
+          confirm={Swal.clickConfirm}
+          close={Swal.close}
+        />
+      ),
+      showConfirmButton: false,
+      width: '280px',
+      padding: 0,
+      customClass: {
+        popup: 'fail-popup-border',
       },
-    );
+    }).then((result) => {
+      if (result.isConfirmed) {
+        socket.emit(
+          'user.delay-reservation.server',
+          reservation.id,
+          (response: { isSuccess: boolean; count: number; estimatedTime: Date }) => {
+            if (response.isSuccess) {
+              updateReservation(reservation, response.estimatedTime);
+              console.log(`시간 지연에 성공했습니다.`);
+              MySwal.fire({
+                html: (
+                  <SuccessPopup
+                    title="예약지연"
+                    description="예약시간을 지연시켰습니다."
+                    close={Swal.clickCancel}
+                  />
+                ),
+                showConfirmButton: false,
+                width: '280px',
+                padding: 0,
+                customClass: {
+                  popup: 'fail-popup-border',
+                },
+                timer: 2000,
+              });
+            } else {
+              if ('count' in response) {
+                console.log(`시간 지연에 실패했습니다. 최대 지연회수는 ${response.count}회입니다.`);
+                MySwal.fire({
+                  html: (
+                    <SuccessPopup
+                      title="예약지연"
+                      description={`시간 지연에 실패했습니다! 최대 지연회수는 ${response.count}회입니다.`}
+                      close={Swal.clickCancel}
+                    />
+                  ),
+                  showConfirmButton: false,
+                  width: '280px',
+                  padding: 0,
+                  customClass: {
+                    popup: 'fail-popup-border',
+                  },
+                  timer: 2000,
+                });
+              } else {
+                console.log(`시간 지연에 실패했습니다.`);
+                MySwal.fire({
+                  html: (
+                    <SuccessPopup
+                      title="예약지연"
+                      description={'예약지연에 실패했습니다!'}
+                      close={Swal.clickCancel}
+                    />
+                  ),
+                  showConfirmButton: false,
+                  width: '280px',
+                  padding: 0,
+                  customClass: {
+                    popup: 'fail-popup-border',
+                  },
+                  timer: 2000,
+                });
+              }
+            }
+          },
+        );
+      }
+    });
   }
 
   function reject() {
-    socket.emit(
-      'user.cancel-reservation.server',
-      reservation?.id,
-      (response: { isSuccess: boolean; reservationId: number }) => {
-        if (response.isSuccess) {
-          console.log('예약취소 이벤트 전송에 성공했습니다.');
-          deleteReservation(response.reservationId)
-            .then((res) => {
-              if (res) {
-                removeReservation();
-                console.log('예약이 성공적으로 취소되었습니다.');
-              } else {
-                console.log('예약을 취소하지 못했습니다.');
-              }
-            })
-            .catch(() => {
-              console.log('통신에 문제가 있습니다.');
-            });
-        } else {
-          console.log('예약취소 이벤트 전송에 실패했습니다.');
-        }
+    MySwal.fire({
+      html: (
+        <ConfirmPopup
+          title="예약취소"
+          description={'예약을 취소하겠습니까?'}
+          confirm={Swal.clickConfirm}
+          close={Swal.close}
+        />
+      ),
+      showConfirmButton: false,
+      width: '280px',
+      padding: 0,
+      customClass: {
+        popup: 'fail-popup-border',
       },
-    );
+    }).then((result) => {
+      if (result.isConfirmed) {
+        socket.emit(
+          'user.cancel-reservation.server',
+          reservation?.id,
+          (response: { isSuccess: boolean; reservationId: number }) => {
+            if (response.isSuccess) {
+              deleteReservation(response.reservationId).then((res) => {
+                if (typeof res === 'boolean') {
+                  console.log('예약이 성공적으로 취소되었습니다.');
+                  removeReservation();
+                  MySwal.fire({
+                    html: (
+                      <SuccessPopup
+                        title="예약취소"
+                        description="예약을 취소했습니다."
+                        close={Swal.clickCancel}
+                      />
+                    ),
+                    showConfirmButton: false,
+                    width: '280px',
+                    padding: 0,
+                    customClass: {
+                      popup: 'fail-popup-border',
+                    },
+                    timer: 2000,
+                  });
+                } else {
+                  console.log('예약을 취소하지 못했습니다.');
+                  MySwal.fire({
+                    html: (
+                      <FailPopup
+                        title="예약취소"
+                        description={res.message}
+                        close={Swal.clickCancel}
+                      />
+                    ),
+                    showConfirmButton: false,
+                    width: '280px',
+                    padding: 0,
+                    customClass: {
+                      popup: 'fail-popup-border',
+                    },
+                    timer: 2000,
+                  });
+                }
+              });
+            } else {
+              console.log('서버오류로 인해 예약취소를 하지 못했습니다.');
+              MySwal.fire({
+                html: (
+                  <FailPopup
+                    title="예약취소"
+                    description="서버오류로 인해 예약취소를 하지 못했습니다."
+                    close={Swal.clickCancel}
+                  />
+                ),
+                showConfirmButton: false,
+                width: '280px',
+                padding: 0,
+                customClass: {
+                  popup: 'fail-popup-border',
+                },
+                timer: 2000,
+              });
+            }
+          },
+        );
+      }
+    });
   }
 
   useEffect(() => {
