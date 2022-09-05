@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import useRequestInfoStore from '../../stores/user/requestInfoStore';
@@ -6,6 +7,7 @@ import UserRequestHeader from '../../components/user/RequestHeader';
 import RequestStep from '../../components/user/RequestStep';
 import RequestCategory from '../../components/user/RequestCategory';
 import RequestStatus from '../../components/user/RequestStatus';
+import thema from '../../styles/thema';
 
 const RequestContainer = styled.div`
   display: flex;
@@ -20,17 +22,18 @@ const SearchBtn = styled.button`
   width: 320px;
   height: 48px;
   margin: 20px;
-  font: normal 700 14px / 20px 'IBM Plex Sans KR';
-  color: white;
-  background: #ddd;
+  font: ${thema.font.pb2};
+  color: ${thema.color.primary.main3};
+  background: ${thema.color.secondary.main3};
   border: none;
   border-radius: 4px;
 
   &.active {
-    background: #54c2ff;
+    background: ${thema.color.primary.main1};
+    color: ${thema.color.primary.main2};
   }
   &:active {
-    background: #0ba8ff;
+    background: ${thema.color.primary.main1_active};
   }
 `;
 
@@ -38,7 +41,7 @@ function RequestPage() {
   const navigate = useNavigate();
   const token = localStorage.getItem('token') as string;
   const { socket } = useSocket(token);
-  const { selectedCategories, people, time, latitude, longitude } = useRequestInfoStore();
+  const { selectedCategories, people, time, latitude, longitude, initPT } = useRequestInfoStore();
 
   function findStore() {
     if (latitude && longitude) {
@@ -65,6 +68,13 @@ function RequestPage() {
       console.log('사용자의 위치가 특정되지 않아 아직 요청을 보낼 수 없습니다.');
     }
   }
+
+  useEffect(() => {
+    return () => {
+      initPT();
+    };
+  }, []);
+
   return (
     <RequestContainer>
       <UserRequestHeader />
