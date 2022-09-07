@@ -1,9 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 import useMap from '../../stores/mapStore';
 import useSocket from '../../utils/useSocket';
 import useReservationStore from '../../stores/user/reservationStore';
+import ConfirmPopup from './ConfirmPopup';
+import SuccessPopup from './SuccessPopup';
+import FailPopup from './FailPopup';
+import MenuPopup from './Menupopup';
 import { getDistance } from '../../utils/reservation';
 import type { ReservationDTO } from '../../utils/interface';
 import useRequestInfoStore from '../../stores/user/requestInfoStore';
@@ -147,25 +153,89 @@ function SearchStoreItem({ item }: { item: ReservationDTO }) {
   const { socket } = useSocket(token);
   const { addReservation } = useReservationStore();
   const navigate = useNavigate();
+  const MySwal = withReactContent(Swal);
 
-  function reservation() {
-    socket.emit(
-      'user.make-reservation.server',
-      { storeId: item.store.id, reservationId: item.id },
-      (response: boolean) => {
-        if (response) {
-          console.log('예약에 성공했습니다.');
-          addReservation(item);
-          navigate('/main', { replace: true });
-        } else {
-          console.log('예약에 실패했습니다.');
-        }
+  function reservation(name: string) {
+    MySwal.fire({
+      html: (
+        <ConfirmPopup
+          title="예약"
+          description={`${name}에 예약하시겠습니까?`}
+          confirm={Swal.clickConfirm}
+          close={Swal.close}
+        />
+      ),
+      showConfirmButton: false,
+      width: '280px',
+      padding: 0,
+      customClass: {
+        popup: 'fail-popup-border',
       },
-    );
+    }).then((result) => {
+      if (result.isConfirmed) {
+        socket.emit(
+          'user.make-reservation.server',
+          { storeId: item.store.id, reservationId: item.id },
+          (response: boolean) => {
+            if (response) {
+              console.log('예약에 성공했습니다.');
+              addReservation(item);
+              navigate('/main', { replace: true });
+              MySwal.fire({
+                html: (
+                  <SuccessPopup
+                    title="예약"
+                    description="예약에 성공했습니다."
+                    close={Swal.clickCancel}
+                  />
+                ),
+                showConfirmButton: false,
+                width: '280px',
+                padding: 0,
+                customClass: {
+                  popup: 'fail-popup-border',
+                },
+                timer: 2000,
+              });
+            } else {
+              console.log('예약을 하지 못했습니다.');
+              MySwal.fire({
+                html: (
+                  <FailPopup
+                    title="예약"
+                    description="예약에 실패했습니다."
+                    close={Swal.clickCancel}
+                  />
+                ),
+                showConfirmButton: false,
+                width: '280px',
+                padding: 0,
+                customClass: {
+                  popup: 'fail-popup-border',
+                },
+                timer: 2000,
+              });
+            }
+          },
+        );
+      }
+    });
   }
 
   function showDetail() {
     setIsDetail(!isDetail);
+  }
+
+  function showMenu() {
+    MySwal.fire({
+      html: <MenuPopup src={item.store.menuImage as string} />,
+      showConfirmButton: false,
+      width: '380px',
+      padding: 0,
+      customClass: {
+        popup: 'fail-popup-border',
+      },
+    });
   }
 
   useEffect(() => {
@@ -237,7 +307,12 @@ function SearchStoreItem({ item }: { item: ReservationDTO }) {
           </InfoBox>
         </InfoContainer>
         <BtnContainer>
-          <button className={isDone ? 'done' : ''} onClick={reservation} disabled={isDone}>
+          <button
+            className={isDone ? 'done' : ''}
+            onClick={() => {
+              reservation(item.store.businessName);
+            }}
+            disabled={isDone}>
             예약
           </button>
           <span className={isLimit ? 'limit' : ''}>{time}</span>
@@ -261,7 +336,7 @@ function SearchStoreItem({ item }: { item: ReservationDTO }) {
             .filter((ele) => ele !== null)
             .join(', ')}
         </p>
-        {item.store.menuImage ? <span>메뉴보기</span> : null}
+        {item.store.menuImage ? <span onClick={showMenu}>메뉴보기</span> : null}
       </DetailContainer>
     </div>
   );
