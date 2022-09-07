@@ -26,6 +26,7 @@ const PopupContainer = styled.div`
     position: absolute;
     top: 130px;
     left: 50%;
+    width: 100%;
     transform: translateX(-50%);
     font: ${thema.font.h4};
   }

@@ -8,6 +8,7 @@ import SuccessPopup from './SuccessPopup';
 import FailPopup from './FailPopup';
 import { deleteReservation } from '../../utils/reservation';
 import type { ReservationInStore } from '../../utils/interface';
+import thema from '../../styles/thema';
 
 const ItemContainer = styled.div`
   display: flex;
@@ -15,7 +16,7 @@ const ItemContainer = styled.div`
   align-items: center;
   width: 95%;
   min-height: 140px;
-  border: 1px solid #ccc;
+  border: 1px solid ${thema.color.secondary.main3};
   padding: 20px;
   margin-top: 30px;
 `;
@@ -29,7 +30,7 @@ const InfoContainer = styled.div`
     align-items: center;
     width: 92px;
     height: 64px;
-    font: normal 700 24px / 32px 'IBM Plex Sans KR';
+    font: ${thema.font.h4};
     text-align: center;
   }
 `;
@@ -38,11 +39,11 @@ const Info = styled.div`
   margin-left: 20px;
   border-left: 1px solid #ccc;
   & h3 {
-    font: normal 700 24px / 32px 'IBM Plex Sans KR';
+    font: ${thema.font.h4};
     margin-bottom: 6px;
   }
   & p {
-    font: normal 500 14px / 20px 'IBM Plex Sans KR';
+    font: ${thema.font.p2};
   }
 `;
 const ButtonBox = styled.div`
@@ -54,21 +55,21 @@ const ButtonBox = styled.div`
     border: none;
     border-radius: 4px;
     margin-left: 20px;
-    font: normal 700 16px / 22px 'IBM Plex Sans KR';
+    font: ${thema.font.pb1};
   }
   & button:nth-child(1) {
-    border: 2px solid #282828;
-    background-color: white;
-    color: #282828;
+    border: 2px solid ${thema.color.primary.main2};
+    background-color: ${thema.color.primary.main3};
+    color: ${thema.color.primary.main2};
   }
   & button:nth-child(2) {
-    border: 2px solid #ff5555;
+    border: 2px solid ${thema.color.alert.red};
     background-color: #ffe7e7;
-    color: #ff5555;
+    color: ${thema.color.alert.red};
   }
   & button:nth-child(3) {
-    background-color: #54c2ff;
-    color: white;
+    background-color: ${thema.color.primary.main1};
+    color: ${thema.color.primary.main2_active};
   }
 `;
 
@@ -85,7 +86,6 @@ function ReservationItem({ item }: { item: ReservationInStore }) {
   }
 
   function reject() {
-    // 예약을 취소하는 함수 작성
     MySwal.fire({
       html: (
         <ConfirmPopup
@@ -135,7 +135,7 @@ function ReservationItem({ item }: { item: ReservationInStore }) {
                     html: (
                       <FailPopup
                         title="예약취소"
-                        description="res.message"
+                        description={res.message}
                         close={Swal.clickCancel}
                       />
                     ),
@@ -175,22 +175,72 @@ function ReservationItem({ item }: { item: ReservationInStore }) {
   }
 
   function checkIn() {
-    // 예약자가 도착했을때 처리하는 함수 작성
-    socket.emit(
-      'store.check-in.server',
-      {
-        reservationId: item.id,
-        userId: item.user.id,
+    MySwal.fire({
+      html: (
+        <ConfirmPopup
+          title="체크인"
+          description={'예약자가 도착했습니까?'}
+          confirm={Swal.clickConfirm}
+          close={Swal.close}
+        />
+      ),
+      showConfirmButton: false,
+      width: '480px',
+      padding: 0,
+      customClass: {
+        popup: 'fail-popup-border',
       },
-      (isSuccess: boolean) => {
-        if (isSuccess) {
-          removeReservation(item);
-          console.log('사용자의 도착을 처리하는데 성공했습니다.');
-        } else {
-          console.log('사용자의 도착을 처리하는데 실패했습니다.');
-        }
-      },
-    );
+    }).then((result) => {
+      if (result.isConfirmed) {
+        socket.emit(
+          'store.check-in.server',
+          {
+            reservationId: item.id,
+            userId: item.user.id,
+          },
+          (isSuccess: boolean) => {
+            if (isSuccess) {
+              console.log('사용자의 도착을 처리하는데 성공했습니다.');
+              removeReservation(item);
+              MySwal.fire({
+                html: (
+                  <SuccessPopup
+                    title="체크인"
+                    description="예약을 체크인 처리했습니다."
+                    close={Swal.clickCancel}
+                  />
+                ),
+                showConfirmButton: false,
+                width: '480px',
+                padding: 0,
+                customClass: {
+                  popup: 'fail-popup-border',
+                },
+                // timer: 2000,
+              });
+            } else {
+              console.log('사용자의 도착을 처리하는데 실패했습니다.');
+              MySwal.fire({
+                html: (
+                  <FailPopup
+                    title="체크인"
+                    description="체크인에 실패했습니다!"
+                    close={Swal.clickCancel}
+                  />
+                ),
+                showConfirmButton: false,
+                width: '480px',
+                padding: 0,
+                customClass: {
+                  popup: 'fail-popup-border',
+                },
+                timer: 2000,
+              });
+            }
+          },
+        );
+      }
+    });
   }
 
   return (
@@ -208,7 +258,7 @@ function ReservationItem({ item }: { item: ReservationInStore }) {
       <ButtonBox>
         <button onClick={checkPosition}>위치확인</button>
         <button onClick={reject}>예약취소</button>
-        <button onClick={checkIn}>Check In</button>
+        <button onClick={checkIn}>체크인</button>
       </ButtonBox>
     </ItemContainer>
   );
