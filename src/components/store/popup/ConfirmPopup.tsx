@@ -1,29 +1,31 @@
 import styled from 'styled-components';
-import thema from '../../styles/thema';
+import thema from '../../../styles/thema';
 
 const PopupContainer = styled.div`
   width: 100%;
-  height: 151px;
+  height: 300px;
 `;
 const Info = styled.div`
+  position: relative;
   display: flex;
-  flex-direction: column;
   justify-content: center;
-  align-items: center;
   width: 100%;
-  height: 111px;
+  height: 240px;
 
   & h1 {
-    font: ${thema.font.pb2};
-    margin-bottom: 7px;
+    position: absolute;
+    top: 50px;
+    font: ${thema.font.pb1};
   }
   & p {
-    font: ${thema.font.p2};
+    position: absolute;
+    top: 130px;
+    font: ${thema.font.h4};
   }
 `;
 const BtnContainer = styled.div`
   width: 100%;
-  height: 40px;
+  height: 60px;
 
   & button {
     height: 100%;

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import thema from '../../styles/thema';
+import thema from '../../../styles/thema';
 
 const PopupContainer = styled.div`
   width: 100%;

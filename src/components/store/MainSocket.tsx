@@ -5,8 +5,8 @@ import withReactContent from 'sweetalert2-react-content';
 import useSocket from '../../utils/useSocket';
 import useReservationStore from '../../stores/store/storeManagerStore';
 import { getReservationInfo } from '../../utils/reservation';
-import RequestPopup from './RequestPopup';
-import ReservationPopup from './ReservationPopup';
+import RequestPopup from './popup/RequestPopup';
+import ReservationPopup from './popup/ReservationPopup';
 
 function MainSocket() {
   const token = localStorage.getItem('token') as string;

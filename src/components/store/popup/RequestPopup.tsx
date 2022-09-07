@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import useSocket from '../../utils/useSocket';
-import useStoreManagerStore from '../../stores/store/storeManagerStore';
-import { deleteReservation, validTime } from '../../utils/reservation';
-import type { ReservationInStore } from '../../utils/interface';
+import useSocket from '../../../utils/useSocket';
+import useStoreManagerStore from '../../../stores/store/storeManagerStore';
+import { deleteReservation, validTime } from '../../../utils/reservation';
+import type { ReservationInStore } from '../../../utils/interface';
 
 const PopupContainer = styled.div`
   display: flex;

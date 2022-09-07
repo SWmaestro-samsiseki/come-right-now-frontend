@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import FailPopup from '../components/user/FailPopup';
+import FailPopup from '../components/user/popup/FailPopup';
 import useAuthStore from '../stores/authStore';
 import { login } from '../utils/auth';
 

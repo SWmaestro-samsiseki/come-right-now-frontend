@@ -1,6 +1,6 @@
 import { NavigateFunction } from 'react-router-dom';
 import styled from 'styled-components';
-import type { ReservationInStore } from '../../utils/interface';
+import type { ReservationInStore } from '../../../utils/interface';
 
 const PopupContainer = styled.div`
   display: flex;
