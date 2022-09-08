@@ -8,6 +8,7 @@ import useReservationStore from '../../stores/user/reservationStore';
 import ConfirmPopup from './popup/ConfirmPopup';
 import FailPopup from './popup/FailPopup';
 import SuccessPopup from './popup/SuccessPopup';
+import ConfirmLoadPopup from './popup/ConfirmLoadPopup';
 import { getDistance } from '../../utils/reservation';
 import { deleteReservation } from '../../utils/reservation';
 import type { ReservationDTO } from '../../utils/interface';
@@ -191,6 +192,25 @@ function ReservationItem({ reservation }: { reservation: ReservationDTO }) {
     return Math.floor((temp.getTime() - cur.getTime()) / 60000);
   }
 
+  function findLoad() {
+    MySwal.fire({
+      html: (
+        <ConfirmLoadPopup
+          title="길 찾기"
+          description={'원하는 서비스를 골라주세요'}
+          confirm={Swal.clickConfirm}
+          close={Swal.close}
+        />
+      ),
+      showConfirmButton: false,
+      width: '280px',
+      padding: 0,
+      customClass: {
+        popup: 'fail-popup-border',
+      },
+    });
+  }
+
   function delay() {
     MySwal.fire({
       html: (
@@ -237,7 +257,7 @@ function ReservationItem({ reservation }: { reservation: ReservationDTO }) {
                 console.log(`시간 지연에 실패했습니다. 최대 지연회수는 ${response.count}회입니다.`);
                 MySwal.fire({
                   html: (
-                    <SuccessPopup
+                    <FailPopup
                       title="예약지연"
                       description={`시간 지연에 실패했습니다! 최대 지연회수는 ${response.count}회입니다.`}
                       close={Swal.clickCancel}
@@ -255,7 +275,7 @@ function ReservationItem({ reservation }: { reservation: ReservationDTO }) {
                 console.log(`시간 지연에 실패했습니다.`);
                 MySwal.fire({
                   html: (
-                    <SuccessPopup
+                    <FailPopup
                       title="예약지연"
                       description={'예약지연에 실패했습니다!'}
                       close={Swal.clickCancel}
@@ -442,7 +462,7 @@ function ReservationItem({ reservation }: { reservation: ReservationDTO }) {
         </DetailInfo>
         <DetailBtn>
           <button>전화 걸기</button>
-          <button>길 찾기</button>
+          <button onClick={findLoad}>길 찾기</button>
           <button onClick={delay}>시간 변경</button>
           <button className="cancel" onClick={reject}>
             예약 취소

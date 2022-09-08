@@ -142,7 +142,7 @@ const DetailContainer = styled.div`
 
 function SearchStoreItem({ item }: { item: ReservationDTO }) {
   const { map } = useMap();
-  const { latitude, longitude } = useRequestInfoStore();
+  const { latitude, longitude, initPT } = useRequestInfoStore();
   const [limitTime] = useState(new Date().getTime() + 180000);
   const [time, setTime] = useState('03:00');
   const [isLimit, setIsLimit] = useState(false);
@@ -180,6 +180,7 @@ function SearchStoreItem({ item }: { item: ReservationDTO }) {
             if (response) {
               console.log('예약에 성공했습니다.');
               addReservation(item);
+              initPT();
               navigate('/main', { replace: true });
               MySwal.fire({
                 html: (

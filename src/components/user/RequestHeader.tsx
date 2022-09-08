@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import useRequestInfoStore from '../../stores/user/requestInfoStore';
 
 const Header = styled.header`
   position: relative;
@@ -16,9 +17,11 @@ const BackBtn = styled(Link)`
 `;
 
 function UserRequestHeader() {
+  const { initPT } = useRequestInfoStore();
+
   return (
     <Header>
-      <BackBtn to="/main" replace={true}>
+      <BackBtn to="/main" replace={true} onClick={initPT}>
         <img src={require('../../images/back.png')} alt="뒤로가기" />
       </BackBtn>
       <h1>주점 찾기</h1>
