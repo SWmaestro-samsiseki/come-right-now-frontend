@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import useAuthStore from '../../stores/authStore';
-import useStoreManagerStore from '../../stores/store/storeManagerStore';
+import useStandStore from '../../stores/store/standStore';
+import useReservationStore from '../../stores/store/reservationStore';
 import { fetchStoreInfo } from '../../utils/auth';
 import { getReservationList, getRequestList } from '../../utils/reservation';
 import MainHeader from '../../components/store/MainHeader';
@@ -17,7 +18,8 @@ const MainContainer = styled.div`
 
 function StoreMainPage() {
   const { setUser } = useAuthStore();
-  const { addReservation, addRequest } = useStoreManagerStore();
+  const { addStand } = useStandStore();
+  const { addReservation } = useReservationStore();
 
   useEffect(() => {
     fetchStoreInfo().then((res) => {
@@ -29,12 +31,11 @@ function StoreMainPage() {
       });
       getRequestList(res.id).then((res) => {
         if (res.length !== 0) {
-          res.forEach((ele) => addRequest(ele));
+          res.forEach((ele) => addStand(ele));
         }
       });
     });
   }, []);
-  // TODO: 이미 있는 예약내역, 대기내역 가져오는 코드 작성하기
   return (
     <MainContainer>
       <MainHeader />
