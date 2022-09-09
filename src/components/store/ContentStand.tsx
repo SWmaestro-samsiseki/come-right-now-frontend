@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import useStoreManagerStore from '../../stores/store/storeManagerStore';
-import RequestItem from '../../components/store/RequestItem';
+import useStandStore from '../../stores/store/standStore';
+import RequestItem from './ItemStand';
 
 const ListContainer = styled.div`
   width: 100%;
@@ -11,16 +11,16 @@ const ListContainer = styled.div`
   overflow-y: scroll;
 `;
 
-function StoreRequestList() {
-  const { requestList } = useStoreManagerStore();
+function ContentStand() {
+  const { standList } = useStandStore();
 
   return (
     <ListContainer>
-      {requestList.map((item, index) => (
+      {standList.map((item, index) => (
         <RequestItem key={index} item={item} />
       ))}
     </ListContainer>
   );
 }
 
-export default StoreRequestList;
+export default ContentStand;

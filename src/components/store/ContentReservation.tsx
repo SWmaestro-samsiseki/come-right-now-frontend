@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import useStoreManagerStore from '../../stores/store/storeManagerStore';
-import ReservationItem from '../../components/store/ReservationItem';
+import useReservationStore from '../../stores/store/reservationStore';
+import ReservationItem from './ItemReservation';
 
 const ListContainer = styled.div`
   width: 100%;
@@ -11,8 +11,8 @@ const ListContainer = styled.div`
   overflow-y: scroll;
 `;
 
-function StoreReservationList() {
-  const { reservationList } = useStoreManagerStore();
+function ContentReservation() {
+  const { reservationList } = useReservationStore();
 
   return (
     <ListContainer>
@@ -23,4 +23,4 @@ function StoreReservationList() {
   );
 }
 
-export default StoreReservationList;
+export default ContentReservation;
