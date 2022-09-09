@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import thema from '../../styles/thema';
 
-const Advertisement = styled.div`
+const AdContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,6 +12,6 @@ const Advertisement = styled.div`
 `;
 
 function StoreAd() {
-  return <Advertisement>광고</Advertisement>;
+  return <AdContainer>광고</AdContainer>;
 }
 export default StoreAd;

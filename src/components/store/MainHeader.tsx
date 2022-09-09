@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import thema from '../../styles/thema';
 
@@ -8,12 +9,15 @@ const HeaderContainer = styled.div`
   background: ${thema.color.primary.main3};
   box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.08);
 `;
-const Title = styled.h1`
-  font: ${thema.font.h5};
+const Title = styled(Link)`
   position: absolute;
   top: 50%;
   left: 30px;
   transform: translateY(-50%);
+  padding: 5px;
+  font: ${thema.font.h5};
+  color: ${thema.color.primary.main2};
+  text-decoration: none;
 `;
 const IconContainer = styled.div`
   position: absolute;
@@ -30,7 +34,7 @@ const IconContainer = styled.div`
 function StoreHeader() {
   return (
     <HeaderContainer>
-      <Title>지금갈게</Title>
+      <Title to="/main">지금갈게</Title>
       <IconContainer>
         <img src={require('../../images/notification_on.png')} />
         <img src={require('../../images/graph.png')} />
