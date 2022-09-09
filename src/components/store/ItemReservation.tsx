@@ -1,14 +1,14 @@
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import useSocket from '../../utils/useSocket';
 import useReservationStore from '../../stores/store/reservationStore';
+import useSocket from '../../utils/useSocket';
+import { deleteReservation } from '../../utils/reservation';
+import thema from '../../styles/thema';
 import ConfirmPopup from './popup/ConfirmPopup';
 import SuccessPopup from './popup/SuccessPopup';
 import FailPopup from './popup/FailPopup';
-import { deleteReservation } from '../../utils/reservation';
-import thema from '../../styles/thema';
-import type { ReservationDTO } from '../../utils/interface';
+import type { ReservationDTO, SocketResponseDTO } from '../../utils/interface';
 
 const ItemContainer = styled.div`
   position: relative;
@@ -78,9 +78,9 @@ function ReservationItem({ item }: { item: ReservationDTO }) {
   const token = localStorage.getItem('token') as string;
   const { socket } = useSocket(token);
   const { removeReservation } = useReservationStore();
-  const finalTime = new Date(item.estimatedTime).toLocaleTimeString();
-  const time = finalTime.slice(0, finalTime.lastIndexOf(':'));
   const MySwal = withReactContent(Swal);
+  const timeString = new Date(item.estimatedTime).toLocaleTimeString();
+  const time = timeString.slice(0, timeString.lastIndexOf(':'));
 
   function checkPosition() {
     // 예약자의 위치를 확인하는 함수
@@ -91,7 +91,7 @@ function ReservationItem({ item }: { item: ReservationDTO }) {
       html: (
         <ConfirmPopup
           title="예약취소"
-          description={'예약을 취소하겠습니까?'}
+          description={'예약을 취소하시겠습니까?'}
           confirm={Swal.clickConfirm}
           close={Swal.close}
         />
@@ -106,57 +106,48 @@ function ReservationItem({ item }: { item: ReservationDTO }) {
       if (result.isConfirmed) {
         socket.emit(
           'store.cancel-reservation.server',
+          // id와 user아이디를 같이 보낼지 준호와 상의
           item.id,
-          (response: { isSuccess: boolean; reservationId: number }) => {
-            if (response.isSuccess) {
-              console.log('예약취소 이벤트 전송에 성공했습니다.');
-              deleteReservation(response.reservationId).then((res) => {
-                if (typeof res === 'boolean') {
-                  console.log('예약이 성공적으로 취소되었습니다.');
-                  removeReservation(item);
-                  MySwal.fire({
-                    html: (
-                      <SuccessPopup
-                        title="예약취소"
-                        description="예약을 취소했습니다."
-                        close={Swal.clickCancel}
-                      />
-                    ),
-                    showConfirmButton: false,
-                    width: '480px',
-                    padding: 0,
-                    customClass: {
-                      popup: 'fail-popup-border',
-                    },
-                    timer: 2000,
-                  });
-                } else {
-                  console.log('예약을 취소하지 못했습니다.');
-                  MySwal.fire({
-                    html: (
-                      <FailPopup
-                        title="예약취소"
-                        description={res.message}
-                        close={Swal.clickCancel}
-                      />
-                    ),
-                    showConfirmButton: false,
-                    width: '480px',
-                    padding: 0,
-                    customClass: {
-                      popup: 'fail-popup-border',
-                    },
-                    timer: 2000,
-                  });
-                }
+          async ({ isSuccess, message }: SocketResponseDTO) => {
+            if (isSuccess) {
+              const response = await deleteReservation(item.id);
+              if (typeof response === 'boolean') {
+                removeReservation(item);
+              } else {
+                MySwal.fire({
+                  html: (
+                    <FailPopup
+                      title="예약취소"
+                      description={response.message}
+                      close={Swal.clickCancel}
+                    />
+                  ),
+                  showConfirmButton: false,
+                  width: '480px',
+                  padding: 0,
+                  customClass: {
+                    popup: 'fail-popup-border',
+                  },
+                  timer: 2000,
+                });
+              }
+            } else if (message) {
+              MySwal.fire({
+                html: <FailPopup title="예약취소" description={message} close={Swal.clickCancel} />,
+                showConfirmButton: false,
+                width: '480px',
+                padding: 0,
+                customClass: {
+                  popup: 'fail-popup-border',
+                },
+                timer: 2000,
               });
             } else {
-              console.log('예약취소 이벤트 전송에 실패했습니다.');
               MySwal.fire({
                 html: (
                   <FailPopup
                     title="예약취소"
-                    description="서버오류로 인해 예약취소를 하지 못했습니다."
+                    description="잠시 뒤에 다시 시도하세요."
                     close={Swal.clickCancel}
                   />
                 ),
@@ -199,15 +190,14 @@ function ReservationItem({ item }: { item: ReservationDTO }) {
             reservationId: item.id,
             userId: item.user.id,
           },
-          (isSuccess: boolean) => {
+          async ({ isSuccess, message }: SocketResponseDTO) => {
             if (isSuccess) {
-              console.log('사용자의 도착을 처리하는데 성공했습니다.');
               removeReservation(item);
               MySwal.fire({
                 html: (
                   <SuccessPopup
                     title="체크인"
-                    description="예약을 체크인 처리했습니다."
+                    description="체크인에 성공했습니다."
                     close={Swal.clickCancel}
                   />
                 ),
@@ -220,12 +210,11 @@ function ReservationItem({ item }: { item: ReservationDTO }) {
                 timer: 2000,
               });
             } else {
-              console.log('사용자의 도착을 처리하는데 실패했습니다.');
               MySwal.fire({
                 html: (
                   <FailPopup
                     title="체크인"
-                    description="체크인에 실패했습니다!"
+                    description={message as string}
                     close={Swal.clickCancel}
                   />
                 ),
