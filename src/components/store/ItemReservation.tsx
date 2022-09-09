@@ -2,51 +2,51 @@ import styled from 'styled-components';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import useSocket from '../../utils/useSocket';
-import useStoreManagerStore from '../../stores/store/storeManagerStore';
+import useReservationStore from '../../stores/store/reservationStore';
 import ConfirmPopup from './popup/ConfirmPopup';
 import SuccessPopup from './popup/SuccessPopup';
 import FailPopup from './popup/FailPopup';
 import { deleteReservation } from '../../utils/reservation';
-import type { ReservationInStore } from '../../utils/interface';
 import thema from '../../styles/thema';
+import type { ReservationDTO } from '../../utils/interface';
 
 const ItemContainer = styled.div`
+  position: relative;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   width: 95%;
-  min-height: 140px;
+  min-height: 120px;
   border: 1px solid ${thema.color.secondary.main3};
-  padding: 20px;
-  margin-top: 30px;
+  padding: 0 18px;
+  margin-top: 20px;
 `;
-const InfoContainer = styled.div`
+const TimeBox = styled.div`
   display: flex;
   align-items: center;
-
-  & > p {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 92px;
-    height: 64px;
-    font: ${thema.font.h4};
-    text-align: center;
-  }
+  width: 92px;
+  height: 88px;
+  padding-right: 20px;
+  border-right: 1.4px solid ${thema.color.secondary.main3};
+  font: ${thema.font.h4};
+  text-align: center;
 `;
-const Info = styled.div`
-  padding-left: 30px;
-  margin-left: 20px;
-  border-left: 1px solid #ccc;
-  & h3 {
+const InfoBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding-left: 20px;
+
+  & p {
+    font: ${thema.font.p2};
+    margin-bottom: 2px;
+  }
+  & p:first-child {
     font: ${thema.font.h4};
     margin-bottom: 6px;
   }
-  & p {
-    font: ${thema.font.p2};
-  }
 `;
-const ButtonBox = styled.div`
+const BtnBox = styled.div`
+  position: absolute;
+  right: 18px;
   display: flex;
 
   & button {
@@ -54,35 +54,36 @@ const ButtonBox = styled.div`
     height: 84px;
     border: none;
     border-radius: 4px;
-    margin-left: 20px;
     font: ${thema.font.pb1};
   }
   & button:nth-child(1) {
-    border: 2px solid ${thema.color.primary.main2};
-    background-color: ${thema.color.primary.main3};
+    border: 1px solid ${thema.color.primary.main2};
+    background: ${thema.color.primary.main3};
     color: ${thema.color.primary.main2};
   }
   & button:nth-child(2) {
-    border: 2px solid ${thema.color.alert.red};
-    background-color: #ffe7e7;
+    margin-left: 12px;
+    border: 1px solid ${thema.color.alert.red};
+    background: ${thema.color.primary.main3};
     color: ${thema.color.alert.red};
   }
   & button:nth-child(3) {
+    margin-left: 12px;
     background-color: ${thema.color.primary.main1};
     color: ${thema.color.primary.main2_active};
   }
 `;
 
-function ReservationItem({ item }: { item: ReservationInStore }) {
+function ReservationItem({ item }: { item: ReservationDTO }) {
   const token = localStorage.getItem('token') as string;
   const { socket } = useSocket(token);
-  const { removeReservation } = useStoreManagerStore();
+  const { removeReservation } = useReservationStore();
   const finalTime = new Date(item.estimatedTime).toLocaleTimeString();
   const time = finalTime.slice(0, finalTime.lastIndexOf(':'));
   const MySwal = withReactContent(Swal);
 
   function checkPosition() {
-    // 예약자의 위치를 확인하는 함수 작성
+    // 예약자의 위치를 확인하는 함수
   }
 
   function reject() {
@@ -216,7 +217,7 @@ function ReservationItem({ item }: { item: ReservationInStore }) {
                 customClass: {
                   popup: 'fail-popup-border',
                 },
-                // timer: 2000,
+                timer: 2000,
               });
             } else {
               console.log('사용자의 도착을 처리하는데 실패했습니다.');
@@ -245,21 +246,19 @@ function ReservationItem({ item }: { item: ReservationInStore }) {
 
   return (
     <ItemContainer>
-      <InfoContainer>
-        <p>{time}</p>
-        <Info>
-          <h3>
-            {item.user.name} 외 {item.numberOfPeople - 1}명
-          </h3>
-          <p>{item.user.phone}</p>
-          <p>신용등급 : {item.user.creditRate}점</p>
-        </Info>
-      </InfoContainer>
-      <ButtonBox>
+      <TimeBox>{time}</TimeBox>
+      <InfoBox>
+        <p>
+          {item.user.name} 외 {item.numberOfPeople - 1}명
+        </p>
+        <p>{item.user.phone}</p>
+        <p>신용등급 : {item.user.creditRate}점</p>
+      </InfoBox>
+      <BtnBox>
         <button onClick={checkPosition}>위치확인</button>
         <button onClick={reject}>예약취소</button>
         <button onClick={checkIn}>체크인</button>
-      </ButtonBox>
+      </BtnBox>
     </ItemContainer>
   );
 }
