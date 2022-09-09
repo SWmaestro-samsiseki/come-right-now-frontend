@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 import useSocket from '../../../utils/useSocket';
-import useStoreManagerStore from '../../../stores/store/storeManagerStore';
-import { deleteReservation, validTime } from '../../../utils/reservation';
-import type { ReservationInStore } from '../../../utils/interface';
+import useStandStore from '../../../stores/store/standStore';
+import { deleteReservation, calTermTime } from '../../../utils/reservation';
+import FailPopup from './FailPopup';
+import type { ReservationDTO, SocketResponseDTO } from '../../../utils/interface';
 
 const PopupContainer = styled.div`
   display: flex;
@@ -64,30 +67,54 @@ const ButtonContainer = styled.div`
   }
 `;
 
-function RequestPopup({ item, close }: { item: ReservationInStore; close: VoidFunction }) {
+function RequestPopup({ item, close }: { item: ReservationDTO; close: VoidFunction }) {
   const [time, setTime] = useState('');
   const token = localStorage.getItem('token') as string;
-  const { acceptReservation } = useSocket(token);
-  const { removeRequest } = useStoreManagerStore();
+  const { socket } = useSocket(token);
+  const { removeStand } = useStandStore();
+  const MySwal = withReactContent(Swal);
 
   function reject() {
     deleteReservation(item.id).then((res) => {
       close();
       if (res) {
         console.log('요청을 삭제하는데 성공했습니다.');
-        removeRequest(item);
+        removeStand(item);
       } else {
         // TODO: 삭제에 실패했다는 알림
         console.log('요청을 삭제하는데 실패했습니다.');
       }
     });
   }
-  function accept() {
-    acceptReservation(item.user.id, item.id);
-    removeRequest(item);
-    close();
-  }
 
+  function accept() {
+    socket.emit(
+      'store.accept-seat.server',
+      { userId: item.user.id, reservationId: item.id },
+      (response: SocketResponseDTO) => {
+        if (response.isSuccess) {
+          removeStand(item);
+        } else {
+          MySwal.fire({
+            html: (
+              <FailPopup
+                title="오류!"
+                description={response.message as string}
+                close={Swal.clickCancel}
+              />
+            ),
+            showConfirmButton: false,
+            width: '480px',
+            padding: 0,
+            customClass: {
+              popup: 'fail-popup-border',
+            },
+            timer: 2000,
+          });
+        }
+      },
+    );
+  }
   useEffect(() => {
     const intervalId = setInterval(() => {
       setTime('');
@@ -97,7 +124,7 @@ function RequestPopup({ item, close }: { item: ReservationInStore; close: VoidFu
     };
   }, []);
   useEffect(() => {
-    const term = validTime(item.createdAt);
+    const term = calTermTime(item.createdAt);
     if (term) {
       const finalTime = new Date(
         new Date(item.estimatedTime).getTime() + term,

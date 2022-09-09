@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import useSocket from '../../utils/useSocket';
 import useStandStore from '../../stores/store/standStore';
-import { deleteReservation, validTime } from '../../utils/reservation';
+import { deleteReservation, calTermTime } from '../../utils/reservation';
 import thema from '../../styles/thema';
 import FailPopup from './popup/FailPopup';
 import type { ReservationDTO, SocketResponseDTO } from '../../utils/interface';
@@ -70,7 +70,7 @@ const BtnBox = styled.div`
 function RequestItem({ item }: { item: ReservationDTO }) {
   const token = localStorage.getItem('token') as string;
   const { socket } = useSocket(token);
-  const [time, setTime] = useState('');
+  const [time, setTime] = useState(new Date(item.estimatedTime));
   const { removeStand } = useStandStore();
   const MySwal = withReactContent(Swal);
 
@@ -123,28 +123,25 @@ function RequestItem({ item }: { item: ReservationDTO }) {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setTime('');
+      const term = calTermTime(item.createdAt);
+      if (term) {
+        const calTime = new Date(new Date(time).getTime() + term);
+        setTime(calTime);
+      } else {
+        reject();
+      }
     }, 60000);
+
     return () => {
       clearInterval(intervalId);
     };
   }, []);
 
-  useEffect(() => {
-    const term = validTime(item.createdAt);
-    if (term) {
-      const finalTime = new Date(
-        new Date(item.estimatedTime).getTime() + term,
-      ).toLocaleTimeString();
-      setTime(finalTime.slice(0, finalTime.lastIndexOf(':')));
-    } else {
-      reject();
-    }
-  }, [time]);
-
   return (
     <ItemContainer>
-      <TimeBox>{time}</TimeBox>
+      <TimeBox>
+        {time.toLocaleTimeString().slice(0, time.toLocaleTimeString().lastIndexOf(':'))}
+      </TimeBox>
       <InfoBox>
         <p>
           {item.user.name} 외 {item.numberOfPeople - 1}명

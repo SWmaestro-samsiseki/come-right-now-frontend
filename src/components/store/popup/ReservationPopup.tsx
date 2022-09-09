@@ -1,6 +1,6 @@
 import { NavigateFunction } from 'react-router-dom';
 import styled from 'styled-components';
-import type { ReservationInStore } from '../../../utils/interface';
+import type { ReservationDTO } from '../../../utils/interface';
 
 const PopupContainer = styled.div`
   display: flex;
@@ -80,7 +80,7 @@ function ReservationPopup({
   close,
   navigate,
 }: {
-  item: ReservationInStore;
+  item: ReservationDTO;
   close: VoidFunction;
   navigate: NavigateFunction;
 }) {
