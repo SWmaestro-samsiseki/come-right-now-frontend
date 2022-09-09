@@ -3,6 +3,11 @@ interface ErrorDTO {
   message: string;
 }
 
+interface SocketResponseDTO {
+  isSuccess: boolean;
+  message?: string;
+}
+
 interface LoginOutputDTO {
   isSuccess: boolean;
   message: string;
@@ -91,22 +96,13 @@ interface ReservationDTO {
   store: StoreInfo;
 }
 
-interface ReservationInStore {
-  id: number;
-  numberOfPeople: number;
-  estimatedTime: Date;
-  createdAt: Date;
-  reservationStatus: string;
-  user: UserAuth;
-}
-
 export type {
   ErrorDTO,
+  SocketResponseDTO,
   LoginOutputDTO,
   UserAuth,
   StoreAuth,
   Category,
   StoreInfo,
   ReservationDTO,
-  ReservationInStore,
 };
