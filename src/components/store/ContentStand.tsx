@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import useStandStore from '../../stores/store/standStore';
-import RequestItem from './ItemStand';
+import ItemStand from './ItemStand';
 
 const ListContainer = styled.div`
   width: 100%;
@@ -17,7 +17,7 @@ function ContentStand() {
   return (
     <ListContainer>
       {standList.map((item, index) => (
-        <RequestItem key={index} item={item} />
+        <ItemStand key={index} item={item} />
       ))}
     </ListContainer>
   );

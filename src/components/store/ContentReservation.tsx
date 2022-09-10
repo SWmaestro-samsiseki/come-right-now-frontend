@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import useReservationStore from '../../stores/store/reservationStore';
-import ReservationItem from './ItemReservation';
+import ItemReservation from './ItemReservation';
 
 const ListContainer = styled.div`
   width: 100%;
@@ -17,7 +17,7 @@ function ContentReservation() {
   return (
     <ListContainer>
       {reservationList.map((item, index) => (
-        <ReservationItem key={index} item={item} />
+        <ItemReservation key={index} item={item} />
       ))}
     </ListContainer>
   );
