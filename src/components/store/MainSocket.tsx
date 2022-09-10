@@ -6,7 +6,7 @@ import useSocket from '../../utils/useSocket';
 import useStandStore from '../../stores/store/standStore';
 import useReservationStore from '../../stores/store/reservationStore';
 import { getReservationInfo } from '../../utils/reservation';
-import RequestPopup from './popup/RequestPopup';
+import RequestPopup from './popup/StandPopup';
 import ReservationPopup from './popup/ReservationPopup';
 import FailPopup from './popup/FailPopup';
 

@@ -113,6 +113,22 @@ function ReservationItem({ item }: { item: ReservationDTO }) {
               const response = await deleteReservation(item.id);
               if (typeof response === 'boolean') {
                 removeReservation(item);
+                MySwal.fire({
+                  html: (
+                    <SuccessPopup
+                      title="예챡취소"
+                      description="예약취소에 성공했습니다."
+                      close={Swal.clickCancel}
+                    />
+                  ),
+                  showConfirmButton: false,
+                  width: '480px',
+                  padding: 0,
+                  customClass: {
+                    popup: 'fail-popup-border',
+                  },
+                  timer: 2000,
+                });
               } else {
                 MySwal.fire({
                   html: (

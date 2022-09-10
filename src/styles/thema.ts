@@ -20,7 +20,7 @@ export default {
     alert: {
       red: '#FF5555',
       green: '#34A853',
-      blue: '#1593FFD',
+      blue: '#1593FD',
     },
   },
   font: {
