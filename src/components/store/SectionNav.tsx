@@ -37,7 +37,9 @@ function SectionNav() {
       <Button to="/main/reservation" className={param['*'] === 'reservation' ? 'current' : ''}>
         예약
       </Button>
-      <Button to="/main/timedeal" className={param['*'] === 'timedeal' ? 'current' : ''}>
+      <Button
+        to="/main/timedeal"
+        className={param['*'] === 'timedeal' || param['*'] === 'timedeal/create' ? 'current' : ''}>
         타임딜
       </Button>
     </NavContainer>
