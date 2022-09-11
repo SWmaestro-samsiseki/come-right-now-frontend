@@ -96,6 +96,12 @@ interface ReservationDTO {
   store: StoreInfo;
 }
 
+interface TimeDealDTO {
+  limitTime: Date;
+  benefit: string;
+  participant: UserAuth[];
+}
+
 export type {
   ErrorDTO,
   SocketResponseDTO,
@@ -105,4 +111,5 @@ export type {
   Category,
   StoreInfo,
   ReservationDTO,
+  TimeDealDTO,
 };
