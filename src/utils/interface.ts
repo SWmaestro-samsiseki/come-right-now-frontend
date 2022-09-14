@@ -96,10 +96,16 @@ interface ReservationDTO {
   store: StoreInfo;
 }
 
-interface TimeDealDTO {
-  limitTime: Date;
+interface TimeDealStoreDTO {
+  endTime: Date;
   benefit: string;
-  participant: UserAuth[];
+  participants: { status: string; user: UserAuth }[];
+}
+
+interface TimeDealUserDTO {
+  endTime: Date;
+  benefit: string;
+  store: StoreInfo;
 }
 
 export type {
@@ -111,5 +117,6 @@ export type {
   Category,
   StoreInfo,
   ReservationDTO,
-  TimeDealDTO,
+  TimeDealStoreDTO,
+  TimeDealUserDTO,
 };

@@ -1,19 +1,19 @@
 import create from 'zustand';
-import type { TimeDealDTO } from '../../utils/interface';
+import type { TimeDealStoreDTO } from '../../utils/interface';
 
 interface TimeDealStore {
-  timeDealList: TimeDealDTO[];
-  initTimeDeal: (value: TimeDealDTO[]) => void;
-  addTimeDeal: (value: TimeDealDTO) => void;
-  removeTimeDeal: (value: TimeDealDTO) => void;
+  timeDealList: TimeDealStoreDTO[];
+  initTimeDeal: (value: TimeDealStoreDTO[]) => void;
+  addTimeDeal: (value: TimeDealStoreDTO) => void;
+  removeTimeDeal: (value: TimeDealStoreDTO) => void;
 }
 
 const useTimeDealStore = create<TimeDealStore>((set) => ({
   timeDealList: [],
-  initTimeDeal: (value: TimeDealDTO[]) => set(() => ({ timeDealList: value })),
-  addTimeDeal: (value: TimeDealDTO) =>
+  initTimeDeal: (value: TimeDealStoreDTO[]) => set(() => ({ timeDealList: value })),
+  addTimeDeal: (value: TimeDealStoreDTO) =>
     set((state) => ({ timeDealList: [...state.timeDealList, value] })),
-  removeTimeDeal: (value: TimeDealDTO) =>
+  removeTimeDeal: (value: TimeDealStoreDTO) =>
     set((state) => ({ timeDealList: [...state.timeDealList.filter((ele) => ele !== value)] })),
 }));
 
