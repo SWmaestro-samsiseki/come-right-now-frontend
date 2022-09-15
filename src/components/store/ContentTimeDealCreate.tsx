@@ -1,6 +1,14 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 import styled from 'styled-components';
+import useTimeDealStore from '../../stores/store/timeDealStore';
 import thema from '../../styles/thema';
+import ConfirmPopup from './popup/ConfirmPopup';
+import SuccessPopup from './popup/SuccessPopup';
+import FailPopup from './popup/FailPopup';
+import { postTimeDeal } from '../../utils/timeDeal';
 
 const TimeDealCreateContainer = styled.div`
   display: flex;
@@ -143,10 +151,81 @@ const CreateBtn = styled.button`
 `;
 
 function ContentTimeDealCreate() {
+  const [time, setTime] = useState(0);
+  const [benefit, setBenefit] = useState('');
   const navigate = useNavigate();
+  const MySwal = withReactContent(Swal);
+  const { addTimeDeal } = useTimeDealStore();
 
   function goBack() {
     navigate('/main/timedeal', { replace: true });
+  }
+
+  function minusTime() {
+    if (time > 0) setTime(time - 5);
+  }
+
+  function plusTime() {
+    if (time < 60) setTime(time + 5);
+  }
+
+  function createTimeDeal() {
+    MySwal.fire({
+      html: (
+        <ConfirmPopup
+          title="타임딜 게시"
+          description={`${time}분간 타임딜을 게시하시겠습니까?`}
+          confirm={Swal.clickConfirm}
+          close={Swal.close}
+        />
+      ),
+      showConfirmButton: false,
+      width: '480px',
+      padding: 0,
+      customClass: {
+        popup: 'fail-popup-border',
+      },
+    }).then(async ({ isConfirmed }) => {
+      if (isConfirmed) {
+        const response = await postTimeDeal(time, benefit);
+        if (!('error' in response)) {
+          addTimeDeal(response);
+          MySwal.fire({
+            html: (
+              <SuccessPopup
+                title="타임딜 게시"
+                description="타임딜 게시에 성공했습니다."
+                close={Swal.clickCancel}
+              />
+            ),
+            showConfirmButton: false,
+            width: '480px',
+            padding: 0,
+            customClass: {
+              popup: 'fail-popup-border',
+            },
+            timer: 2000,
+          });
+        } else {
+          MySwal.fire({
+            html: (
+              <FailPopup
+                title="타임딜 게시"
+                description={response.message}
+                close={Swal.clickCancel}
+              />
+            ),
+            showConfirmButton: false,
+            width: '480px',
+            padding: 0,
+            customClass: {
+              popup: 'fail-popup-border',
+            },
+            timer: 2000,
+          });
+        }
+      }
+    });
   }
 
   return (
@@ -168,18 +247,24 @@ function ContentTimeDealCreate() {
             <p>시간</p>
             <div>
               <Controller>
-                <button>-</button>
-                <span>0</span>
-                <button>+</button>
+                <button onClick={minusTime}>-</button>
+                <span>{time}</span>
+                <button onClick={plusTime}>+</button>
               </Controller>
-              간 노출
+              분간 노출
             </div>
           </TimeBox>
           <BenefitBox>
             <p>혜택 및 조건</p>
-            <textarea cols={35} rows={4}></textarea>
+            <textarea
+              cols={35}
+              rows={4}
+              value={benefit}
+              onChange={(e) => {
+                setBenefit(e.target.value);
+              }}></textarea>
           </BenefitBox>
-          <CreateBtn>게시하기</CreateBtn>
+          <CreateBtn onClick={createTimeDeal}>게시하기</CreateBtn>
         </Content>
       </Contents>
     </TimeDealCreateContainer>
