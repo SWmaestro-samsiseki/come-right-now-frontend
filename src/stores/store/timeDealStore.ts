@@ -11,9 +11,8 @@ interface TimeDealStore {
 const useTimeDealStore = create<TimeDealStore>((set) => ({
   timeDealList: [],
   initTimeDeal: (value: TimeDealStoreDTO[]) => set(() => ({ timeDealList: value })),
-  addTimeDeal: (value: TimeDealStoreDTO) => {
-    set((state) => ({ timeDealList: [...state.timeDealList, value] })), console.log(value);
-  },
+  addTimeDeal: (value: TimeDealStoreDTO) =>
+    set((state) => ({ timeDealList: [value, ...state.timeDealList] })),
   removeTimeDeal: (value: TimeDealStoreDTO) =>
     set((state) => ({ timeDealList: [...state.timeDealList.filter((ele) => ele !== value)] })),
 }));

@@ -6,6 +6,7 @@ import withReactContent from 'sweetalert2-react-content';
 import FailPopup from '../components/user/popup/FailPopup';
 import useAuthStore from '../stores/authStore';
 import { login } from '../utils/auth';
+import thema from '../styles/thema';
 
 const LoginForm = styled.div`
   display: flex;
@@ -17,14 +18,14 @@ const LoginForm = styled.div`
   @media screen and (min-width: 500px) {
     width: 30%;
     height: 60%;
-    border: 1px solid #ccc;
+    border: 1px solid ${thema.color.secondary.main3};
     border-radius: 4px;
   }
 `;
 const Title = styled.h1`
   margin-bottom: 50%;
-  font: normal 700 32px / 42px 'IBM Plex Sans KR';
-  color: #282828;
+  font: ${thema.font.h3};
+  color: ${thema.color.primary.main2};
   @media screen and (min-width: 500px) {
     margin: 0 0 100px;
   }
@@ -46,16 +47,15 @@ const InputBox = styled.div`
     width: 100%;
     height: 100%;
     border: none;
-    border-bottom: 1px solid #888;
-    font: normal 500 14px / 20px 'IBM Plex Sans KR';
-    text-decoration: 1px solid #54c2ff;
-    caret-color: #54c2ff;
+    border-bottom: 1px solid ${thema.color.secondary.main4};
+    font: ${thema.font.p2};
+    caret-color: ${thema.color.primary.main1};
     &:focus {
-      border-bottom: 1px solid #54c2ff;
+      border-bottom: 1px solid ${thema.color.primary.main1};
       outline: none;
     }
     &::placeholder {
-      color: #ddd;
+      color: ${thema.color.secondary.main4};
     }
     @media screen and (min-width: 500px) {
       width: 240px;
@@ -63,7 +63,7 @@ const InputBox = styled.div`
       padding: 0 10px;
       border: none;
       border-radius: 4px;
-      background: #f5f5f5;
+      background: ${thema.color.secondary.main2};
     }
   }
 
@@ -85,11 +85,13 @@ const LoginBtn = styled.button`
   margin-bottom: 30px;
   border: none;
   border-radius: 4px;
-  font: normal 700 14px / 20px 'IBM Plex Sans KR';
-  color: white;
-  background: ${(props) => (props.disabled ? '#DDD' : '#54c2ff')};
+  font: ${thema.font.pb2};
+  color: ${thema.color.primary.main3};
+  background: ${(props) =>
+    props.disabled ? thema.color.secondary.main3_active : thema.color.primary.main1};
   &:active {
-    background: ${(props) => (props.disabled ? '#DDD' : '#0ba8ff')};
+    background: ${(props) =>
+      props.disabled ? thema.color.secondary.main3_active : thema.color.primary.main1_active};
   }
   @media screen and (min-width: 500px) {
     width: 260px;
@@ -97,8 +99,8 @@ const LoginBtn = styled.button`
   }
 `;
 const RegistBtn = styled(Link)`
-  font: normal 500 12px / 16px 'IBM Plex Sans KR';
-  color: #282828;
+  font: ${thema.font.p3};
+  color: ${thema.color.primary.main2};
   text-decoration: none;
   @media screen and (min-width: 500px) {
     display: none;
@@ -112,9 +114,9 @@ const Tooltip = styled.div`
   top: 30px;
   right: 40px;
   border-radius: 50%;
-  font: normal 700 24px / 32px 'IBM Plex Sans KR';
-  color: white;
-  background: #54c2ff;
+  font: ${thema.font.h4};
+  color: ${thema.color.primary.main3};
+  background: ${thema.color.primary.main1};
   @media screen and (min-width: 500px) {
     display: flex;
     justify-content: center;

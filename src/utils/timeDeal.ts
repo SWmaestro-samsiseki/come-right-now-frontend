@@ -21,6 +21,7 @@ async function postTimeDeal(
     if (resposne.ok) {
       const jsonResponse = await resposne.json();
       delete jsonResponse.status;
+      delete jsonResponse.id;
       jsonResponse.participants = [];
       return jsonResponse;
     } else {

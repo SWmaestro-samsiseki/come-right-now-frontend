@@ -190,6 +190,7 @@ function ContentTimeDealCreate() {
         const response = await postTimeDeal(time, benefit);
         if (!('error' in response)) {
           addTimeDeal(response);
+          navigate('/main/timedeal', { replace: true });
           MySwal.fire({
             html: (
               <SuccessPopup

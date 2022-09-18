@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import thema from '../../styles/thema';
+import useTimeDealStore from '../../stores/store/timeDealStore';
+import ItemTimeDeal from './ItemTimeDeal';
 
 const TimeDealContainer = styled.div`
   display: flex;
@@ -22,6 +24,7 @@ const CreateTimeDealBtn = styled.button`
 
 function ConetntTimeDeal() {
   const navigate = useNavigate();
+  const { timeDealList } = useTimeDealStore();
 
   function createTimeDeal() {
     navigate('create', { replace: true });
@@ -32,6 +35,9 @@ function ConetntTimeDeal() {
       <CreateTimeDealBtn type="button" onClick={createTimeDeal}>
         + 타임딜 새로 생성하기
       </CreateTimeDealBtn>
+      {timeDealList.map((item, index) => (
+        <ItemTimeDeal key={index} item={item} />
+      ))}
     </TimeDealContainer>
   );
 }
