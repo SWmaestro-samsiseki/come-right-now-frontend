@@ -61,7 +61,7 @@ function UserMenu() {
               src={require(`../../images/time_${param['*'] === 'timedeal' ? 'on' : 'off'}.png`)}
               alt="타임딜 아이콘"
             />
-            <span>이용내역</span>
+            <span>타임딜</span>
           </li>
         </MenuItem>
         <MenuItem to="/main/mypage" replace={true}>

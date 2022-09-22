@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import useSocket from '../../utils/useSocket';
 import useReservationStore from '../../stores/user/reservationStore';
 import LoadingPage from '../LoadingPage';
-import UserHeader from '../../components/user/MainHeader';
 import UserSection from '../../components/user/MainSection';
 import UserMenu from '../../components/user/MainMenu';
 
@@ -33,7 +32,6 @@ function UserMainPage() {
   return (
     <MainContainer>
       <LoadingPage />
-      <UserHeader />
       <UserSection />
       <UserMenu />
     </MainContainer>
