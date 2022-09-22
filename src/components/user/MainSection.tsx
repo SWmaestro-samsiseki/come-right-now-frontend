@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import SectionMain from '../../pages/user/SectionMain';
+import SectionTimedeal from '../../pages/user/SectionTimeDeal';
 
 const SectionContainer = styled.section`
   width: 100%;
@@ -13,7 +14,7 @@ function UserSection() {
       <Routes>
         <Route path="" element={<SectionMain />} />
         <Route path="star" element={<div>찜</div>} />
-        <Route path="history" element={<div>이용내역</div>} />
+        <Route path="timedeal" element={<SectionTimedeal />} />
         <Route path="mypage" element={<div>마이페이지</div>} />
       </Routes>
     </SectionContainer>
