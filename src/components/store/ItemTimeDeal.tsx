@@ -60,16 +60,22 @@ const CloseBtn = styled.button`
 function ItemTimeDeal({ item }: { item: TimeDealStoreDTO }) {
   const timeString = new Date(item.endTime).toLocaleTimeString();
   const time = timeString.slice(0, timeString.lastIndexOf(':'));
-  const [limit, setLimit] = useState('00:00:00');
+  const [limitTime, setLimitTime] = useState('00:00');
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      const term = new Date(item.endTime).getTime() - new Date().getTime();
-      if (term >= 0) {
-        setLimit(String(term));
+      const limit = new Date(item.endTime);
+      const cur = new Date();
+      const term = limit.getTime() - cur.getTime();
+      if (term > 1000) {
+        const T = Math.floor(term / 1000);
+        const M = Math.floor(T / 60);
+        const S = T % 60;
+        setLimitTime(`${M < 10 ? '0' + M : M}:${S}`);
       } else {
-        console.log('이미 끝남');
+        setLimitTime('00:00');
         clearInterval(intervalId);
+        console.log('이미 끝남');
       }
     }, 1000);
 
@@ -86,7 +92,7 @@ function ItemTimeDeal({ item }: { item: TimeDealStoreDTO }) {
           <p>{time}까지 방문시</p>
           <p>{item.benefit}</p>
         </InfoBox>
-        <LimitTimeBox>종료까지 {limit}</LimitTimeBox>
+        <LimitTimeBox>종료까지 {limitTime}</LimitTimeBox>
         <CloseBtn>종료</CloseBtn>
       </ControlBox>
     </TimeDealContainer>
