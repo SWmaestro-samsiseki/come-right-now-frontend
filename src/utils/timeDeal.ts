@@ -1,4 +1,4 @@
-import { TimeDealStoreDTO, ErrorDTO } from './interface';
+import { TimeDealStoreDTO, TimeDealUserDTO, ErrorDTO } from './interface';
 
 const BASE_URL = 'http://localhost:8080';
 
@@ -38,4 +38,42 @@ async function postTimeDeal(
   }
 }
 
-export { postTimeDeal };
+async function getTimeDealByUser(
+  latitude: number,
+  longitude: number,
+): Promise<TimeDealUserDTO[] | ErrorDTO> {
+  const token = localStorage.getItem('token');
+  try {
+    const response = await fetch(
+      `${BASE_URL}/time-deal/user?latitude=${latitude}&longitude=${longitude}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    if (response.ok) {
+      return await response.json();
+    } else {
+      if (response.status === 404) {
+        return {
+          error: true,
+          message: '타임딜 항목이 없습니다.',
+        };
+      } else {
+        return {
+          error: true,
+          message: '서버오류로 인해 타임딜목록을 받아오지 못했습니다.',
+        };
+      }
+    }
+  } catch (err) {
+    return {
+      error: true,
+      message: '서버오류로 인해 타임딜목록을 받아오지 못했습니다.',
+    };
+  }
+}
+
+export { postTimeDeal, getTimeDealByUser };
