@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import useReservationStore from '../../stores/user/reservationStore';
+import UserHeader from '../../components/user/MainHeader';
 import ReservationContainer from '../../components/user/ReservationContainer';
+import TimeDealContainer from '../../components/user/TimeDealContainer';
 import thema from '../../styles/thema';
 
 const MainContainer = styled.div`
@@ -20,6 +22,10 @@ const Contents = styled.div`
   width: 100%;
   height: calc(100% - 88px);
   overflow: scroll;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 const RequestBtn = styled.button`
   display: flex;
@@ -52,8 +58,10 @@ function SectionMain() {
 
   return (
     <MainContainer>
+      <UserHeader />
       <Contents>
         <ReservationContainer />
+        <TimeDealContainer />
       </Contents>
       <RequestBtn onClick={next} disabled={isReservation}>
         + 실시간 예약
