@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import thema from '../../styles/thema';
 import useTimeDealStore from '../../stores/user/timeDealStore';
 import MenuHeader from '../../components/user/MenuHeader';
 import ItemTimeDeal from '../../components/user/ItemTimeDeal';
