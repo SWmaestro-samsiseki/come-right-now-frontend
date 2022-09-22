@@ -13,7 +13,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  height: 211px;
+  height: 221px;
   margin: 44px 0 8px;
 `;
 const Header = styled.div`
@@ -36,7 +36,7 @@ const Header = styled.div`
 `;
 const Content = styled.div`
   width: 100%;
-  height: 169px;
+  height: 179px;
   overflow-x: scroll;
   overflow-y: visible;
 
