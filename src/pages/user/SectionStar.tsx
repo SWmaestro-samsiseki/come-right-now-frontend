@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import thema from '../../styles/thema';
 import MenuHeader from '../../components/user/MenuHeader';
 
 const Container = styled.div`

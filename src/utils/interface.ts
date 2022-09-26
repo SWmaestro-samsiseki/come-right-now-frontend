@@ -103,6 +103,7 @@ interface TimeDealStoreDTO {
 }
 
 interface TimeDealUserDTO {
+  id: number;
   endTime: Date;
   benefit: string;
   store: StoreInfo;

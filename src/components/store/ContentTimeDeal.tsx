@@ -15,6 +15,7 @@ const TimeDealContainer = styled.div`
 const CreateTimeDealBtn = styled.button`
   width: 95%;
   height: 120px;
+  min-height: 120px;
   margin: 20px;
   background: ${thema.color.secondary.main2};
   border: none;

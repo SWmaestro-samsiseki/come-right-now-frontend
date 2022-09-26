@@ -69,7 +69,10 @@ function RequestStatus({ type }: { type: string }) {
       {type === 'time' ? (
         <p className={isZero ? '' : 'highlight'}>
           {new Date(new Date().getTime() + time * 60000).getHours()}:
-          {new Date(new Date().getTime() + time * 60000).getMinutes()} 에 출발예정
+          {new Date(new Date().getTime() + time * 60000).getMinutes() < 10
+            ? '0' + new Date(new Date().getTime() + time * 60000).getMinutes()
+            : new Date(new Date().getTime() + time * 60000).getMinutes()}{' '}
+          에 출발예정
         </p>
       ) : null}
     </StatusContainer>

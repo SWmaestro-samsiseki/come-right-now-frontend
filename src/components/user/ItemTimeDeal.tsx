@@ -1,6 +1,12 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 import thema from '../../styles/thema';
+import { requestTimeDealByUser } from '../../utils/timeDeal';
+import ConfirmPopup from './popup/ConfirmPopup';
+import SuccessPopup from './popup/SuccessPopup';
+import FailPopup from './popup/FailPopup';
 import type { TimeDealUserDTO } from '../../utils/interface';
 
 const Container = styled.div`
@@ -117,12 +123,71 @@ const BtnBox = styled.div`
 
 function ItemTimeDeal({ item }: { item: TimeDealUserDTO }) {
   const [limitTime, setLimitTime] = useState('00:00');
+  const MySwal = withReactContent(Swal);
 
   function calLimitTime(time: Date): string {
     const limit = new Date(time);
     const H = limit.getHours();
     const M = limit.getMinutes();
-    return `${H < 12 ? '오전 ' + H : '오후 ' + (H - 12)}시 ${M}분`;
+    return `${H < 12 ? '오전 ' + H : '오후 ' + (H - 12)}시 ${M < 10 ? '0' + M : M}분`;
+  }
+
+  function requestTimeDeal() {
+    MySwal.fire({
+      html: (
+        <ConfirmPopup
+          title="타임딜 신청"
+          description={`해당 타임딜을 신청하시겠습니까?`}
+          confirm={Swal.clickConfirm}
+          close={Swal.close}
+        />
+      ),
+      showConfirmButton: false,
+      width: '280px',
+      padding: 0,
+      customClass: {
+        popup: 'fail-popup-border',
+      },
+    }).then(async ({ isConfirmed }) => {
+      if (isConfirmed) {
+        const response = await requestTimeDealByUser(item.id);
+        if (typeof response === 'boolean') {
+          MySwal.fire({
+            html: (
+              <SuccessPopup
+                title="타임딜 신청"
+                description="타임딜 신청에 성공했습니다."
+                close={Swal.clickCancel}
+              />
+            ),
+            showConfirmButton: false,
+            width: '280px',
+            padding: 0,
+            customClass: {
+              popup: 'fail-popup-border',
+            },
+            timer: 2000,
+          });
+        } else {
+          MySwal.fire({
+            html: (
+              <FailPopup
+                title="타임딜 신청"
+                description={response.message}
+                close={Swal.clickCancel}
+              />
+            ),
+            showConfirmButton: false,
+            width: '280px',
+            padding: 0,
+            customClass: {
+              popup: 'fail-popup-border',
+            },
+            timer: 2000,
+          });
+        }
+      }
+    });
   }
 
   useEffect(() => {
@@ -134,7 +199,7 @@ function ItemTimeDeal({ item }: { item: TimeDealUserDTO }) {
         const T = Math.floor(term / 1000);
         const M = Math.floor(T / 60);
         const S = T % 60;
-        setLimitTime(`${M < 10 ? '0' + M : M}:${S}`);
+        setLimitTime(`${M < 10 ? '0' + M : M}:${S < 10 ? '0' + S : S}`);
       } else {
         setLimitTime('00:00');
         clearInterval(intervalId);
@@ -176,7 +241,7 @@ function ItemTimeDeal({ item }: { item: TimeDealUserDTO }) {
           </p>
           <p>{item.benefit}</p>
         </div>
-        <button>신청</button>
+        <button onClick={requestTimeDeal}>신청</button>
       </BtnBox>
     </Container>
   );

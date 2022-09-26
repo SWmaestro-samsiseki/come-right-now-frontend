@@ -39,43 +39,49 @@ const InfoBox = styled.div`
     color: ${thema.color.alert.green};
   }
 `;
-const LimitTimeBox = styled.div`
+const LimitTimeBox = styled.div<{ done: boolean }>`
   position: absolute;
   right: 113px;
   font: ${thema.font.p2};
-  color: ${thema.color.alert.red};
+  color: ${(props) => (props.done !== true ? thema.color.alert.red : thema.color.secondary.main4)};
 `;
-const CloseBtn = styled.button`
+const CloseBtn = styled.button<{ done: boolean }>`
   position: absolute;
   right: 18px;
   width: 80px;
   height: 84px;
   background: ${thema.color.primary.main3};
-  border: 1px solid ${thema.color.alert.red};
+  border: 1px solid
+    ${(props) => (props.done !== true ? thema.color.alert.red : thema.color.secondary.main4)};
   border-radius: 4px;
   font: ${thema.font.pb1};
-  color: ${thema.color.alert.red};
+  color: ${(props) => (props.done !== true ? thema.color.alert.red : thema.color.secondary.main4)};
 `;
 
 function ItemTimeDeal({ item }: { item: TimeDealStoreDTO }) {
   const timeString = new Date(item.endTime).toLocaleTimeString();
   const time = timeString.slice(0, timeString.lastIndexOf(':'));
   const [limitTime, setLimitTime] = useState('00:00');
+  const [isDone, setIsDone] = useState(false);
+
+  function closeTimeDeal() {
+    setIsDone(true);
+  }
 
   useEffect(() => {
     const intervalId = setInterval(() => {
       const limit = new Date(item.endTime);
       const cur = new Date();
       const term = limit.getTime() - cur.getTime();
-      if (term > 1000) {
+      if (term > 1000 && isDone) {
         const T = Math.floor(term / 1000);
         const M = Math.floor(T / 60);
         const S = T % 60;
-        setLimitTime(`${M < 10 ? '0' + M : M}:${S}`);
+        setLimitTime(`${M < 10 ? '0' + M : M}:${S < 10 ? '0' + S : S}`);
       } else {
+        setIsDone(true);
         setLimitTime('00:00');
         clearInterval(intervalId);
-        console.log('이미 끝남');
       }
     }, 1000);
 
@@ -92,8 +98,10 @@ function ItemTimeDeal({ item }: { item: TimeDealStoreDTO }) {
           <p>{time}까지 방문시</p>
           <p>{item.benefit}</p>
         </InfoBox>
-        <LimitTimeBox>종료까지 {limitTime}</LimitTimeBox>
-        <CloseBtn>종료</CloseBtn>
+        <LimitTimeBox done={isDone}>종료까지 {limitTime}</LimitTimeBox>
+        <CloseBtn done={isDone} onClick={closeTimeDeal}>
+          종료
+        </CloseBtn>
       </ControlBox>
     </TimeDealContainer>
   );

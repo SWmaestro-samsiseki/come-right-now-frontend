@@ -55,6 +55,7 @@ const EmptyBox = styled.div`
   align-items: center;
   width: calc(100% - 40px);
   height: 100%;
+  margin: 0 auto;
   font: ${thema.font.p2};
   box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.24);
 `;
