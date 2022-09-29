@@ -1,16 +1,16 @@
 import create from 'zustand';
-import type { ReservationInUser } from '../../utils/interface';
+import type { ReservationDTO } from '../../utils/interface';
 
 interface ResponseInfo {
-  responses: ReservationInUser[];
-  addResponse: (value: ReservationInUser) => void;
+  responses: ReservationDTO[];
+  addResponse: (value: ReservationDTO) => void;
   resetResponse: () => void;
 }
 
 const useResponseInfoStore = create<ResponseInfo>((set) => ({
   responses: [],
-  addResponse: (value: ReservationInUser) =>
-    set((state) => ({ responses: [value, ...state.responses] })),
+  addResponse: (value: ReservationDTO) =>
+    set((state) => ({ responses: [...state.responses, value] })),
   resetResponse: () => set(() => ({ responses: [] })),
 }));
 

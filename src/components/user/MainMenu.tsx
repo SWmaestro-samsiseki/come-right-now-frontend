@@ -55,13 +55,13 @@ function UserMenu() {
             <span>찜</span>
           </li>
         </MenuItem>
-        <MenuItem to="/main/history" replace={true}>
+        <MenuItem to="/main/timedeal" replace={true}>
           <li>
             <img
-              src={require(`../../images/history_${param['*'] === 'history' ? 'on' : 'off'}.png`)}
-              alt="이용내역 아이콘"
+              src={require(`../../images/time_${param['*'] === 'timedeal' ? 'on' : 'off'}.png`)}
+              alt="타임딜 아이콘"
             />
-            <span>이용내역</span>
+            <span>타임딜</span>
           </li>
         </MenuItem>
         <MenuItem to="/main/mypage" replace={true}>

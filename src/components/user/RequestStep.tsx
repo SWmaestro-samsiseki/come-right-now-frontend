@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import thema from '../../styles/thema';
 
 const StepContainer = styled.div`
   display: flex;
@@ -12,21 +13,21 @@ const StepContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 53px;
-    height: 20px;
+    width: 59px;
+    height: 24px;
     border-radius: 16px;
-    background-color: #0ba8ff;
-    font: normal 700 12px / 16px 'IBM Plex Sans KR';
-    color: white;
+    background-color: ${thema.color.primary.main1};
+    font: ${thema.font.pb2};
+    color: ${thema.color.primary.main2};
   }
   & span:last-child {
-    width: 65%;
+    width: 62%;
     height: 1px;
-    border-top: 1px solid #282828;
+    border-top: 1px solid ${thema.color.primary.main2};
   }
   & p {
-    margin: 0 6px;
-    font: normal 700 12px / 16px 'IBM Plex Sans KR';
+    margin: 0 10px;
+    font: ${thema.font.pb2};
     color: #282828;
   }
 `;

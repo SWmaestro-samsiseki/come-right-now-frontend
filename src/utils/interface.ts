@@ -1,3 +1,13 @@
+interface ErrorDTO {
+  error: boolean;
+  message: string;
+}
+
+interface SocketResponseDTO {
+  isSuccess: boolean;
+  message?: string;
+}
+
 interface LoginOutputDTO {
   isSuccess: boolean;
   message: string;
@@ -75,9 +85,10 @@ interface StoreInfo {
   }[];
 }
 
-interface Reservation {
+interface ReservationDTO {
   id: number;
   numberOfPeople: number;
+  departureTime: Date;
   estimatedTime: Date;
   createdAt: Date;
   reservationStatus: string;
@@ -85,31 +96,28 @@ interface Reservation {
   store: StoreInfo;
 }
 
-interface ReservationInUser {
-  id: number;
-  numberOfPeople: number;
-  estimatedTime: Date;
-  createdAt: Date;
-  reservationStatus: string;
-  store: StoreInfo;
+interface TimeDealStoreDTO {
+  endTime: Date;
+  benefit: string;
+  participants: { status: string; user: UserAuth }[];
 }
 
-interface ReservationInStore {
+interface TimeDealUserDTO {
   id: number;
-  numberOfPeople: number;
-  estimatedTime: Date;
-  createdAt: Date;
-  reservationStatus: string;
-  user: UserAuth;
+  endTime: Date;
+  benefit: string;
+  store: StoreInfo;
 }
 
 export type {
+  ErrorDTO,
+  SocketResponseDTO,
   LoginOutputDTO,
   UserAuth,
   StoreAuth,
   Category,
   StoreInfo,
-  Reservation,
-  ReservationInUser,
-  ReservationInStore,
+  ReservationDTO,
+  TimeDealStoreDTO,
+  TimeDealUserDTO,
 };

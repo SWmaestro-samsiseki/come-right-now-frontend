@@ -1,4 +1,4 @@
-import type { LoginOutputDTO, UserAuth, StoreAuth } from '../utils/interface';
+import type { ErrorDTO, LoginOutputDTO, UserAuth, StoreAuth } from '../utils/interface';
 
 const BASE_URL = 'http://localhost:8080';
 
@@ -19,8 +19,8 @@ async function authValid(): Promise<string> {
   return '';
 }
 
-async function login(id: string, pw: string): Promise<LoginOutputDTO> {
-  const response = await fetch(`${BASE_URL}/account/login`, {
+function login(id: string, pw: string): Promise<LoginOutputDTO | ErrorDTO> {
+  return fetch(`${BASE_URL}/account/login`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
@@ -30,9 +30,22 @@ async function login(id: string, pw: string): Promise<LoginOutputDTO> {
       email: id,
       password: pw,
     }),
-  });
-  const parse = await response.json();
-  return parse;
+  })
+    .then((response) => {
+      if (!response.ok) {
+        return {
+          error: true,
+          message: '아이디나 비밀번호가 틀렸습니다.',
+        };
+      }
+      return response.json();
+    })
+    .catch(() => {
+      return {
+        error: true,
+        message: '서버오류로 인해 로그인에 실패했습니다.',
+      };
+    });
 }
 
 async function fetchUserInfo(): Promise<UserAuth> {

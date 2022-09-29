@@ -1,11 +1,16 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 import useRequestInfoStore from '../../stores/user/requestInfoStore';
 import useSocket from '../../utils/useSocket';
 import UserRequestHeader from '../../components/user/RequestHeader';
 import RequestStep from '../../components/user/RequestStep';
 import RequestCategory from '../../components/user/RequestCategory';
 import RequestStatus from '../../components/user/RequestStatus';
+import ConfirmPopup from '../../components/user/popup/ConfirmPopup';
+import FailPopup from '../../components/user/popup/FailPopup';
+import thema from '../../styles/thema';
 
 const RequestContainer = styled.div`
   display: flex;
@@ -20,17 +25,18 @@ const SearchBtn = styled.button`
   width: 320px;
   height: 48px;
   margin: 20px;
-  font: normal 700 14px / 20px 'IBM Plex Sans KR';
-  color: white;
-  background: #ddd;
+  font: ${thema.font.pb2};
+  color: ${thema.color.primary.main3};
+  background: ${thema.color.secondary.main3};
   border: none;
   border-radius: 4px;
 
   &.active {
-    background: #54c2ff;
+    background: ${thema.color.primary.main1};
+    color: ${thema.color.primary.main2};
   }
   &:active {
-    background: #0ba8ff;
+    background: ${thema.color.primary.main1_active};
   }
 `;
 
@@ -39,6 +45,7 @@ function RequestPage() {
   const token = localStorage.getItem('token') as string;
   const { socket } = useSocket(token);
   const { selectedCategories, people, time, latitude, longitude } = useRequestInfoStore();
+  const MySwal = withReactContent(Swal);
 
   function findStore() {
     if (latitude && longitude) {
@@ -56,15 +63,64 @@ function RequestPage() {
             console.log('자리요청 이벤트를 보내는데 성공했습니다.');
             navigate('/search', { replace: true });
           } else {
-            // TODO: 이벤트 전송에 실패했다는 알림
-            console.log('자리요청 이벤트를 보내는데 실패했습니다.');
+            MySwal.fire({
+              html: (
+                <ConfirmPopup
+                  title="탐색"
+                  description={`주번에 가게가 없습니다. 더 넓은 범위로 탐색하시겠습니까?`}
+                  confirm={Swal.clickConfirm}
+                  close={Swal.close}
+                />
+              ),
+              showConfirmButton: false,
+              width: '280px',
+              padding: 0,
+              customClass: {
+                popup: 'fail-popup-border',
+              },
+            }).then((result) => {
+              if (result.isConfirmed) {
+                socket.emit(
+                  'user.find-store-further.server',
+                  {
+                    categories: selectedCategories.map((ele) => ele.id),
+                    numberOfPeople: people,
+                    delayMinutes: time,
+                    longitude: longitude,
+                    latitude: latitude,
+                  },
+                  (response: boolean) => {
+                    if (response) {
+                      console.log('자리요청 이벤트를 보내는데 성공했습니다.');
+                      navigate('/search', { replace: true });
+                    } else {
+                      MySwal.fire({
+                        html: (
+                          <FailPopup
+                            title="탐색"
+                            description={`탐색에 실패했습니다. 다른 곳으로 이동하십시오.`}
+                            close={Swal.clickCancel}
+                          />
+                        ),
+                        showConfirmButton: false,
+                        width: '280px',
+                        padding: 0,
+                        customClass: {
+                          popup: 'fail-popup-border',
+                        },
+                        timer: 2000,
+                      });
+                    }
+                  },
+                );
+              }
+            });
           }
         },
       );
-    } else {
-      console.log('사용자의 위치가 특정되지 않아 아직 요청을 보낼 수 없습니다.');
     }
   }
+
   return (
     <RequestContainer>
       <UserRequestHeader />

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import type { Category } from '../../utils/interface';
 import useRequestStore from '../../stores/user/requestInfoStore';
+import thema from '../../styles/thema';
 
 const ItemContainer = styled.div`
   display: flex;
@@ -9,11 +10,11 @@ const ItemContainer = styled.div`
   width: 76px;
   height: 76px;
   margin: 5px;
-  border: 1px solid #f5f5f5;
+  border: 1px solid ${thema.color.secondary.main2};
   border-radius: 24px;
 
   &.selected {
-    border: 2px solid #0ba8ff;
+    border: 1px solid ${thema.color.primary.main2};
   }
   & img {
     height: 51px;
@@ -22,7 +23,7 @@ const ItemContainer = styled.div`
 
   & p {
     text-align: center;
-    font: normal 700 10px / 12px 'IBM Plex Sans KR';
+    font: ${thema.font.pb4};
   }
 `;
 

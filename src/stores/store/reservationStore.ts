@@ -1,22 +1,18 @@
 import create from 'zustand';
-import type { ReservationInStore } from '../../utils/interface';
+import type { ReservationDTO } from '../../utils/interface';
 
-interface StoreManager {
-  reservationList: ReservationInStore[];
-  requestList: ReservationInStore[];
-  addReservation: (value: ReservationInStore) => void;
-  removeReservation: (value: ReservationInStore | number) => void;
+interface ReservationStore {
+  reservationList: ReservationDTO[];
+  addReservation: (value: ReservationDTO) => void;
+  removeReservation: (value: ReservationDTO | number) => void;
   updateReservation: (id: number, time: Date) => void;
-  addRequest: (value: ReservationInStore) => void;
-  removeRequest: (value: ReservationInStore) => void;
 }
 
-const useStoreManagerStore = create<StoreManager>((set) => ({
+const useReservationStore = create<ReservationStore>((set) => ({
   reservationList: [],
-  requestList: [],
-  addReservation: (value: ReservationInStore) =>
+  addReservation: (value: ReservationDTO) =>
     set((state) => ({ reservationList: [...state.reservationList, value] })),
-  removeReservation: (value: ReservationInStore | number) => {
+  removeReservation: (value: ReservationDTO | number) => {
     if (typeof value === 'number')
       set((state) => ({
         reservationList: [...state.reservationList.filter((ele) => ele.id !== value)],
@@ -35,19 +31,17 @@ const useStoreManagerStore = create<StoreManager>((set) => ({
             return {
               id: ele.id,
               numberOfPeople: ele.numberOfPeople,
+              departureTime: ele.departureTime,
               estimatedTime: time,
               createdAt: ele.createdAt,
               reservationStatus: ele.reservationStatus,
               user: ele.user,
+              store: ele.store,
             };
           } else return ele;
         }),
       ],
     })),
-  addRequest: (value: ReservationInStore) =>
-    set((state) => ({ requestList: [...state.requestList, value] })),
-  removeRequest: (value: ReservationInStore) =>
-    set((state) => ({ requestList: [...state.requestList.filter((ele) => ele !== value)] })),
 }));
 
-export default useStoreManagerStore;
+export default useReservationStore;

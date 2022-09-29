@@ -17,6 +17,7 @@ interface RequestInfo {
   minusTime: () => void;
   setLatitude: (value: number) => void;
   setLongitude: (value: number) => void;
+  initPT: () => void;
 }
 
 const useRequestInfoStore = create<RequestInfo>((set) => ({
@@ -41,6 +42,7 @@ const useRequestInfoStore = create<RequestInfo>((set) => ({
   minusTime: () => set((state) => ({ time: state.time > 0 ? state.time - 5 : state.time })),
   setLatitude: (value: number) => set(() => ({ latitude: value })),
   setLongitude: (value: number) => set(() => ({ longitude: value })),
+  initPT: () => set(() => ({ selectedCategories: [], people: 1, time: 0 })),
 }));
 
 export default useRequestInfoStore;
