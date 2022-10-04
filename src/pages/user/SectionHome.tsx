@@ -6,6 +6,7 @@ import UserHeader from '../../components/user/MainHeader';
 import ReservationContainer from '../../components/user/ReservationContainer';
 import TimeDealContainer from '../../components/user/TimeDealContainer';
 import thema from '../../styles/thema';
+import CurrentTimeDealContainer from '../../components/user/CurrentTimeDealContainer';
 
 const MainContainer = styled.div`
   position: relative;
@@ -61,6 +62,7 @@ function SectionMain() {
       <UserHeader />
       <Contents>
         <ReservationContainer />
+        <CurrentTimeDealContainer />
         <TimeDealContainer />
       </Contents>
       <RequestBtn onClick={next} disabled={isReservation}>

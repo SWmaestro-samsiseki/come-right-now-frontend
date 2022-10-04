@@ -1,6 +1,6 @@
-import { TimeDealStoreDTO, TimeDealUserDTO, ErrorDTO } from './interface';
+import { TimeDealStoreDTO, TimeDealUserDTO, CurrentTimeDealUserDTO, ErrorDTO } from './interface';
 
-const BASE_URL = 'http://localhost:8080';
+const BASE_URL = 'http://devserver.jigeumgo.com';
 
 async function postTimeDeal(
   duration: number,
@@ -21,9 +21,7 @@ async function postTimeDeal(
     });
     if (resposne.ok) {
       const jsonResponse = await resposne.json();
-      delete jsonResponse.status;
-      delete jsonResponse.id;
-      jsonResponse.participants = [];
+      console.log(jsonResponse);
       return jsonResponse;
     } else {
       return {
@@ -118,4 +116,105 @@ async function requestTimeDealByUser(timeDealId: number): Promise<boolean | Erro
   }
 }
 
-export { postTimeDeal, getTimeDealByUser, requestTimeDealByUser };
+async function getCurrenTimeDealByUser(
+  latitude: number,
+  longitude: number,
+): Promise<CurrentTimeDealUserDTO[] | ErrorDTO> {
+  try {
+    const response = await fetch(
+      `${BASE_URL}/time-deal/userDeals?latitude=${latitude}&longitude=${longitude}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      },
+    );
+    if (response.ok) {
+      const jsonResponse = await response.json();
+      return jsonResponse;
+    } else {
+      if (response.status === 401) {
+        return {
+          error: true,
+          message: '권한이 없습니다.',
+        };
+      } else {
+        return {
+          error: true,
+          message: '서버오류로 인해 신청된 타임딜목록을 받아오지 못했습니다.',
+        };
+      }
+    }
+  } catch (err) {
+    return {
+      error: true,
+      message: '서버오류로 인해 신청된 타임딜목록을 받아오지 못했습니다.',
+    };
+  }
+}
+
+async function closeTimeDealByStore(timeDealId: number): Promise<boolean | ErrorDTO> {
+  try {
+    const response = await fetch(`${BASE_URL}/time-deal/${timeDealId}/close`, {
+      method: 'PATCH',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+    if (response.ok) {
+      return true;
+    } else {
+      return {
+        error: true,
+        message: '존재하지 않은 타임딜입니다.',
+      };
+    }
+  } catch (err) {
+    return {
+      error: true,
+      message: `서버오류로 인해 타임딜을 끝내지 못했습니다.`,
+    };
+  }
+}
+
+async function getTimeDealByStore(storeId: string): Promise<TimeDealStoreDTO | ErrorDTO> {
+  try {
+    const response = await fetch(`${BASE_URL}/time-deal/store?storeId=${storeId}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+    if (response.ok) {
+      const jsonResponse = await response.json();
+      return jsonResponse;
+    } else {
+      if (response.status === 404) {
+        return {
+          error: true,
+          message: '타임딜 항목이 없습니다.',
+        };
+      } else {
+        return {
+          error: true,
+          message: '서버오류로 인해 타임딜목록을 받아오지 못했습니다.',
+        };
+      }
+    }
+  } catch (err) {
+    return {
+      error: true,
+      message: '서버오류로 인해 타임딜목록을 받아오지 못했습니다.',
+    };
+  }
+}
+
+export {
+  postTimeDeal,
+  getTimeDealByUser,
+  getTimeDealByStore,
+  getCurrenTimeDealByUser,
+  requestTimeDealByUser,
+  closeTimeDealByStore,
+};

@@ -97,6 +97,8 @@ interface ReservationDTO {
 }
 
 interface TimeDealStoreDTO {
+  id: number;
+  status: string;
   endTime: Date;
   benefit: string;
   participants: { status: string; user: UserAuth }[];
@@ -104,9 +106,21 @@ interface TimeDealStoreDTO {
 
 interface TimeDealUserDTO {
   id: number;
+  status: string;
   endTime: Date;
   benefit: string;
   store: StoreInfo;
+}
+
+interface CurrentTimeDealUserDTO {
+  id: number;
+  benefit: string;
+  endTime: Date;
+  businessName: string;
+  storeImage: string;
+  latitude: number;
+  longitude: number;
+  distance: number;
 }
 
 export type {
@@ -120,4 +134,5 @@ export type {
   ReservationDTO,
   TimeDealStoreDTO,
   TimeDealUserDTO,
+  CurrentTimeDealUserDTO,
 };

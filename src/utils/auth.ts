@@ -1,6 +1,6 @@
 import type { ErrorDTO, LoginOutputDTO, UserAuth, StoreAuth } from '../utils/interface';
 
-const BASE_URL = 'http://localhost:8080';
+const BASE_URL = 'http://devserver.jigeumgo.com';
 
 async function authValid(): Promise<string> {
   const token = localStorage.getItem('token');

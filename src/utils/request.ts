@@ -1,6 +1,6 @@
 import type { Category } from '../utils/interface';
 
-const BASE_URL = 'http://localhost:8080';
+const BASE_URL = 'http://devserver.jigeumgo.com';
 
 async function fetchCategories(): Promise<Array<Category>> {
   const response = await fetch(`${BASE_URL}/category`, {

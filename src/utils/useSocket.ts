@@ -1,6 +1,6 @@
 import { io, Socket } from 'socket.io-client';
 
-const BASE_URL = 'http://localhost:8080';
+const BASE_URL = 'http://devserver.jigeumgo.com';
 const socket: { [key: string]: Socket } = {};
 
 interface SocketHooks {
@@ -10,9 +10,10 @@ interface SocketHooks {
 const useSocket = (token: string): SocketHooks => {
   if (!socket[token]) {
     socket[token] = io(BASE_URL, {
-      extraHeaders: {
-        auth: token,
+      auth: {
+        token,
       },
+      transports: ['websocket', 'polling'],
     });
   }
 

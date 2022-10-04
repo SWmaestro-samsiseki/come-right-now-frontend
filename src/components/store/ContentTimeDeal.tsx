@@ -1,7 +1,10 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import thema from '../../styles/thema';
+import useAuthStore from '../../stores/authStore';
 import useTimeDealStore from '../../stores/store/timeDealStore';
+import { getTimeDealByStore } from '../../utils/timeDeal';
 import ItemTimeDeal from './ItemTimeDeal';
 
 const TimeDealContainer = styled.div`
@@ -25,11 +28,27 @@ const CreateTimeDealBtn = styled.button`
 
 function ConetntTimeDeal() {
   const navigate = useNavigate();
-  const { timeDealList } = useTimeDealStore();
+  const { user } = useAuthStore();
+  const { timeDealList, initTimeDeal } = useTimeDealStore();
+
+  async function fetchTimeDeal(storeId: string) {
+    const response = await getTimeDealByStore(storeId);
+    if (!('error' in response)) {
+      initTimeDeal([response]);
+    } else {
+      console.log('진행중인 타임딜이 없습니다.');
+    }
+  }
 
   function createTimeDeal() {
     navigate('create', { replace: true });
   }
+
+  useEffect(() => {
+    if (user !== null) {
+      fetchTimeDeal(user.id);
+    }
+  }, [user]);
 
   return (
     <TimeDealContainer>
