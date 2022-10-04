@@ -1,5 +1,8 @@
 import styled from 'styled-components';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 import thema from '../../styles/thema';
+import MapPopup from './popup/MapPopup';
 import type { CurrentTimeDealUserDTO } from '../../utils/interface';
 
 const Container = styled.div`
@@ -56,6 +59,20 @@ const InfoBox = styled.div`
 `;
 
 function ItemCurrentTimeDeal({ item }: { item: CurrentTimeDealUserDTO }) {
+  const MySwal = withReactContent(Swal);
+
+  function showMap() {
+    MySwal.fire({
+      html: <MapPopup location={{ la: item.latitude, lo: item.longitude }} />,
+      showConfirmButton: false,
+      width: '370px',
+      padding: 0,
+      customClass: {
+        popup: 'border-radius-0',
+      },
+    });
+  }
+
   function calLimitTime(time: Date): string {
     const limit = new Date(time);
     const H = limit.getHours();
@@ -72,7 +89,7 @@ function ItemCurrentTimeDeal({ item }: { item: CurrentTimeDealUserDTO }) {
         <p>
           <span>{item.businessName}</span>
           <span>{item.distance}m</span>
-          <button>지도보기</button>
+          <button onClick={showMap}>지도보기</button>
         </p>
         <p>
           {calLimitTime(item.endTime)}
