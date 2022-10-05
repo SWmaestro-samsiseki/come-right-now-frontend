@@ -136,6 +136,18 @@ function ItemTimeDeal({ item }: { item: TimeDealStoreDTO }) {
     });
   }
 
+  async function doneTimeDeal() {
+    const response = await closeTimeDealByStore(item.id);
+    if (typeof response === 'boolean') {
+      setIsDone(true);
+      if (item.participants.length === 0) {
+        removeTimeDeal(item);
+      }
+    } else {
+      console.log(response.error);
+    }
+  }
+
   useEffect(() => {
     if (item.status === 'CLOSED' && item.participants.length === 0) {
       closeTimeDeal();
@@ -154,7 +166,7 @@ function ItemTimeDeal({ item }: { item: TimeDealStoreDTO }) {
           const S = T % 60;
           setLimitTime(`${M < 10 ? '0' + M : M}:${S < 10 ? '0' + S : S}`);
         } else {
-          setIsDone(true);
+          doneTimeDeal();
           setLimitTime('00:00');
           clearInterval(intervalId);
         }

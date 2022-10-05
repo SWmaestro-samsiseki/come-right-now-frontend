@@ -117,6 +117,25 @@ async function getDistance(id: string, latitude: number, longitude: number) {
   return parse;
 }
 
+async function getHistoryByUser(id: string): Promise<ErrorDTO> {
+  try {
+    const response = await fetch(`${BASE_URL}`);
+    if (response.ok) {
+      return await response.json();
+    } else {
+      return {
+        error: true,
+        message: '서버오류로 인해 예약내역을 가져오지 못했습니다.',
+      };
+    }
+  } catch (err) {
+    return {
+      error: true,
+      message: '서버오류로 인해 예약내역을 가져오지 못했습니다.',
+    };
+  }
+}
+
 export {
   getReservationList,
   getRequestList,
@@ -125,4 +144,5 @@ export {
   deleteReservation,
   calTermTime,
   getDistance,
+  getHistoryByUser,
 };

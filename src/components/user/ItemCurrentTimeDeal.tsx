@@ -20,6 +20,10 @@ const ImageBox = styled.div`
   width: 70px;
   height: 70px;
   background: ${thema.color.secondary.main2};
+
+  & img {
+    width: 100%;
+  }
 `;
 const InfoBox = styled.div`
   display: flex;
@@ -83,16 +87,16 @@ function ItemCurrentTimeDeal({ item }: { item: CurrentTimeDealUserDTO }) {
   return (
     <Container>
       <ImageBox>
-        {item.storeImage ? <img src={item.storeImage} alt="가게 이미지" /> : null}
+        {item.storeimage ? <img src={item.storeimage} alt="가게 이미지" /> : null}
       </ImageBox>
       <InfoBox>
         <p>
-          <span>{item.businessName}</span>
+          <span>{item.businessname}</span>
           <span>{item.distance}m</span>
           <button onClick={showMap}>지도보기</button>
         </p>
         <p>
-          {calLimitTime(item.endTime)}
+          {calLimitTime(item.endtime)}
           까지 방문시
         </p>
         <p>{item.benefit}</p>
