@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import useAuthStore from '../../stores/authStore';
 import thema from '../../styles/thema';
+import { StoreInfo } from '../../utils/interface';
 import { getHistoryByUser } from '../../utils/reservation';
+import HistoryList from './HistoryList';
 
 const Container = styled.div`
   width: 100%;
@@ -31,13 +33,22 @@ const EmtpyHistory = styled.div`
 
 function HistoryContainer() {
   const { user } = useAuthStore();
-  const [historyList, setHistoryList] = useState([]);
+  const [historyList, setHistoryList] = useState<{ day: string; store: StoreInfo[] }[]>([]);
   const [text, setText] = useState('이용내역이 없습니다 :0');
 
   async function fetchHistory(id: string) {
     const response = await getHistoryByUser(id);
     if (!('error' in response)) {
-      setHistoryList(response);
+      setHistoryList(
+        response.map((list) => {
+          const day = new Date(list[0].arrivalTime).toLocaleDateString();
+          const store = list.map((item) => item.store);
+          return {
+            day,
+            store,
+          };
+        }),
+      );
     } else {
       setText(response.message);
     }
@@ -61,7 +72,9 @@ function HistoryContainer() {
           />
           {text}
         </EmtpyHistory>
-      ) : null}
+      ) : (
+        historyList.map((list, index) => <HistoryList key={index} list={list} />)
+      )}
     </Container>
   );
 }

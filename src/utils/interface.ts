@@ -123,6 +123,18 @@ interface CurrentTimeDealUserDTO {
   distance: number;
 }
 
+interface HistoryUserDTO {
+  arrivalTime: Date;
+  createdAt: Date;
+  departureTime: Date;
+  estimatedTime: Date;
+  id: number;
+  numberOfPeople: number;
+  resevationStatus: string;
+  store: StoreInfo;
+  user: UserAuth;
+}
+
 export type {
   ErrorDTO,
   SocketResponseDTO,
@@ -135,4 +147,5 @@ export type {
   TimeDealStoreDTO,
   TimeDealUserDTO,
   CurrentTimeDealUserDTO,
+  HistoryUserDTO,
 };

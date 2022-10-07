@@ -1,4 +1,4 @@
-import type { ErrorDTO, ReservationDTO } from '../utils/interface';
+import type { ErrorDTO, ReservationDTO, HistoryUserDTO } from '../utils/interface';
 
 const BASE_URL = 'http://devserver.jigeumgo.com';
 
@@ -117,9 +117,9 @@ async function getDistance(id: string, latitude: number, longitude: number) {
   return parse;
 }
 
-async function getHistoryByUser(id: string): Promise<ErrorDTO> {
+async function getHistoryByUser(id: string): Promise<HistoryUserDTO[][] | ErrorDTO> {
   try {
-    const response = await fetch(`${BASE_URL}`);
+    const response = await fetch(`${BASE_URL}/reservation/user/${id}?status=arrived&order=date`);
     if (response.ok) {
       return await response.json();
     } else {

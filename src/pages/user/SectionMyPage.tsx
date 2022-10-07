@@ -108,9 +108,10 @@ function SectionTimeDeal() {
   const [text, setText] = useState('');
 
   function select(e: React.MouseEvent) {
-    if ((e.target as Element).getAttribute('data-menu')) {
+    const type = (e.target as Element).getAttribute('data-menu');
+    if (type) {
       setMenuSelect(true);
-      setText((e.target as Element).getAttribute('data-menu') as string);
+      setText(type as string);
     }
   }
   function unSelect() {
@@ -170,7 +171,9 @@ function SectionTimeDeal() {
             {text}
             <img src={require('../../images/back.png')} alt="이전 이미지" onClick={unSelect} />
           </SubHeader>
-          <HistoryContainer />
+          {text === '이용내역' ? (
+            <HistoryContainer />
+          ) : text === '이벤트' ? null : text === '환경설정' ? null : null}
         </SubSection>
       </Slider>
     </Container>
