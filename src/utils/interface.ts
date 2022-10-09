@@ -115,9 +115,9 @@ interface TimeDealUserDTO {
 interface CurrentTimeDealUserDTO {
   id: number;
   benefit: string;
-  endtime: Date;
-  businessname: string;
-  storeimage: string;
+  endTime: Date;
+  businessName: string;
+  storeImage: string;
   latitude: number;
   longitude: number;
   distance: number;

@@ -87,16 +87,16 @@ function ItemCurrentTimeDeal({ item }: { item: CurrentTimeDealUserDTO }) {
   return (
     <Container>
       <ImageBox>
-        {item.storeimage ? <img src={item.storeimage} alt="가게 이미지" /> : null}
+        {item.storeImage ? <img src={item.storeImage} alt="가게 이미지" /> : null}
       </ImageBox>
       <InfoBox>
         <p>
-          <span>{item.businessname}</span>
+          <span>{item.businessName}</span>
           <span>{item.distance}m</span>
           <button onClick={showMap}>지도보기</button>
         </p>
         <p>
-          {calLimitTime(item.endtime)}
+          {calLimitTime(item.endTime)}
           까지 방문시
         </p>
         <p>{item.benefit}</p>
