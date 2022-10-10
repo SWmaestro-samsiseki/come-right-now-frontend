@@ -34,7 +34,7 @@ function ReservationContainer() {
     if (user !== null) {
       getReservation(user.id).then((res) => {
         if (!('error' in res)) {
-          addReservation(res);
+          addReservation(res[0]);
         } else {
           console.log(res.message);
         }

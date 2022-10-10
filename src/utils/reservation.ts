@@ -24,7 +24,7 @@ async function getRequestList(id: string): Promise<ReservationDTO[]> {
   return parse;
 }
 
-function getReservation(id: string): Promise<ReservationDTO | ErrorDTO> {
+function getReservation(id: string): Promise<ReservationDTO[] | ErrorDTO> {
   return fetch(`${BASE_URL}/reservation/user/${id}?status=reserved`, {
     method: 'GET',
     headers: {
