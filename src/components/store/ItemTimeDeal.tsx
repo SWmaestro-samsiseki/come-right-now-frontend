@@ -8,14 +8,15 @@ import { closeTimeDealByStore } from '../../utils/timeDeal';
 import ConfirmPopup from './popup/ConfirmPopup';
 import SuccessPopup from './popup/SuccessPopup';
 import FailPopup from './popup/FailPopup';
+import ItemParticipant from './ItemParticipant';
 import type { TimeDealStoreDTO } from '../../utils/interface';
 
 const TimeDealContainer = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   width: 95%;
   margin: 20px;
-  border: 1px solid ${thema.color.secondary.main3};
   background: ${thema.color.primary.main3};
 `;
 const ControlBox = styled.div`
@@ -24,6 +25,7 @@ const ControlBox = styled.div`
   align-items: center;
   width: 100%;
   height: 120px;
+  border: 1px solid ${thema.color.secondary.main3};
 
   & > p {
     display: flex;
@@ -63,6 +65,20 @@ const CloseBtn = styled.button<{ done: boolean }>`
   border-radius: 4px;
   font: ${thema.font.pb1};
   color: ${(props) => (props.done !== true ? thema.color.alert.red : thema.color.secondary.main4)};
+`;
+const ParticipantBox = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  height: fit-content;
+  padding-top: 20px;
+
+  & > div:nth-child(odd) {
+    margin: 0 1% 2% 0;
+  }
+  & > div:nth-child(even) {
+    margin: 0 0 2% 1%;
+  }
 `;
 
 function ItemTimeDeal({ item }: { item: TimeDealStoreDTO }) {
@@ -190,6 +206,13 @@ function ItemTimeDeal({ item }: { item: TimeDealStoreDTO }) {
           종료
         </CloseBtn>
       </ControlBox>
+      <ParticipantBox>
+        {item.participants.length !== 0
+          ? item.participants.map((ele, index) => (
+              <ItemParticipant key={index} item={ele} timeDealId={item.id} />
+            ))
+          : null}
+      </ParticipantBox>
     </TimeDealContainer>
   );
 }

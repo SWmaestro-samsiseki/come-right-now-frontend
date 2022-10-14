@@ -1,4 +1,10 @@
-import { TimeDealStoreDTO, TimeDealUserDTO, CurrentTimeDealUserDTO, ErrorDTO } from './interface';
+import {
+  TimeDealStoreDTO,
+  TimeDealUserDTO,
+  CurrentTimeDealUserDTO,
+  CheckInUserDTO,
+  ErrorDTO,
+} from './interface';
 
 const BASE_URL = 'http://devserver.jigeumgo.com';
 
@@ -21,7 +27,7 @@ async function postTimeDeal(
     });
     if (resposne.ok) {
       const jsonResponse = await resposne.json();
-      console.log(jsonResponse);
+      jsonResponse.participants = [];
       return jsonResponse;
     } else {
       return {
@@ -188,6 +194,8 @@ async function getTimeDealByStore(storeId: string): Promise<TimeDealStoreDTO | E
     });
     if (response.ok) {
       const jsonResponse = await response.json();
+      console.log(jsonResponse);
+
       return jsonResponse;
     } else {
       if (response.status === 404) {
@@ -210,6 +218,71 @@ async function getTimeDealByStore(storeId: string): Promise<TimeDealStoreDTO | E
   }
 }
 
+async function getParcitipantInfoByStore(
+  participantId: number,
+): Promise<CheckInUserDTO | ErrorDTO> {
+  try {
+    const response = await fetch(`${BASE_URL}/participant/${participantId}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+    if (response.ok) {
+      const jsonResponse = await response.json();
+      return jsonResponse;
+    } else {
+      if (response.status === 404) {
+        return {
+          error: true,
+          message: '체크인 내역이 없습니다.',
+        };
+      } else {
+        return {
+          error: true,
+          message: '서버오류로 인해 타임딜목록을 받아오지 못했습니다.',
+        };
+      }
+    }
+  } catch (err) {
+    return {
+      error: true,
+      message: '서버오류로 인해 사용자 정보를 받아오지 못했습니다.',
+    };
+  }
+}
+
+async function deleteParticipantByStore(participantId: number): Promise<boolean | ErrorDTO> {
+  try {
+    const response = await fetch(`${BASE_URL}/participant/${participantId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+    if (response.ok) {
+      return true;
+    } else {
+      if (response.status === 404) {
+        return {
+          error: true,
+          message: '내역이 없습니다.',
+        };
+      } else {
+        return {
+          error: true,
+          message: '서버오류로 인해 체크아웃을 처리하지 못했습니다.',
+        };
+      }
+    }
+  } catch (err) {
+    return {
+      error: true,
+      message: '서버오류로 인해 체크아웃을 처리하지 못했습니다.',
+    };
+  }
+}
+
 export {
   postTimeDeal,
   getTimeDealByUser,
@@ -217,4 +290,6 @@ export {
   getCurrenTimeDealByUser,
   requestTimeDealByUser,
   closeTimeDealByStore,
+  getParcitipantInfoByStore,
+  deleteParticipantByStore,
 };

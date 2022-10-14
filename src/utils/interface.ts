@@ -15,6 +15,21 @@ interface LoginOutputDTO {
   userType: string;
 }
 
+interface MiniTimeDealDTO {
+  benefit: string;
+  endTime: Date;
+  id: number;
+  status: string;
+}
+
+interface MiniUserDTO {
+  birthDate: string;
+  creditRate: number;
+  id: string;
+  name: string;
+  phone: string;
+}
+
 interface UserAuth {
   id: string;
   email: string;
@@ -101,7 +116,7 @@ interface TimeDealStoreDTO {
   status: string;
   endTime: Date;
   benefit: string;
-  participants: { status: string; user: UserAuth }[];
+  participants: { id: number; status: string; user: MiniUserDTO }[];
 }
 
 interface TimeDealUserDTO {
@@ -116,11 +131,13 @@ interface CurrentTimeDealUserDTO {
   id: number;
   benefit: string;
   endTime: Date;
+  storeId: string;
   businessName: string;
   storeImage: string;
   latitude: number;
   longitude: number;
   distance: number;
+  participantId: number;
 }
 
 interface HistoryUserDTO {
@@ -133,6 +150,13 @@ interface HistoryUserDTO {
   resevationStatus: string;
   store: StoreInfo;
   user: UserAuth;
+}
+
+interface CheckInUserDTO {
+  id: number;
+  status: string;
+  timeDeal: MiniTimeDealDTO;
+  user: MiniUserDTO;
 }
 
 export type {
@@ -148,4 +172,6 @@ export type {
   TimeDealUserDTO,
   CurrentTimeDealUserDTO,
   HistoryUserDTO,
+  MiniUserDTO,
+  CheckInUserDTO,
 };

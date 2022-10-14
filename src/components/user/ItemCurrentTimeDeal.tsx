@@ -3,7 +3,11 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import thema from '../../styles/thema';
 import MapPopup from './popup/MapPopup';
+import ConfirmPopup from './popup/ConfirmPopup';
+import SuccessPopup from './popup/SuccessPopup';
+import FailPopup from './popup/FailPopup';
 import type { CurrentTimeDealUserDTO } from '../../utils/interface';
+import useSocket from '../../utils/useSocket';
 
 const Container = styled.div`
   display: flex;
@@ -63,6 +67,7 @@ const InfoBox = styled.div`
 `;
 
 function ItemCurrentTimeDeal({ item }: { item: CurrentTimeDealUserDTO }) {
+  const { socket } = useSocket(localStorage.getItem('token') as string);
   const MySwal = withReactContent(Swal);
 
   function showMap() {
@@ -84,9 +89,75 @@ function ItemCurrentTimeDeal({ item }: { item: CurrentTimeDealUserDTO }) {
     return `${H < 12 ? '오전 ' + H : '오후 ' + (H - 12)}시 ${M < 10 ? '0' + M : M}분`;
   }
 
+  function checkIn() {
+    MySwal.fire({
+      html: (
+        <ConfirmPopup
+          title="체크인"
+          description={`가게에 도착했습니까?`}
+          confirm={Swal.clickConfirm}
+          close={Swal.close}
+        />
+      ),
+      showConfirmButton: false,
+      width: '280px',
+      padding: 0,
+      customClass: {
+        popup: 'fail-popup-border',
+      },
+    }).then(async ({ isConfirmed }) => {
+      if (isConfirmed) {
+        socket.emit(
+          'user.check-in-time-deal.server',
+          {
+            participantId: item.participantId,
+            storeId: item.storeId,
+          },
+          (response: boolean) => {
+            if (response) {
+              MySwal.fire({
+                html: (
+                  <SuccessPopup
+                    title="체크인"
+                    description="체크인되었습니다! :)"
+                    close={Swal.clickCancel}
+                  />
+                ),
+                showConfirmButton: false,
+                width: '280px',
+                padding: 0,
+                customClass: {
+                  popup: 'fail-popup-border',
+                },
+                timer: 2000,
+              });
+            } else {
+              MySwal.fire({
+                html: (
+                  <FailPopup
+                    title="체크인"
+                    description="체크인에 실패했습니다."
+                    close={Swal.clickCancel}
+                  />
+                ),
+                showConfirmButton: false,
+                width: '280px',
+                padding: 0,
+                customClass: {
+                  popup: 'fail-popup-border',
+                },
+                timer: 2000,
+              });
+            }
+          },
+        );
+      }
+    });
+  }
+
   return (
     <Container>
-      <ImageBox>
+      <ImageBox onClick={checkIn}>
         {item.storeImage ? <img src={item.storeImage} alt="가게 이미지" /> : null}
       </ImageBox>
       <InfoBox>
