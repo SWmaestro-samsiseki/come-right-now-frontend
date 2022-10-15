@@ -11,19 +11,18 @@ import type { TimeDealUserDTO } from '../../utils/interface';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 221px;
-  margin: 44px 0 8px;
+  height: 211px;
 `;
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 20px;
+  height: 22px;
   padding: 0 20px;
-  margin-bottom: 20px;
 
   & p:first-child {
     font: ${thema.font.p1};
@@ -57,7 +56,8 @@ const EmptyBox = styled.div`
   height: 100%;
   margin: 0 auto;
   font: ${thema.font.p2};
-  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.24);
+  border: 1px solid ${thema.color.secondary.main3};
+  border-radius: 8px;
 `;
 const MoreBox = styled.div`
   display: flex;

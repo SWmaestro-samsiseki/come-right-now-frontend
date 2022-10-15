@@ -9,10 +9,10 @@ import { getCurrenTimeDealByUser } from '../../utils/timeDeal';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
   height: 144px;
-  margin: 44px 0 8px;
 `;
 const Header = styled.div`
   width: 100%;
@@ -43,7 +43,8 @@ const EmptyBox = styled.div`
   height: 100%;
   margin: 0 auto;
   font: ${thema.font.p2};
-  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.24);
+  border: 1px solid ${thema.color.secondary.main3};
+  border-radius: 8px;
 `;
 
 function CurrentTimeDealContainer() {

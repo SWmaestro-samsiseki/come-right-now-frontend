@@ -14,7 +14,8 @@ const Container = styled.div`
   height: 169px;
   margin: 5px 20px;
   background: ${thema.color.primary.main3};
-  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.24);
+  border-radius: 8px;
+  border: 1px solid ${thema.color.secondary.main3};
   border-radius: 8px;
 
   & hr {

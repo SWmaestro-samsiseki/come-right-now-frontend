@@ -16,7 +16,6 @@ const Container = styled.div`
   margin: 10px 20px;
   padding: 16px 20px;
   background: ${thema.color.primary.main3};
-  /* box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.24); */
   border: 1px solid ${thema.color.secondary.main3};
   border-radius: 8px;
 `;

@@ -43,6 +43,14 @@ const RequestBtn = styled.button`
   color: ${(props) => (props.disabled ? thema.color.secondary.main4 : thema.color.primary.main2)};
   text-decoration: none;
 `;
+interface size {
+  h: number;
+}
+const TermDivBox = styled.div<size>`
+  width: 100%;
+  height: ${(props) => props.h + 'px'};
+`;
+
 function SectionMain() {
   const { reservation } = useReservationStore();
   const [isReservation, setIsReservation] = useState(false);
@@ -62,7 +70,9 @@ function SectionMain() {
       <UserHeader />
       <Contents>
         <ReservationContainer />
+        <TermDivBox h={20} />
         <CurrentTimeDealContainer />
+        <TermDivBox h={20} />
         <TimeDealContainer />
       </Contents>
       <RequestBtn onClick={next} disabled={isReservation}>

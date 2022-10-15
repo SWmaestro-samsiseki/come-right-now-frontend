@@ -12,9 +12,7 @@ const Container = styled.div`
   align-items: center;
   width: 320px;
   height: auto;
-  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.24);
   border-radius: 8px;
-  margin: 10px 0;
 `;
 
 const EmptyReservation = styled.div`
@@ -24,6 +22,8 @@ const EmptyReservation = styled.div`
   width: 100%;
   height: 185px;
   font: ${thema.font.p2};
+  border: 1px solid ${thema.color.secondary.main3};
+  border-radius: 8px;
 `;
 
 function ReservationContainer() {
