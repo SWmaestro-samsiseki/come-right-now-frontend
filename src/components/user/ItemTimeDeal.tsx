@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import useTimeDealStore from '../../stores/user/timeDealStore';
 import thema from '../../styles/thema';
 import { requestTimeDealByUser } from '../../utils/timeDeal';
 import ConfirmPopup from './popup/ConfirmPopup';
@@ -125,6 +126,7 @@ const BtnBox = styled.div`
 
 function ItemTimeDeal({ item }: { item: TimeDealUserDTO }) {
   const [limitTime, setLimitTime] = useState('00:00');
+  const { removeTimeDeal } = useTimeDealStore();
   const MySwal = withReactContent(Swal);
 
   function calLimitTime(time: Date): string {
@@ -215,7 +217,7 @@ function ItemTimeDeal({ item }: { item: TimeDealUserDTO }) {
         const S = T % 60;
         setLimitTime(`${M < 10 ? '0' + M : M}:${S < 10 ? '0' + S : S}`);
       } else {
-        setLimitTime('00:00');
+        removeTimeDeal(item);
         clearInterval(intervalId);
       }
     }, 1000);

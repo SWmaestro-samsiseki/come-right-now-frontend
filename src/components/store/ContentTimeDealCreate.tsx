@@ -187,7 +187,7 @@ function ContentTimeDealCreate() {
       },
     }).then(async ({ isConfirmed }) => {
       if (isConfirmed) {
-        const response = await postTimeDeal(time, benefit);
+        const response = await postTimeDeal(1, benefit);
         if (!('error' in response)) {
           addTimeDeal(response);
           navigate('/main/timedeal', { replace: true });
