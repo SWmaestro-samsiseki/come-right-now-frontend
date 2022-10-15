@@ -126,7 +126,7 @@ const BtnBox = styled.div`
 
 function ItemTimeDeal({ item }: { item: TimeDealUserDTO }) {
   const [limitTime, setLimitTime] = useState('00:00');
-  const { removeTimeDeal } = useTimeDealStore();
+  const { removeTimeDeal, addCurrentTimeDeal } = useTimeDealStore();
   const MySwal = withReactContent(Swal);
 
   function calLimitTime(time: Date): string {
@@ -168,6 +168,7 @@ function ItemTimeDeal({ item }: { item: TimeDealUserDTO }) {
       if (isConfirmed) {
         const response = await requestTimeDealByUser(item.id);
         if (typeof response === 'boolean') {
+          // TODO: 반환값 받아서 바로 currentTimeDeal에 넣기
           MySwal.fire({
             html: (
               <SuccessPopup

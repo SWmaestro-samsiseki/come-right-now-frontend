@@ -87,7 +87,6 @@ function ItemTimeDeal({ item }: { item: TimeDealStoreDTO }) {
   const timeString = new Date(item.endTime).toLocaleTimeString();
   const time = timeString.slice(0, timeString.lastIndexOf(':'));
   const [limitTime, setLimitTime] = useState('00:00');
-  const [intervalId, setIntervalId] = useState<NodeJS.Timer>();
   const [isDone, setIsDone] = useState(false);
 
   function closeTimeDeal() {
@@ -157,6 +156,8 @@ function ItemTimeDeal({ item }: { item: TimeDealStoreDTO }) {
     if (typeof response === 'boolean') {
       setIsDone(true);
       if (item.participants.length === 0) {
+        console.log('dd');
+
         removeTimeDeal(item);
       }
     } else {
@@ -171,23 +172,21 @@ function ItemTimeDeal({ item }: { item: TimeDealStoreDTO }) {
   }, [item.status, item.participants]);
 
   useEffect(() => {
-    setIntervalId(
-      setInterval(() => {
-        const limit = new Date(item.endTime);
-        const cur = new Date();
-        const term = limit.getTime() - cur.getTime();
-        if (term > 1000 && !isDone) {
-          const T = Math.floor(term / 1000);
-          const M = Math.floor(T / 60);
-          const S = T % 60;
-          setLimitTime(`${M < 10 ? '0' + M : M}:${S < 10 ? '0' + S : S}`);
-        } else {
-          doneTimeDeal();
-          setLimitTime('00:00');
-          clearInterval(intervalId);
-        }
-      }, 1000),
-    );
+    const intervalId = setInterval(() => {
+      const limit = new Date(item.endTime);
+      const cur = new Date();
+      const term = limit.getTime() - cur.getTime();
+      if (term > 1000 && !isDone) {
+        const T = Math.floor(term / 1000);
+        const M = Math.floor(T / 60);
+        const S = T % 60;
+        setLimitTime(`${M < 10 ? '0' + M : M}:${S < 10 ? '0' + S : S}`);
+      } else {
+        clearInterval(intervalId);
+        doneTimeDeal();
+        setLimitTime('00:00');
+      }
+    }, 1000);
     return () => {
       clearInterval(intervalId);
     };

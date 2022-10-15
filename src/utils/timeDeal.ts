@@ -194,8 +194,6 @@ async function getTimeDealByStore(storeId: string): Promise<TimeDealStoreDTO | E
     });
     if (response.ok) {
       const jsonResponse = await response.json();
-      console.log(jsonResponse);
-
       return jsonResponse;
     } else {
       if (response.status === 404) {

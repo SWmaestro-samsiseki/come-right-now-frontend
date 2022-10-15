@@ -16,7 +16,9 @@ const useTimeDealStore = create<TimeDealStore>((set) => ({
   addTimeDeal: (value: TimeDealStoreDTO) =>
     set((state) => ({ timeDealList: [value, ...state.timeDealList] })),
   removeTimeDeal: (value: TimeDealStoreDTO) =>
-    set((state) => ({ timeDealList: [...state.timeDealList.filter((ele) => ele !== value)] })),
+    set((state) => ({
+      timeDealList: [...state.timeDealList.filter((ele) => ele.id !== value.id)],
+    })),
   addParticipant: (id: number, checkInId: number, value: MiniUserDTO) =>
     set((state) => ({
       timeDealList: state.timeDealList.map((item) => {
