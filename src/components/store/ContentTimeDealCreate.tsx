@@ -151,7 +151,7 @@ const CreateBtn = styled.button`
 `;
 
 function ContentTimeDealCreate() {
-  const [time, setTime] = useState(0);
+  const [time, setTime] = useState(5);
   const [benefit, setBenefit] = useState('');
   const navigate = useNavigate();
   const MySwal = withReactContent(Swal);
@@ -162,7 +162,7 @@ function ContentTimeDealCreate() {
   }
 
   function minusTime() {
-    if (time > 0) setTime(time - 5);
+    if (time > 5) setTime(time - 5);
   }
 
   function plusTime() {
