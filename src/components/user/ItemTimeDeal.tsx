@@ -7,6 +7,7 @@ import { requestTimeDealByUser } from '../../utils/timeDeal';
 import ConfirmPopup from './popup/ConfirmPopup';
 import SuccessPopup from './popup/SuccessPopup';
 import FailPopup from './popup/FailPopup';
+import MapPopup from './popup/MapPopup';
 import type { TimeDealUserDTO } from '../../utils/interface';
 
 const Container = styled.div`
@@ -133,6 +134,18 @@ function ItemTimeDeal({ item }: { item: TimeDealUserDTO }) {
     return `${H < 12 ? '오전 ' + H : '오후 ' + (H - 12)}시 ${M < 10 ? '0' + M : M}분`;
   }
 
+  function showMap() {
+    MySwal.fire({
+      html: <MapPopup location={{ la: item.store.latitude, lo: item.store.longitude }} />,
+      showConfirmButton: false,
+      width: '370px',
+      padding: 0,
+      customClass: {
+        popup: 'border-radius-0',
+      },
+    });
+  }
+
   function requestTimeDeal() {
     MySwal.fire({
       html: (
@@ -229,7 +242,7 @@ function ItemTimeDeal({ item }: { item: TimeDealUserDTO }) {
               <img src={require('../../images/star_on.png')} alt="별점 이미지" />
               <span>{item.store.starRate}/5.0</span>
             </div>
-            <button>지도보기</button>
+            <button onClick={showMap}>지도보기</button>
           </div>
         </DetailBox>
       </InfoBox>
