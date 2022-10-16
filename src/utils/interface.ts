@@ -138,6 +138,7 @@ interface CurrentTimeDealUserDTO {
   longitude: number;
   distance: number;
   participantId: number;
+  status: string;
 }
 
 interface HistoryUserDTO {

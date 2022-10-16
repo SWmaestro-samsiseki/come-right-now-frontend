@@ -155,9 +155,9 @@ function ItemTimeDeal({ item }: { item: TimeDealStoreDTO }) {
     const response = await closeTimeDealByStore(item.id);
     if (typeof response === 'boolean') {
       setIsDone(true);
-      if (item.participants.length === 0) {
-        console.log('dd');
+      console.log(item.participants.length);
 
+      if (item.participants.length === 0) {
         removeTimeDeal(item);
       }
     } else {

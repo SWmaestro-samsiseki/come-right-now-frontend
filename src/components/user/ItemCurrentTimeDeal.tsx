@@ -1,18 +1,21 @@
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import useSocket from '../../utils/useSocket';
 import thema from '../../styles/thema';
 import MapPopup from './popup/MapPopup';
 import ConfirmPopup from './popup/ConfirmPopup';
 import SuccessPopup from './popup/SuccessPopup';
 import FailPopup from './popup/FailPopup';
+import { deleteParticipantByStore } from '../../utils/timeDeal';
 import type { CurrentTimeDealUserDTO } from '../../utils/interface';
-import useSocket from '../../utils/useSocket';
 
 const Container = styled.div`
   display: flex;
   width: calc(100vw - 40px);
-  height: 102px;
+  flex-wrap: wrap;
+  height: 142px;
   margin: 10px 20px;
   padding: 16px 20px;
   background: ${thema.color.primary.main3};
@@ -62,6 +65,22 @@ const InfoBox = styled.div`
     margin-top: 2px;
     font: ${thema.font.pb2};
     color: ${thema.color.alert.green};
+  }
+`;
+const BtnBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
+  height: 40px;
+
+  & button {
+    width: 48%;
+    height: 70%;
+    background: ${thema.color.secondary.main2_active};
+    border: none;
+    border-radius: 4px;
+    font: ${thema.font.p3};
   }
 `;
 
@@ -154,16 +173,36 @@ function ItemCurrentTimeDeal({ item }: { item: CurrentTimeDealUserDTO }) {
     });
   }
 
+  useEffect(() => {
+    const endTime = new Date(item.endTime).getTime();
+    const intervalId = setInterval(async () => {
+      const currentTime = new Date().getTime();
+      if (currentTime > endTime && item.status === 'REQUESTED') {
+        const response = await deleteParticipantByStore(item.participantId);
+        if (typeof response === 'boolean') {
+          console.log('삭제 성공');
+          clearInterval(intervalId);
+        } else {
+          console.log(response.message);
+          clearInterval(intervalId);
+        }
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
+
   return (
     <Container>
-      <ImageBox onClick={checkIn}>
+      <ImageBox>
         {item.storeImage ? <img src={item.storeImage} alt="가게 이미지" /> : null}
       </ImageBox>
       <InfoBox>
         <p>
           <span>{item.businessName}</span>
           <span>{item.distance}m</span>
-          <button onClick={showMap}>지도보기</button>
         </p>
         <p>
           {calLimitTime(item.endTime)}
@@ -171,6 +210,10 @@ function ItemCurrentTimeDeal({ item }: { item: CurrentTimeDealUserDTO }) {
         </p>
         <p>{item.benefit}</p>
       </InfoBox>
+      <BtnBox>
+        <button onClick={showMap}>지도보기</button>
+        <button onClick={checkIn}>체크인</button>
+      </BtnBox>
     </Container>
   );
 }

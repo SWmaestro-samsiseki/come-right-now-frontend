@@ -48,7 +48,7 @@ interface size {
 }
 const TermDivBox = styled.div<size>`
   width: 100%;
-  height: ${(props) => props.h + 'px'};
+  min-height: ${(props) => props.h + 'px'};
 `;
 
 function SectionMain() {

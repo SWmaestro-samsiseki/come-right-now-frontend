@@ -12,7 +12,7 @@ const Container = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 144px;
+  height: 184px;
 `;
 const Header = styled.div`
   width: 100%;
@@ -23,7 +23,7 @@ const Header = styled.div`
 `;
 const Content = styled.div`
   width: 100%;
-  height: 112px;
+  height: 152px;
   overflow-x: scroll;
 
   &::-webkit-scrollbar {
