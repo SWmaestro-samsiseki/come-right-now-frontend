@@ -212,7 +212,9 @@ function ItemCurrentTimeDeal({ item }: { item: CurrentTimeDealUserDTO }) {
       </InfoBox>
       <BtnBox>
         <button onClick={showMap}>지도보기</button>
-        <button onClick={checkIn}>체크인</button>
+        <button onClick={checkIn} disabled={item.status === 'ARRIVED' ? true : false}>
+          체크인
+        </button>
       </BtnBox>
     </Container>
   );
