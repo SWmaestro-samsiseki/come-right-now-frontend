@@ -4,12 +4,13 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import useTimeDealStore from '../../stores/user/timeDealStore';
 import thema from '../../styles/thema';
-import { requestTimeDealByUser } from '../../utils/timeDeal';
+import { getCurrenTimeDealByUser, requestTimeDealByUser } from '../../utils/timeDeal';
 import ConfirmPopup from './popup/ConfirmPopup';
 import SuccessPopup from './popup/SuccessPopup';
 import FailPopup from './popup/FailPopup';
 import MapPopup from './popup/MapPopup';
 import type { TimeDealUserDTO } from '../../utils/interface';
+import useRequestInfoStore from '../../stores/user/requestInfoStore';
 
 const Container = styled.div`
   width: calc(100vw - 40px);
@@ -125,8 +126,19 @@ const BtnBox = styled.div`
 `;
 
 function ItemTimeDeal({ item }: { item: TimeDealUserDTO }) {
+  const { latitude, longitude } = useRequestInfoStore();
+  const { initCurrentTimeDeal } = useTimeDealStore();
+
+  async function fetchCurrentTimeDeal(latitude: number, longitude: number) {
+    const response = await getCurrenTimeDealByUser(latitude, longitude);
+    if (!('error' in response)) {
+      initCurrentTimeDeal(response);
+    } else {
+      console.log(response.message);
+    }
+  }
   const [limitTime, setLimitTime] = useState('00:00');
-  const { removeTimeDeal, addCurrentTimeDeal } = useTimeDealStore();
+  const { removeTimeDeal } = useTimeDealStore();
   const MySwal = withReactContent(Swal);
 
   function calLimitTime(time: Date): string {
@@ -168,7 +180,7 @@ function ItemTimeDeal({ item }: { item: TimeDealUserDTO }) {
       if (isConfirmed) {
         const response = await requestTimeDealByUser(item.id);
         if (typeof response === 'boolean') {
-          // TODO: 반환값 받아서 바로 currentTimeDeal에 넣기
+          fetchCurrentTimeDeal(latitude as number, longitude as number);
           MySwal.fire({
             html: (
               <SuccessPopup

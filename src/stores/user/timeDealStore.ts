@@ -7,7 +7,6 @@ interface TimeDealStore {
   initTimeDeal: (value: TimeDealUserDTO[]) => void;
   removeTimeDeal: (value: TimeDealUserDTO) => void;
   initCurrentTimeDeal: (value: CurrentTimeDealUserDTO[]) => void;
-  addCurrentTimeDeal: (value: CurrentTimeDealUserDTO) => void;
 }
 
 const useTimeDealStore = create<TimeDealStore>((set) => ({
@@ -18,10 +17,6 @@ const useTimeDealStore = create<TimeDealStore>((set) => ({
     set((state) => ({ timeDealList: [...state.timeDealList.filter((ele) => ele !== value)] })),
   initCurrentTimeDeal: (value: CurrentTimeDealUserDTO[]) =>
     set(() => ({ currentTimeDealList: value })),
-  addCurrentTimeDeal: (value: CurrentTimeDealUserDTO) =>
-    set((state) => ({
-      currentTimeDealList: [...state.currentTimeDealList, value],
-    })),
 }));
 
 export default useTimeDealStore;
