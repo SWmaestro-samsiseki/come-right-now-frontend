@@ -34,7 +34,7 @@ function ConetntTimeDeal() {
   async function fetchTimeDeal(storeId: string) {
     const response = await getTimeDealByStore(storeId);
     if (!('error' in response)) {
-      initTimeDeal([response]);
+      initTimeDeal(response);
     } else {
       console.log('진행중인 타임딜이 없습니다.');
     }

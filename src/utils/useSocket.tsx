@@ -20,7 +20,7 @@ interface SocketHooks {
 }
 
 const useSocket = (token: string): SocketHooks => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const MySwal = withReactContent(Swal);
   const { userType } = useAuthStore();
   const { addStand } = useStandStore();

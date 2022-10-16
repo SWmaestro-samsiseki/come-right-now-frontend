@@ -82,6 +82,8 @@ const ParticipantBox = styled.div`
 `;
 
 function ItemTimeDeal({ item }: { item: TimeDealStoreDTO }) {
+  console.log(item);
+
   const MySwal = withReactContent(Swal);
   const { removeTimeDeal } = useTimeDealStore();
   const timeString = new Date(item.endTime).toLocaleTimeString();
@@ -155,8 +157,6 @@ function ItemTimeDeal({ item }: { item: TimeDealStoreDTO }) {
     const response = await closeTimeDealByStore(item.id);
     if (typeof response === 'boolean') {
       setIsDone(true);
-      console.log(item.participants.length);
-
       if (item.participants.length === 0) {
         removeTimeDeal(item);
       }
@@ -206,11 +206,9 @@ function ItemTimeDeal({ item }: { item: TimeDealStoreDTO }) {
         </CloseBtn>
       </ControlBox>
       <ParticipantBox>
-        {item.participants.length !== 0
-          ? item.participants.map((ele, index) => (
-              <ItemParticipant key={index} item={ele} timeDealId={item.id} />
-            ))
-          : null}
+        {item.participants.map((ele, index) => (
+          <ItemParticipant key={index} item={ele} timeDealId={item.id} />
+        ))}
       </ParticipantBox>
     </TimeDealContainer>
   );

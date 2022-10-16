@@ -184,7 +184,7 @@ async function closeTimeDealByStore(timeDealId: number): Promise<boolean | Error
   }
 }
 
-async function getTimeDealByStore(storeId: string): Promise<TimeDealStoreDTO | ErrorDTO> {
+async function getTimeDealByStore(storeId: string): Promise<TimeDealStoreDTO[] | ErrorDTO> {
   try {
     const response = await fetch(`${BASE_URL}/time-deal/store?storeId=${storeId}`, {
       method: 'GET',

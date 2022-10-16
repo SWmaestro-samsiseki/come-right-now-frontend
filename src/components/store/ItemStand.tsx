@@ -67,7 +67,7 @@ const BtnBox = styled.div`
   }
 `;
 
-function RequestItem({ item }: { item: ReservationDTO }) {
+function ItemStand({ item }: { item: ReservationDTO }) {
   const token = localStorage.getItem('token') as string;
   const { socket } = useSocket(token);
   const [time, setTime] = useState(new Date(item.estimatedTime));
@@ -157,4 +157,4 @@ function RequestItem({ item }: { item: ReservationDTO }) {
   );
 }
 
-export default RequestItem;
+export default ItemStand;
