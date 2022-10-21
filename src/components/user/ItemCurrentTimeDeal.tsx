@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import useSocket from '../../utils/useSocket';
+import useRequestStore from '../../stores/user/requestInfoStore';
+import useTimeDealStore from '../../stores/user/timeDealStore';
 import thema from '../../styles/thema';
 import MapPopup from './popup/MapPopup';
 import ConfirmPopup from './popup/ConfirmPopup';
@@ -86,6 +88,8 @@ const BtnBox = styled.div`
 
 function ItemCurrentTimeDeal({ item }: { item: CurrentTimeDealUserDTO }) {
   const { socket } = useSocket(localStorage.getItem('token') as string);
+  const { latitude, longitude } = useRequestStore();
+  const { removeCurrentTimeDeal } = useTimeDealStore();
   const MySwal = withReactContent(Swal);
 
   function showMap() {
@@ -126,29 +130,50 @@ function ItemCurrentTimeDeal({ item }: { item: CurrentTimeDealUserDTO }) {
     }).then(async ({ isConfirmed }) => {
       if (isConfirmed) {
         socket.emit(
-          'user.check-in-time-deal.server',
+          'user.check-in-time-deal-test.server',
           {
             participantId: item.participantId,
             storeId: item.storeId,
+            latitude,
+            longitude,
           },
-          (response: boolean) => {
-            if (response) {
-              MySwal.fire({
-                html: (
-                  <SuccessPopup
-                    title="체크인"
-                    description="체크인되었습니다! :)"
-                    close={Swal.clickCancel}
-                  />
-                ),
-                showConfirmButton: false,
-                width: '280px',
-                padding: 0,
-                customClass: {
-                  popup: 'fail-popup-border',
-                },
-                timer: 2000,
-              });
+          (response: { isSuccess: boolean; message?: string }) => {
+            if (response.message !== undefined) {
+              if (response.isSuccess) {
+                MySwal.fire({
+                  html: (
+                    <SuccessPopup
+                      title="체크인"
+                      description="체크인되었습니다! :)"
+                      close={Swal.clickCancel}
+                    />
+                  ),
+                  showConfirmButton: false,
+                  width: '280px',
+                  padding: 0,
+                  customClass: {
+                    popup: 'fail-popup-border',
+                  },
+                  timer: 2000,
+                });
+              } else {
+                MySwal.fire({
+                  html: (
+                    <FailPopup
+                      title="체크인"
+                      description={response.message}
+                      close={Swal.clickCancel}
+                    />
+                  ),
+                  showConfirmButton: false,
+                  width: '280px',
+                  padding: 0,
+                  customClass: {
+                    popup: 'fail-popup-border',
+                  },
+                  timer: 2000,
+                });
+              }
             } else {
               MySwal.fire({
                 html: (
@@ -181,6 +206,7 @@ function ItemCurrentTimeDeal({ item }: { item: CurrentTimeDealUserDTO }) {
         const response = await deleteParticipantByStore(item.participantId);
         if (typeof response === 'boolean') {
           console.log('삭제 성공');
+          removeCurrentTimeDeal(item);
           clearInterval(intervalId);
         } else {
           console.log(response.message);

@@ -34,7 +34,7 @@ const useTimeDealStore = create<TimeDealStore>((set) => ({
     set((state) => ({
       timeDealList: state.timeDealList.map((item) => {
         if (item.id === timeDealId) {
-          item.participants.filter((ele) => ele.id !== participantId);
+          item.participants = item.participants.filter((ele) => ele.id !== participantId);
           return item;
         } else {
           return item;

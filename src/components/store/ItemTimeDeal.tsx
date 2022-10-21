@@ -82,8 +82,6 @@ const ParticipantBox = styled.div`
 `;
 
 function ItemTimeDeal({ item }: { item: TimeDealStoreDTO }) {
-  console.log(item);
-
   const MySwal = withReactContent(Swal);
   const { removeTimeDeal } = useTimeDealStore();
   const timeString = new Date(item.endTime).toLocaleTimeString();
@@ -200,8 +198,8 @@ function ItemTimeDeal({ item }: { item: TimeDealStoreDTO }) {
           <p>{time}까지 방문시</p>
           <p>{item.benefit}</p>
         </InfoBox>
-        <LimitTimeBox done={isDone}>종료까지 {limitTime}</LimitTimeBox>
-        <CloseBtn done={isDone} onClick={closeTimeDeal}>
+        <LimitTimeBox done={isDone}>종료까지 {isDone ? '00:00' : limitTime}</LimitTimeBox>
+        <CloseBtn done={isDone} onClick={closeTimeDeal} disabled={isDone}>
           종료
         </CloseBtn>
       </ControlBox>
